@@ -1,5 +1,6 @@
+#this is the app that starts everything else
+#----------------------------------------------------------
 import os
-
 import dash
 import dash_bootstrap_components as dbc
 from flask import Flask
@@ -42,5 +43,5 @@ app.layout = dbc.Container(
 
 if __name__ == "__main__":
     debug = os.getenv("DEBUG", "True") == "True"
-    app.run_server(debug=debug)
+    app.run_server(port=8040, debug=debug)
 #----------------------------------------------------------
