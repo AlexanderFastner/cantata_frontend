@@ -1,0 +1,7 @@
+#ignore data
+data/
+
+
+#ignore local caches
+**/__pycache__/
+cache/*
