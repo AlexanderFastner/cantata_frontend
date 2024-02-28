@@ -20,7 +20,6 @@ app = dash.Dash(
 )
 
 
-
 app.config.suppress_callback_exceptions = True
 #----------------------------------------------------------
 app.layout = dbc.Container(
