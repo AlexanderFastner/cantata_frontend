@@ -53,14 +53,14 @@ layout = html.Div(
                                             [
                                                 dbc.CardBody(
                                                     [
-                                                        html.Label("Download this heatmap as .png"),
+                                                        dbc.Button('Download this Heatmap', id='download-heatmap-button')
                                                     ],
                                                 )
                                             ],
                                         ),
                                         #style={"width": "20%", "align": "end"},
                                     ),
-                                    style={"width": "20%","justify": "end"}
+                                    style={"width": "15%"}
                                 ),
                             ],
                         ),

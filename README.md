@@ -1,2 +1,2 @@
-# busco_frontend
-frontend for various investigations of genomic data for various taxa
+# Cantata Frontend
+Frontend providing access to the curated Cantata Database as well as several tools

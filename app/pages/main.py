@@ -22,7 +22,7 @@ layout = html.Div([
         dbc.Card(
             dbc.CardBody(
                 [
-                    html.Label("Tools we offer"),
+                    html.Label("Tools we offer: "),
                     #what tools analysis are there
                     #heatmap of buscos
                     #raincloud plots?
@@ -30,7 +30,8 @@ layout = html.Div([
                     #future tools
                         #make trees
                         #other ways to compare or inspect selected data
-                    html.Label("Our Data:"),
+                    html.Hr(),
+                    html.Label("Our Data: "),
                     #where our data is from
                     #brief overview of available species
                     #link to figshare?
