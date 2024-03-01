@@ -3,42 +3,63 @@
 import dash
 from dash import dcc, html
 import dash_bootstrap_components as dbc
-from pages.components.heatmap import get_species_list
+from pages.components.heatmap import get_species_list, heatmap
 #----------------------------------------------------------
 
 dash.register_page(__name__, path="/Busco")
 
 layout = html.Div(
     [
-        html.Div(
+        dbc.Row(
             [
-                dbc.Card(
+                html.Div(
                     [
-                        dbc.CardHeader(html.H5("Select species for comparison")),
-                        dbc.CardBody(
+                        dbc.Col(
                             [
-                                #call function to get species names
-                                #add selection option for main groups/all
-                                #Also radio buttons for each species
-                                dcc.Checklist(
-                                    options=get_species_list()
+                                dbc.Card(
+                                    [
+                                        dbc.CardHeader(html.H5("Select species for comparison")),
+                                        dbc.CardBody(
+                                            [
+                                                dcc.Dropdown(
+                                                    options=[
+                                                        {"label": "All", "value": "All"},
+                                                        #TODO SERGIO
+                                                        {"label": "Cnideria", "value": "SERGIO please add a list of cniderians here!"},
+                                                        {"label": "None", "value": "None"},
+                                                    ],
+                                                    placeholder="Select a Group",
+                                                ),
+                                                html.Hr(),
+                                                dcc.Checklist(
+                                                    options=get_species_list()
+                                                ),                           
+                                            ],
+                                        )
+                                    ],
                                 ),
-                                #generate heatmap based on the selected input
+                                dbc.Card(
+                                    [
+                                        dbc.CardBody(
+                                            [
+                                                html.Label("Download this heatmap as .png"),
+                                            ],
+                                        )
+                                    ],
+                                ),
                             ],
-                        )
+                        ),
                     ],
-                    style={'width': '20%', 'height': '100%'},
+                    style={'width': '20%', 'display': 'inline-block'}
                 ),
-                dbc.Card(
-                    dbc.CardBody(
-                        [
-                            html.Label("Downloads: download this heatmap as .png"),
-                            #TODO
-                        ],
-                    )
-                ),
-            ],
-        ),
-        dcc.Location(id="url", refresh=False),
+                dbc.Col(
+                    [
+                        html.Div(heatmap),
+                        dcc.Location(id="url", refresh=False),
+                    ],
+                    style={'width': '80%', 'display': 'inline-block'},
+                )
+            ]
+        )
     ]
 )
