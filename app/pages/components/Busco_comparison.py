@@ -3,7 +3,8 @@
 import dash
 from dash import dcc, html
 import dash_bootstrap_components as dbc
-from pages.components.heatmap import get_species_list, heatmap
+from pages.components.user_selection import get_species_list
+from pages.components.tabs import plot_selector_tabs
 #----------------------------------------------------------
 
 dash.register_page(__name__, path="/Busco")
@@ -30,7 +31,8 @@ layout = html.Div(
                                         html.Hr(),
                                         dcc.Checklist(
                                             id='species_selected',
-                                            options=get_species_list()
+                                            options=get_species_list(),
+                                            value=[]
                                         ),                           
                                     ],
                                 ),
@@ -40,31 +42,11 @@ layout = html.Div(
                     width="auto",
                 ),
 
-                dbc.Col( # middle/right column for heatmap
+                dbc.Col( # middle/right column for plotting
+                    
+                    #tabs for the various possible plots
                     [
-                        html.Div(heatmap, id="heatmap"),
-                        dcc.Location(id="url", refresh=False),
-
-                        html.Div( #add download option
-                            [
-                                dbc.Row(
-                                    dbc.Col(
-                                        dbc.Card(
-                                            [
-                                                dbc.CardBody(
-                                                    [
-                                                        dbc.Button('Download this Heatmap', id='download-heatmap-button')
-                                                    ],
-                                                )
-                                            ],
-                                        ),
-                                        #style={"width": "20%", "align": "end"},
-                                    ),
-                                    style={"width": "15%"}
-                                ),
-                            ],
-                        ),
-
+                        plot_selector_tabs
                     ],
                     style={"width": "80%", 'display': 'inline-block'},
                 ),
