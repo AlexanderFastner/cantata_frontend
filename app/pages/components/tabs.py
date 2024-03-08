@@ -6,16 +6,6 @@ from dash import dcc, html
 #TODO for each tab add download buttons
 
 #----------------------------------------------------------
-#TEST
-from dash import dcc, callback
-from dash.dependencies import Input, Output, State
-@callback(
-    Output('output', 'children'),
-    Input('species_selected', 'value')
-)
-def print_species_value(species_selected):
-    print("Selected species:", species_selected)
-    return ""
 
 tab_heatmap = html.Div(
     [
@@ -44,8 +34,9 @@ tab_stacked_area= html.Div(
 #----------------------------------------------------------
 tab_raincloud= html.Div(
     [
-        dbc.Row(html.H1("Raincloud Plots")),
-        #dcc.Graph(id='my_stacked_barplot'),
+        dbc.Row(html.H1("TransPi v. Trinity Raincloud Plots")),
+        #dcc.Graph(id='TransPi_Raincloud'),
+        dcc.Graph(id='Trinity_Raincloud'),
     ],
     className="mt-3",
 )
