@@ -44,7 +44,7 @@ tab_raincloud= html.Div(
 tab_alignment= html.Div(
     [
         dbc.Row(html.H1("Alignment of Buscos")),
-        #TODO add selector for busco gene 
+        #TODO
         #1 selector by busco name
         #2 selector by function
         #select single,fragmented, duplicated

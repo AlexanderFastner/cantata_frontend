@@ -26,8 +26,8 @@ layout = html.Div([
         dbc.Card(
             dbc.CardBody(
                 [
-                    html.Label("About:"),
                     dcc.Markdown('''
+                    # About: \n
                     add some text explain the purpose of website\n
                     link to future paper
                     '''),
@@ -37,8 +37,8 @@ layout = html.Div([
         dbc.Card(
             dbc.CardBody(
                 [
-                    html.Label("Tools we offer: "),
                     dcc.Markdown('''
+                    # Tools we offer: \n             
                     #what tools analysis are there\n
                     #heatmap of buscos\n
                     #raincloud plots?\n
@@ -49,8 +49,8 @@ layout = html.Div([
                     '''),
 
                     html.Hr(),
-                    html.Label("Our Data: "),
                     dcc.Markdown('''
+                    # Our Data: \n             
                     where our data is from\n
                     brief overview of available species\n
                     link to figshare?\n
@@ -62,7 +62,10 @@ layout = html.Div([
     style={"width": "60%", 'display': 'inline-block'},
 )
 #----------------------------------------------------------
-#heatmap
+#Heatmap
+#TODO add selector for which dataset you want.
+#restrict species selection to that dataset?
+
 @callback(
     Output(component_id="busco_heatmap", component_property="figure"),
     Input(component_id="species_selected", component_property="value"),
@@ -234,7 +237,9 @@ def download_Raincloud_Trinity(n_clicks, figure):
 
 #---------------------------------------------------------- 
 #TODO Alignments
-
+#TODO add data dir for each busco.faa
+#Those files contain all sequences for each species for that busco gene
+#Query this for the alignments
 
 
 

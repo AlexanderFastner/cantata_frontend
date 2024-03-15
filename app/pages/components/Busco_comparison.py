@@ -1,13 +1,14 @@
 # This holds the page for Busco gene comparison across Species
 #----------------------------------------------------------
 import dash
-from dash import dcc, html
 import dash_bootstrap_components as dbc
-from pages.components.user_selection import get_species_list
+from pages.components.user_selection import get_species_list, group_options
 from pages.components.tabs import plot_selector_tabs
+from dash import dcc, html, callback
+from dash.dependencies import Input, Output, State
 #----------------------------------------------------------
-
 dash.register_page(__name__, path="/Busco")
+#----------------------------------------------------------
 
 layout = html.Div(
     [
@@ -20,12 +21,8 @@ layout = html.Div(
                                 dbc.CardBody(
                                     [
                                         dcc.Dropdown(
-                                            options=[
-                                                {"label": "All", "value": "All"},
-                                                #TODO SERGIO
-                                                {"label": "Cnideria", "value": "SERGIO please add a list of cniderians here!"},
-                                                {"label": "None", "value": "None"},
-                                            ],
+                                            id="group_dropdown",
+                                            options=[{'label': category['label'], 'value': category['value']} for category in group_options],
                                             placeholder="Select a Group",
                                         ),
                                         html.Hr(),
@@ -56,3 +53,18 @@ layout = html.Div(
     ],
     style={"width": "100%", 'display': 'inline-block'}
 )
+
+
+@callback(
+    Output('species_selected', 'values'),
+    Input('group_dropdown', 'value')
+)
+def update_checklist_options(selected_value):
+    print(selected_value)
+    updated_options = get_updated_species_list(selected_value)
+    return updated_options
+
+def get_updated_species_list(selected_value):
+    # Implement your logic here to generate updated species list based on selected value
+    # Return a list of dictionaries with 'label' and 'value' keys for each option
+    pass
