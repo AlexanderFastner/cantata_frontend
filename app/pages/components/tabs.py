@@ -41,6 +41,22 @@ tab_raincloud= html.Div(
     className="mt-3",
 )
 #----------------------------------------------------------
+tab_alignment= html.Div(
+    [
+        dbc.Row(html.H1("Alignment of Buscos")),
+        #TODO add selector for busco gene 
+        #1 selector by busco name
+        #2 selector by function
+        #select single,fragmented, duplicated
+        #various options for which parameterrs of alignment to use
+        #highlight/alter alignments/differences to the user
+        #Add tree view
+
+        #dcc.Graph(id='Busco_alignment'),
+    ],
+    className="mt-3",
+)
+#----------------------------------------------------------
 plot_selector_tabs = html.Div(
     [
         dbc.Tabs(
@@ -50,6 +66,7 @@ plot_selector_tabs = html.Div(
                 dbc.Tab(tab_heatmap, label="Heatmap", tab_id="tab_heatmap"),
                 dbc.Tab(tab_stacked_area, label="Stacked Area", tab_id="tab_stacked_area"),
                 dbc.Tab(tab_raincloud, label="Raincloud Plot", tab_id="tab_raincloud"),
+                dbc.Tab(tab_alignment, label="Busco Alignment", tab_id="tab_alignment"),
             ],
         ),
         html.Div(id="tab-content", style={"marginBottom": "10px"}),

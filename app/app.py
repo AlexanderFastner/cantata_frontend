@@ -1,4 +1,4 @@
-#this is the app that starts everything else
+#This is the app that starts everything else
 #----------------------------------------------------------
 import os
 import dash
@@ -20,7 +20,6 @@ app = dash.Dash(
     use_pages=True,
 )
 
-
 app.config.suppress_callback_exceptions = True
 #----------------------------------------------------------
 app.layout = dbc.Container(
@@ -32,15 +31,15 @@ app.layout = dbc.Container(
             ],
             brand="Cantata",
             brand_href="#",
+            brand_style={"font-size":"40px"},
             className="navbar navbar-light bg-light mx-0",
-            style={"margin-top": "10px", "border-radius": "10px"},
+            style={"margin-top":"5px", "border-radius":"5px"},
         ),
         dash.page_container,
     ],
     fluid=True,
 )
 #----------------------------------------------------------
-
 if __name__ == "__main__":
     debug = os.getenv("DEBUG", "True") == "True"
     app.run_server(port=8040, debug=debug)

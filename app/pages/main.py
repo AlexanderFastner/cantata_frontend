@@ -22,12 +22,15 @@ dash.register_page(__name__, path="/")
 
 layout = html.Div([
     #TODO restrict this to the left side of the screen
+    #TODO add logo
         dbc.Card(
             dbc.CardBody(
                 [
                     html.Label("About:"),
-                    #add some text explain the purpose of website
-                    #link to future paper
+                    dcc.Markdown('''
+                    add some text explain the purpose of website\n
+                    link to future paper
+                    '''),
                 ],
             )
         ),
@@ -35,22 +38,28 @@ layout = html.Div([
             dbc.CardBody(
                 [
                     html.Label("Tools we offer: "),
-                    #what tools analysis are there
-                    #heatmap of buscos
-                    #raincloud plots?
-                    #...
-                    #future tools
-                        #make trees
-                        #other ways to compare or inspect selected data
+                    dcc.Markdown('''
+                    #what tools analysis are there\n
+                    #heatmap of buscos\n
+                    #raincloud plots?\n
+                    #...\n
+                    #future tools\n
+                        #make trees\n
+                        #other ways to compare or inspect selected data\n
+                    '''),
+
                     html.Hr(),
                     html.Label("Our Data: "),
-                    #where our data is from
-                    #brief overview of available species
-                    #link to figshare?
+                    dcc.Markdown('''
+                    where our data is from\n
+                    brief overview of available species\n
+                    link to figshare?\n
+                    '''),
                 ],
             )
         ),
-    ]
+    ],
+    style={"width": "60%", 'display': 'inline-block'},
 )
 #----------------------------------------------------------
 #heatmap
@@ -60,7 +69,7 @@ layout = html.Div([
 )
 def get_heatmap_df(species_selected):
     #print("Selected species Heatmap:", species_selected)
-    heatmap_df = pd.read_csv('./data/prot_busco_df.csv', index_col=0)
+    heatmap_df = pd.read_csv('./data/prot_busco_df_numbers.csv', index_col=0)
 
     #filter by user selection
     if species_selected != None and species_selected != "None":
@@ -103,7 +112,7 @@ def get_TransPi_barplot(species_selected):
     if species_selected != None and species_selected != "None":
         subset_TransPi = TransPi_area_df.loc[species_selected]
         fig = go.Figure(data=ex.area(subset_TransPi, color_discrete_sequence=["#648FFF", "#DC267F", "#FE6100", "#FFB000"],
-                        title="transPi"))
+                        title="TransPi"))
         return fig
     else:
             fig = ""
@@ -157,7 +166,7 @@ def download_stacked_area_Trinity(n_clicks, figure):
         return dcc.send_file('Trinity_stacked_area.png')
 #----------------------------------------------------------
 #Raincloud TransPi
-
+#TODO add this
 
 
 #----------------------------------------------------------
@@ -216,7 +225,19 @@ def download_Raincloud_Trinity(n_clicks, figure):
         return dcc.send_file('Trinity_stacked_area.png')
 
 #----------------------------------------------------------
-#Raincloud Combined
+#TODO Raincloud Proteins
+
+
+#----------------------------------------------------------    
+#TODO Raincloud Combined
 
 
 #---------------------------------------------------------- 
+#TODO Alignments
+
+
+
+
+#----------------------------------------------------------
+
+#----------------------------------------------------------    
