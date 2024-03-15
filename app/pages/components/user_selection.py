@@ -11,8 +11,10 @@ def get_species_list():
             s = [r.split("\t")[0] for r in t]
             #n = (set(species) - set(s)).union(set(s) - set(species))
             n = len(set(species) - set(s))
-            print(n)
-            print(len(set(s)))
+            #TODO GET THIS TO MATCH 100%
+            
+            #print(n)
+            #print(len(set(s)))
             #print("Difference between prot and TransPi: ",n)
     return species
 #----------------------------------------------------------

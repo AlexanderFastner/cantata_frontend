@@ -25,7 +25,9 @@ tab_heatmap = html.Div(
             ),
         ),
         dcc.Graph(id='busco_heatmap'),
-        html.Button('Download Heatmap', id='download-heatmap', n_clicks=0),
+        html.Hr(),
+        #TODO dcc.Graph(id='busco_difference_heatmap'),
+        html.Button('Download Heatmap', id='download-heatmap'),
         html.Button('Download Difference Heatmap', id='download-difference-heatmap', n_clicks=0),
         #TODO dif heatmp is the difference calculated betweeen the different heatmaps to more easily spot differences
             #TODO selector of what to calculate differencces between (protein/transpi, protein/trinity, trinity/transpi)
@@ -39,6 +41,7 @@ tab_stacked_area= html.Div(
         dbc.Row(html.H1("Stacked Area Plots of TransPi and Trinity Buscos")),
         #stacked area plots for Transpi/Trinity
         dcc.Graph(id='TransPi_area'),
+        html.Hr(),
         dcc.Graph(id='Trinity_area'),
         html.Button('Download Stacked Area TransPi', id='download-stacked-area-TransPi', n_clicks=0),
         html.Button('Download Stacked Area Trinity', id='download-stacked-area-Trinity', n_clicks=0),
@@ -50,6 +53,7 @@ tab_raincloud= html.Div(
     [
         dbc.Row(html.H1("TransPi v. Trinity Raincloud Plots")),
         dcc.Graph(id='TransPi_Raincloud'),
+        html.Hr(),
         dcc.Graph(id='Trinity_Raincloud'),
         html.Button('Download Raincloud TransPi', id='download-Raincloud-TransPi', n_clicks=0),
         html.Button('Download Raincloud Trinity', id='download-Raincloud-Trinity', n_clicks=0),
@@ -98,7 +102,7 @@ tab_alignment= html.Div(
                 ],
             )
         ),
-        #TODO add download option
+        #TODO add download options
 
         #TODO
         #1 selector by busco name
