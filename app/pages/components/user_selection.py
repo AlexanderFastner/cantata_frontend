@@ -6,14 +6,28 @@ def get_species_list():
     species_list = []
     with open("./data/prot_busco_df_numbers.csv") as f:
         species = [row.split(",")[0] for row in f]
-        species=species[1:]
+        species=sorted(species[1:])
+        with open("./data/TransPi.tsv") as t:
+            s = [r.split("\t")[0] for r in t]
+            #n = (set(species) - set(s)).union(set(s) - set(species))
+            n = len(set(species) - set(s))
+            print(n)
+            print(len(set(s)))
+            #print("Difference between prot and TransPi: ",n)
     return species
 #----------------------------------------------------------
-#contain the various selecctble groups
+def get_busco_genes():
+    print("activated get_busco_genes")
+    return None
+#----------------------------------------------------------
+def get_busco_functions():
+    print("activated get_busco_functions")
+    return None
+#----------------------------------------------------------
+#contain the various selecatble groups
 group_options=[
-    #TODO make this selection update checklist
-    {"label": "All", "value": "All"},
     {"label": "None", "value": "None"},
+    {"label": "All", "value": "All"},
     {"label": "Annelida-Polychaeta", "value": "Platynereis_dumerilii"},
     {"label": "Arthropoda-Branchiopoda", "value": "Daphnia_pulex"},
     {"label": "Choanozoa-Choanoflagellatea", "value": "Acanthoeca_spectabilis, Helgoeca_nana, Salpingoeca_infusionum"},

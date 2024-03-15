@@ -54,14 +54,20 @@ layout = html.Div(
     style={"width": "100%", 'display': 'inline-block'}
 )
 
-
 @callback(
-    Output('species_selected', 'values'),
-    Input('group_dropdown', 'value')
+    Output('species_selected', 'value'),
+    Input('group_dropdown', 'value'),
+    prevent_initial_call=True,
 )
 def update_checklist_options(selected_value):
-    print(selected_value)
-    updated_options = get_updated_species_list(selected_value)
+    print("update checklist values: ", selected_value)
+    if selected_value == "None":
+        updated_options = []
+    if selected_value == "All":
+        #TODO add all options
+        updated_options = ["Abeoforma_whisleri"]
+    updated_options = [selected_value]
+    print("updated_options: ", updated_options)
     return updated_options
 
 def get_updated_species_list(selected_value):
