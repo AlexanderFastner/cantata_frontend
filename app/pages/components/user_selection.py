@@ -1,4 +1,4 @@
-#What the user selects
+#What the user selects/can select
 #----------------------------------------------------------
 #TODO prot_buscso ids need to match ids in TransPi/Trinity .tsv
 
@@ -7,10 +7,10 @@ def get_species_list():
     with open("./data/prot_busco_df_numbers.csv") as f:
         species = [row.split(",")[0] for row in f]
         species=sorted(species[1:])
-        with open("./data/TransPi.tsv") as t:
-            s = [r.split("\t")[0] for r in t]
-            #n = (set(species) - set(s)).union(set(s) - set(species))
-            n = len(set(species) - set(s))
+        # with open("./data/TransPi.tsv") as t:
+        #     s = [r.split("\t")[0] for r in t]
+        #     #n = (set(species) - set(s)).union(set(s) - set(species))
+        #     n = len(set(species) - set(s))
             #TODO GET THIS TO MATCH 100%
             
             #print(n)
@@ -20,10 +20,14 @@ def get_species_list():
 #----------------------------------------------------------
 def get_busco_genes():
     print("activated get_busco_genes")
+    #return a list of all the busco genes
+    #TODO get this and functions list from sergio
+    #add that too data and query here
     return None
 #----------------------------------------------------------
 def get_busco_functions():
     print("activated get_busco_functions")
+    #return a list of the various busco functions
     return None
 #----------------------------------------------------------
 #contain the various selecatble groups

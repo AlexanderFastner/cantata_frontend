@@ -27,13 +27,15 @@ app.layout = dbc.Container(
         dbc.NavbarSimple(
             [
                 dbc.NavItem(dbc.NavLink(page["name"], href=page["path"]))
+                #TODO change this from Nav Item to dropdown once we can link to individual tools
                 for page in dash.page_registry.values()
             ],
             brand="Cantata",
             brand_href="#",
             brand_style={"font-size":"40px"},
-            className="navbar navbar-light bg-light mx-0",
+            className="navbar navbar-dark bg-dark",
             style={"margin-top":"5px", "border-radius":"5px"},
+
         ),
         dash.page_container,
     ],

@@ -110,9 +110,10 @@ tab_alignment= html.Div(
         #select single,fragmented, duplicated
         #TODO Add tree view
 
-        #TODO visualize alignment
-            #dcc.Graph(id='Busco_alignment'),
+        #TODO visualize alignment how?
+        #dcc.Graph(id='Busco_alignment'),
     ],
+    style={"width": "10%", 'display': 'inline-block'},
     className="mt-3",
 )
 #----------------------------------------------------------
