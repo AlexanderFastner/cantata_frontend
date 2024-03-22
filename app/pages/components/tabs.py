@@ -9,30 +9,36 @@ from pages.components.user_selection import get_busco_genes, get_busco_functions
 #----------------------------------------------------------
 tab_heatmap = html.Div(
     [
-        dbc.Row(html.H1("Species v. Buscos Heatmap")),
+        html.H1("Species v. Buscos Heatmap"),
         #selector to switch between the Protein buscos and the transpi/trinity ones
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    dcc.Dropdown(
-                        id="heatmap_selector",
-                        options=[
-                            "Protein","TransPi","Trinity"
-                        ],
-                        multi=True,
-                        placeholder="Select transciptome",
+        dbc.Col(
+            [
+                dbc.Card(
+                    dbc.CardBody(
+                        dcc.Dropdown(
+                            id="heatmap_selector",
+                            options=["Protein","TransPi","Trinity"],
+                            multi=True,
+                            placeholder="Select transciptome",
+                        )
                     ),
-                ],
-            ),
+                )
+            ],width=2,
         ),
-        dcc.Graph(id='busco_heatmap'),
-        html.Hr(),
-        #TODO dcc.Graph(id='busco_difference_heatmap'),
-        html.Button('Download Heatmap', id='download-heatmap'),
-        html.Button('Download Difference Heatmap', id='download-difference-heatmap', n_clicks=0),
-        #TODO dif heatmp is the difference calculated betweeen the different heatmaps to more easily spot differences
-            #TODO selector of what to calculate differencces between (protein/transpi, protein/trinity, trinity/transpi)
-        #dcc.Graph(id='difference_heatmap'),
+        dbc.Col(
+            [
+                dcc.Graph(id='busco_heatmap'),
+                html.Hr(),
+                #TODO dif heatmp is the difference calculated betweeen the different heatmaps to more easily spot differences
+                #TODO dcc.Graph(id='busco_difference_heatmap'),
+            ],
+        ),
+        dbc.Col(
+            [
+                html.Button('Download Heatmap', id='download-heatmap'),
+                html.Button('Download Difference Heatmap', id='download-difference-heatmap', n_clicks=0),
+            ],
+        ),
     ],
     className="mt-3",
 )
@@ -119,8 +125,7 @@ tab_alignment= html.Div(
         
 
         #TODO visualize alignment heatmap 
-        #dashbio.AlignmentChart()
-
+        #dashbio.AlignmentChart(id="alignment_viewer", data=, height=800, tilewidth=40)
 
         #TODO Add tree view
 
