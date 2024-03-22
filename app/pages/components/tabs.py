@@ -2,6 +2,7 @@
 #----------------------------------------------------------
 import dash_bootstrap_components as dbc
 from dash import dcc, html
+import dash_bio as dashbio
 from pages.components.user_selection import get_busco_genes, get_busco_functions
 #----------------------------------------------------------
 #TODO for each tab add download buttons
@@ -114,16 +115,16 @@ tab_alignment= html.Div(
             ],
             style={"width":"100%"},
         )
-        #TODO add download options
+        
+        
 
-        #TODO
-        #1 selector by busco name
-        #2 selector by function
-        #select single,fragmented, duplicated
+        #TODO visualize alignment heatmap 
+        #dashbio.AlignmentChart()
+
+
         #TODO Add tree view
 
-        #TODO visualize alignment how?
-        #dcc.Graph(id='Busco_alignment'),
+        #TODO add download options
     ],
     #style={'display': 'inline-block'},
     className="mt-3",
