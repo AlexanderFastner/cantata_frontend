@@ -57,7 +57,7 @@ layout = html.Div(
                     [
                         plot_selector_tabs
                     ],
-                    style={"width": "80%", 'display': 'inline-block'},
+                    style={"width": "80%"},
                 ),
             ],
         ),
@@ -320,7 +320,7 @@ def download_Raincloud_Trinity(n_clicks, figure):
 
 #---------------------------------------------------------- 
 #TODO Alignments
-#TODO add data dir for each busco.faa
+#TODO add data dir
 #Those files contain all sequences for each species for that busco gene
 #Query this for the alignments
 

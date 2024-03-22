@@ -63,45 +63,57 @@ tab_raincloud= html.Div(
 #----------------------------------------------------------
 tab_alignment= html.Div(
     [
-        dbc.Row(html.H1("Alignment of Buscos")),
+        html.H1("Alignment of Buscos"),
         #TODO add styling and css to center correctly
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    dcc.Dropdown(
-                        id="busco_name_selector",
-                        options=get_busco_genes(),
-                        placeholder="Select Busco Gene by Name",
+        dbc.Row(
+            [
+                dbc.Col(
+                    dbc.Card(
+                        dbc.CardBody(
+                            [
+                                dcc.Dropdown(
+                                    id="busco_name_selector",
+                                    options=get_busco_genes(),
+                                    placeholder="Select Busco Gene by Name",
+                                ),
+                            ],
+                        ),
                     ),
-                ],
-            ),
-        ),
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    dcc.Dropdown(
-                        id="busco_function_selector",
-                        options=get_busco_functions(),
-                        placeholder="Select Busco Gene by Function",
+                ),
+                
+                dbc.Col( 
+                    dbc.Card(
+                        dbc.CardBody(
+                            [
+                                dcc.Dropdown(
+                                    id="busco_function_selector",
+                                    options=get_busco_functions(),
+                                    placeholder="Select Busco Gene by Function",
+                                ),
+                            ],
+                        ),
                     ),
-                ],
-            ),
-        ),
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    dcc.Dropdown(
-                        id="type_selector",
-                        options=[
-                            {"label": "single", "value": "single"},
-                            {"label": "fragmented", "value": "fragmented"},
-                            {"label": "duplicated", "value": "duplicated"},
-                        ],
-                        placeholder="Select what Type of Busco Gene to show",
+                ),
+                dbc.Col(
+                    dbc.Card(
+                        dbc.CardBody(
+                            [
+                                dcc.Dropdown(
+                                    id="type_selector",
+                                    options=[
+                                        {"label": "single", "value": "single"},
+                                        {"label": "fragmented", "value": "fragmented"},
+                                        {"label": "duplicated", "value": "duplicated"},
+                                    ],
+                                    placeholder="Select what Type of Busco Gene to show",
+                                ),
+                            ],
+                        )
                     ),
-                ],
-            )
-        ),
+                ),
+            ],
+            style={"width":"100%"},
+        )
         #TODO add download options
 
         #TODO
@@ -113,7 +125,7 @@ tab_alignment= html.Div(
         #TODO visualize alignment how?
         #dcc.Graph(id='Busco_alignment'),
     ],
-    style={"width": "10%", 'display': 'inline-block'},
+    #style={'display': 'inline-block'},
     className="mt-3",
 )
 #----------------------------------------------------------

@@ -23,12 +23,16 @@ def get_busco_genes():
     #return a list of all the busco genes
     #TODO get this and functions list from sergio
     #add that too data and query here
-    return None
+    busco_genes = ["262757at33208"]
+
+    return busco_genes
 #----------------------------------------------------------
 def get_busco_functions():
     print("activated get_busco_functions")
     #return a list of the various busco functions
-    return None
+
+    busco_function = ["do something"]
+    return busco_function
 #----------------------------------------------------------
 #contain the various selecatble groups
 group_options=[
@@ -46,7 +50,7 @@ group_options=[
     {"label": "Cnidaria-Staurozoa", "value": "Calvadosia_campanulata, Calvadosia_cruxmelitensis, Craterolophus_convolvulus, Haliclystus_auricula"},
     {"label": "Ctenophora-Nuda", "value": "Beroe_abyssicola, Beroe_forskalii, Beroe_ovata"},
     {"label": "Ctenophora-Tentaculata", "value": "Cestum_veneris, Velamen_paralellum, Aulacoctena_acuminata, Bathyctena_chuni, Charistephane_fugiens, Dryodora_glandiformis, Euplokamis_dunlapae, Haeckelia_beehleri, Haeckelia_rubra, Hormiphora_californensis, Lampea_lactea, Lampea_sp, Bathocyroe_fosteri, Bolinopsis_microptera, Deiopea_kaloktenota, Kiyohimea_sp_WRF2015, Lampocteis_cruentiventer, Leucothea_pulchra, Lobata_sp_VWRF2014, Ocyropsis_maculata, Thalassocalyce_inconstans"},
-    {"label": "Ctenophora-nan", "value": "Ctenophora_sp_BWRF2014, Ctenophora_sp_CWRF2014, Ctenophora_sp_KWRF2015, Ctenophora_sp_L1WRF2015, Ctenophora_sp_L2WRF2015, Ctenophora_sp_MWRF2015, Ctenophora_sp_N1WRF2014, Ctenophora_sp_N2WRF2014, Ctenophora_sp_PWRF2015, Ctenophora_sp_TWRF2014, Ctenophora_sp_WWRF2014, Ctenophora_sp_XWRF2015"},
+    {"label": "Ctenophora-Indet", "value": "Ctenophora_sp_BWRF2014, Ctenophora_sp_CWRF2014, Ctenophora_sp_KWRF2015, Ctenophora_sp_L1WRF2015, Ctenophora_sp_L2WRF2015, Ctenophora_sp_MWRF2015, Ctenophora_sp_N1WRF2014, Ctenophora_sp_N2WRF2014, Ctenophora_sp_PWRF2015, Ctenophora_sp_TWRF2014, Ctenophora_sp_WWRF2014, Ctenophora_sp_XWRF2015"},
     {"label": "Echinodermata-Crinoidea", "value": "Oligometra_serripinna"},
     {"label": "Echinodermata-Echinoidea", "value": "Strongylocentrotus_purpuratus, Eucidaris_tribuloides"},
     {"label": "Hemichordata-Enteropneusta", "value": "Ptychodera_flava"},
@@ -56,9 +60,9 @@ group_options=[
     {"label": "Porifera-Demospongiae", "value": "Cymbastella_concentrica, Halisarca_dujardinii, Chondrosia_reniformis, Cliona_varians, Dendrilla_antarctica, Dysidea_avara, Lendenfeldia_chondrodes, Pleraplysilla_spinifera, Sarcotragus_fasciculatus, Spongia_officinalis, Vaceletia_crypta, Amphimedon_queenslandica, Haliclona_amboinensis, Haliclona_tubifera, Neopetrosia_compacta, Petrosia_ficiformis, Xestospongia_testudinaria, Crella_elegans, Latrunculia_apicalis, Mycale_cecilia, Mycale_phylophylla, Tedania_anhelans, Baikalospongia_bacillifera, Ephydatia_muelleri, Lubomirskia_abietina, Lubomirskia_baikalensis, Spongilla_lacustris, Halichondria_panicea, Pseudospongosorites_suberitoides, Tethya_wilhelma, Cinachyrella_alloclada, Geodia_atlantica, Geodia_hentscheli, Geodia_macandrewii, Geodia_phlegraei, Aplysina_aerophoba, Scopalina_sp, Isodyctia_sp, Poecilosclerida_sp"},
     {"label": "Porifera-Hexactinellida", "value": "Amphidiscella_abyssalis, Aulocalyx_serialis, Bolosoma_cyanae, Caulophacus_discohexaster, Chaunoplectella_NIWA126325, Corbitella_NIWA126123, Regadrella_okinoseana, Rossellidae_NIWA126310, Saccocalyx_tetractinus, Trychella_NIWA126306, Walteria_leuckarti, Eurete_NIWA126276, Farrea_occa, Farrea_similaris"},
     {"label": "Porifera-Homoscleromorpha", "value": "Corticium_candelabrum, Oscarella_lobularis, Oscarella_pearsei, Plakina_jani"},
-    {"label": "Priapulida-nan", "value": "Priapulus_caudatus"},
-    {"label": "Xenacoelomorpha-nan", "value": "Symsagittifera_roscoffensis, Xenoturbella_bocki"},
-    {"label": "nan-Filasterea", "value": "Capsaspora_owczarzaki"},
-    {"label": "nan-Ichthyosporea", "value": "Amoebidium_parasiticum, Abeoforma_whisleri, Ichthyosporea_XGB-2017a"},
+    {"label": "Priapulida-Indet", "value": "Priapulus_caudatus"},
+    {"label": "Xenacoelomorpha-Indet", "value": "Symsagittifera_roscoffensis, Xenoturbella_bocki"},
+    {"label": "Indet-Filasterea", "value": "Capsaspora_owczarzaki"},
+    {"label": "Indet-Ichthyosporea", "value": "Amoebidium_parasiticum, Abeoforma_whisleri, Ichthyosporea_XGB-2017a"},
 ]
 #----------------------------------------------------------
