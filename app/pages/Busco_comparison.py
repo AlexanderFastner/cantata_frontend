@@ -9,6 +9,7 @@ import plotly.io as pio
 import plotly.express as ex
 from pages.components.user_selection import get_species_list, group_options
 from pages.components.tabs import plot_selector_tabs
+from pages.components.alignment_functions import read_in_alignment
 from dash import dcc, html, callback
 from dash.dependencies import Input, Output, State
 from flask import send_file
@@ -141,7 +142,6 @@ def get_TransPi_barplot(species_selected):
     print("species_selected ",species_selected)
     #filter by user selection
     if species_selected != None and species_selected != "None":
-        print("inside: ", species_selected)
         TransPi_area_df = pd.read_csv('./data/TransPi.tsv', sep="\t", index_col=0)
         TransPi_area_df = TransPi_area_df.drop(columns=["Complete_BUSCOs", "Total"])
         subset_TransPi = TransPi_area_df.loc[species_selected]
@@ -320,9 +320,24 @@ def download_Raincloud_Trinity(n_clicks, figure):
 
 #---------------------------------------------------------- 
 #TODO Alignments
-#TODO add data dir
-#Those files contain all sequences for each species for that busco gene
-#Query this for the alignments
+#Need a list of Species and a busco_id
+@callback(
+    Output(component_id="alignment_viewer", component_property="children"),
+    Input(component_id="species_selected", component_property="value"),
+    Input(component_id="busco_name_selector", component_property="value"),
+    prevent_initial_call=True
+)
+def get_alignment(species_selected, busco_name_selector):
+    #filter by user selection
+    print("species_selected ", species_selected)
+    print("busco_name_selector ", busco_name_selector)
+
+    Alignment_df = None
+    if species_selected != None and species_selected != "None":
+        if busco_name_selector != None and busco_name_selector != "None":
+            Alignment_df = read_in_alignment(species_selected, busco_name_selector)
+
+    return Alignment_df
 
 
 

@@ -23,7 +23,7 @@ def get_busco_genes():
     #return a list of all the busco genes
     #TODO get this and functions list from sergio
     #add that too data and query here
-    busco_genes = ["262757at33208"]
+    busco_genes = ["55162at33208"]
 
     return busco_genes
 #----------------------------------------------------------
@@ -65,4 +65,17 @@ group_options=[
     {"label": "Indet-Filasterea", "value": "Capsaspora_owczarzaki"},
     {"label": "Indet-Ichthyosporea", "value": "Amoebidium_parasiticum, Abeoforma_whisleri, Ichthyosporea_XGB-2017a"},
 ]
+#----------------------------------------------------------
+#TODO add dictionary lookup for species codes
+species_codes = {"Cinachyrella_alloclada": "CAL",
+                 
+}
+
+#----------------------------------------------------------
+def species_lookup(species_list):
+    species_c = []
+    for item in species_list:
+        species_c.append(str(species_codes.get(item)))
+
+    return species_c
 #----------------------------------------------------------

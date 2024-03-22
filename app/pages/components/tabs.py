@@ -2,8 +2,9 @@
 #----------------------------------------------------------
 import dash_bootstrap_components as dbc
 from dash import dcc, html
-import dash_bio as dashbio
 from pages.components.user_selection import get_busco_genes, get_busco_functions
+from pages.components.Busco_comparison import Alignment_df
+import dash_bio as dashbio
 #----------------------------------------------------------
 #TODO for each tab add download buttons
 #----------------------------------------------------------
@@ -120,16 +121,34 @@ tab_alignment= html.Div(
                 ),
             ],
             style={"width":"100%"},
-        )
-        
-        
+        ),
+        dbc.Row(
+            [
+                #TODO visualize alignment heatmap 
+                dbc.Col(
+                    html.Div(
+                        [
+                            #TODO fix this somehow
+                            #TODO get 3 letter code dict from molpal excel sheet
+                            dashbio.AlignmentChart(id="alignment_viewer", data=Alignment_df, height=800, tilewidth=40)
+                        ]
+                    ),
+                ),
+                #TODO Add tree view
 
-        #TODO visualize alignment heatmap 
-        #dashbio.AlignmentChart(id="alignment_viewer", data=, height=800, tilewidth=40)
-
-        #TODO Add tree view
-
-        #TODO add download options
+                #TODO add download options
+            ]
+        ),
+        dbc.Row(
+            [
+                dbc.Col(
+                    [
+                        html.Button('Download Raw Alignment', id='download-Raw-Alignment', n_clicks=0),
+                        html.Button('Download Alignment Figure', id='download-Alignment-Figure', n_clicks=0),
+                    ], width=4,
+                )
+            ],
+        ),
     ],
     #style={'display': 'inline-block'},
     className="mt-3",
