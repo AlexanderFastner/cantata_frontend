@@ -67,6 +67,7 @@ group_options=[
 ]
 #----------------------------------------------------------
 #TODO add dictionary lookup for species codes
+#sergio mde a .csv in Cantata
 species_codes = {"Cinachyrella_alloclada": "CAL",
                  
 }

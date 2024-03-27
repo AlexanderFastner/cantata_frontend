@@ -3,7 +3,7 @@
 import dash_bootstrap_components as dbc
 from dash import dcc, html
 from pages.components.user_selection import get_busco_genes, get_busco_functions
-from pages.components.Busco_comparison import Alignment_df
+from pages.components.alignment_functions import alignment_data
 import dash_bio as dashbio
 #----------------------------------------------------------
 #TODO for each tab add download buttons
@@ -124,13 +124,18 @@ tab_alignment= html.Div(
         ),
         dbc.Row(
             [
-                #TODO visualize alignment heatmap 
                 dbc.Col(
                     html.Div(
                         [
                             #TODO fix this somehow
-                            #TODO get 3 letter code dict from molpal excel sheet
-                            dashbio.AlignmentChart(id="alignment_viewer", data=Alignment_df, height=800, tilewidth=40)
+                            #get 3 letter code dict from molpal excel sheet
+                            dashbio.AlignmentChart(
+                                id="alignment_viewer",
+                                data=alignment_data,
+                                height=700,
+                                tilewidth=30, 
+                            ),
+                            
                         ]
                     ),
                 ),

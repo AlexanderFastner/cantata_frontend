@@ -139,18 +139,19 @@ def download_heatmap(n_clicks, figure):
     prevent_initial_call=True
 )
 def get_TransPi_barplot(species_selected):
-    print("species_selected ",species_selected)
+    #print("species_selected ",species_selected)
     #filter by user selection
     if species_selected != None and species_selected != "None":
-        TransPi_area_df = pd.read_csv('./data/TransPi.tsv', sep="\t", index_col=0)
+        TransPi_area_df = pd.read_csv('./data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
         TransPi_area_df = TransPi_area_df.drop(columns=["Complete_BUSCOs", "Total"])
         subset_TransPi = TransPi_area_df.loc[species_selected]
         fig = go.Figure(data=ex.area(subset_TransPi, color_discrete_sequence=["#648FFF", "#DC267F", "#FE6100", "#FFB000"],
                         title="TransPi"))
         return fig
     else:
-            fig = None
-            return fig
+        print("return none TransPi")
+        fig = None
+        return fig
 
 @callback(
     Output('busco_stacked_area_TransPi', 'config'),
@@ -174,9 +175,11 @@ def download_stacked_area_TransPi(n_clicks, figure):
 def get_Trinity_barplot(species_selected):
     #filter by user selection
     if species_selected != None and species_selected != "None":
-        Trinity_area_df = pd.read_csv('./data/Trinity.tsv', sep="\t", index_col=0)
+        #print("Trinity", species_selected)
+        Trinity_area_df = pd.read_csv('./data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
         Trinity_area_df = Trinity_area_df.drop(columns=["Complete_BUSCOs", "Total"])
         subset_Trinity = Trinity_area_df.loc[species_selected]
+        #print(subset_Trinity)
         fig = go.Figure(data=ex.area(subset_Trinity, color_discrete_sequence=["#648FFF", "#DC267F", "#FE6100", "#FFB000"],
                         title="Trinity"))
         return fig
@@ -207,7 +210,7 @@ def download_stacked_area_Trinity(n_clicks, figure):
 def get_TransPi_Raincloud(species_selected):
     #filter by user selection
     if species_selected != None and species_selected != "None":
-        TransPi_df = pd.read_csv('./data/TransPi.tsv', sep="\t", index_col=0)
+        TransPi_df = pd.read_csv('./data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
         subset_TransPi = TransPi_df.loc[species_selected]
 
         #print("Subset TransPi: ",subset_TransPi)    
@@ -264,7 +267,7 @@ def download_Raincloud_TransPi(n_clicks, figure):
 def get_Trinity_Raincloud(species_selected):
     #filter by user selection
     if species_selected != None and species_selected != "None":
-        Trinity_df = pd.read_csv('./data/Trinity.tsv', sep="\t", index_col=0)
+        Trinity_df = pd.read_csv('./data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
         subset_Trinity = Trinity_df.loc[species_selected]
 
         #print("Subset Trinity: ",subset_Trinity)    
@@ -319,28 +322,23 @@ def download_Raincloud_Trinity(n_clicks, figure):
 
 
 #---------------------------------------------------------- 
-#TODO Alignments
-#Need a list of Species and a busco_id
+#callback for alignment
 @callback(
-    Output(component_id="alignment_viewer", component_property="children"),
-    Input(component_id="species_selected", component_property="value"),
-    Input(component_id="busco_name_selector", component_property="value"),
+    Output(component_id="alignment_viewer", component_property="data"),
+    State(component_id="species_selected", component_property="value"),
+    State(component_id="busco_name_selector", component_property="value"),
+    Input(component_id="type_selector", component_property="value"),
     prevent_initial_call=True
 )
-def get_alignment(species_selected, busco_name_selector):
-    #filter by user selection
-    print("species_selected ", species_selected)
-    print("busco_name_selector ", busco_name_selector)
-
-    Alignment_df = None
-    if species_selected != None and species_selected != "None":
-        if busco_name_selector != None and busco_name_selector != "None":
-            Alignment_df = read_in_alignment(species_selected, busco_name_selector)
-
-    return Alignment_df
-
-
-
+def update_align(species_selected, busco_name_selector, type_selector):
+    if species_selected != None and species_selected != "None" and busco_name_selector != None and busco_name_selector != "None":
+        data = read_in_alignment(species_selected, busco_name_selector)
+        print("returning data")
+        print(data)
+        return data
+    else:
+        print("Both species and busco must be selected")
+        return ""
 #----------------------------------------------------------
 
 #----------------------------------------------------------    
