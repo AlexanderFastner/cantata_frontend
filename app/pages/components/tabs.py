@@ -162,7 +162,7 @@ plot_selector_tabs = html.Div(
     [
         dbc.Tabs(
             id="tabs",
-            active_tab="tab_active",
+            active_tab="tab_heatmap",
             children=[
                 dbc.Tab(tab_heatmap, label="Heatmap", tab_id="tab_heatmap"),
                 dbc.Tab(tab_stacked_area, label="Stacked Area", tab_id="tab_stacked_area"),

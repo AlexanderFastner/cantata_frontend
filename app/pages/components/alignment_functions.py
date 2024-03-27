@@ -18,7 +18,7 @@ PTVPAISNYAGEHGFNLEFNDSGTAKSVTSTYSVKLGKLFCQLAKTTPIGVLVKEEPPQG"""
 def read_in_alignment(species_selected, busco_name_selector):
     #TODO make lookup table for species->3 letter code
     species_l = species_lookup(species_selected)
-    print(species_l)
+    #print(species_l)
     #print("species_selected ", species_selected)
     #print("busco_name_selector ", busco_name_selector)
 

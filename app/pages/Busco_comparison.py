@@ -77,13 +77,13 @@ layout = html.Div(
     prevent_initial_call=True,
 )
 def update_checklist_options(group_value):
-    print("update checklist values: ", group_value)
+    #print("update checklist values: ", group_value)
     if group_value == "All":
         #TODO add all options
         updated_options = ["Abeoforma_whisleri"]
     #TODO convert from , seperated string into array of strings
     updated_options = group_value.split(',')
-    print("updated_options: ", updated_options)
+    #print("updated_options: ", updated_options)
     return updated_options
 
 #----------------------------------------------------------
@@ -100,13 +100,10 @@ def get_heatmap_df(species_selected):
     #filter by user selection
     if species_selected != None and species_selected != "None":
         heatmap_df = pd.read_csv('./data/prot_busco_df_numbers.csv', index_col=0)
-        #print(heatmap_df.index.isin(['Acanthoeca_spectabilis', 'Helgoeca_nana', 'Salpingoeca_infusionum']))
         subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
-        print(subset)
     else:
         return None
-    #print(subset)
-
+    
     fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF",], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
                     tickvals=[0, 1, 2, 3], ticktext=["single", "fragmented", "multi", "missing"], title="Busco type"),x=subset.columns, y=subset.index))
     fig.update_xaxes(showticklabels=False)
@@ -140,7 +137,7 @@ def get_TransPi_barplot(species_selected):
     if species_selected != None and species_selected != "None":
         TransPi_area_df = pd.read_csv('./data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
         TransPi_area_df = TransPi_area_df.drop(columns=["Complete_BUSCOs", "Total"])
-        subset_TransPi = TransPi_area_df.loc[species_selected]
+        subset_TransPi = TransPi_area_df.loc[TransPi_area_df.index.isin(species_selected)]
         fig = go.Figure(data=ex.area(subset_TransPi, color_discrete_sequence=["#648FFF", "#DC267F", "#FE6100", "#FFB000"],
                         title="TransPi"))
         return fig
@@ -174,7 +171,7 @@ def get_Trinity_barplot(species_selected):
         #print("Trinity", species_selected)
         Trinity_area_df = pd.read_csv('./data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
         Trinity_area_df = Trinity_area_df.drop(columns=["Complete_BUSCOs", "Total"])
-        subset_Trinity = Trinity_area_df.loc[species_selected]
+        subset_Trinity = Trinity_area_df.loc[Trinity_area_df.index.isin(species_selected)]
         #print(subset_Trinity)
         fig = go.Figure(data=ex.area(subset_Trinity, color_discrete_sequence=["#648FFF", "#DC267F", "#FE6100", "#FFB000"],
                         title="Trinity"))
@@ -207,7 +204,7 @@ def get_TransPi_Raincloud(species_selected):
     #filter by user selection
     if species_selected != None and species_selected != "None":
         TransPi_df = pd.read_csv('./data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
-        subset_TransPi = TransPi_df.loc[species_selected]
+        subset_TransPi = TransPi_df.loc[TransPi_df.index.isin(species_selected)]
 
         #print("Subset TransPi: ",subset_TransPi)    
         #data wrangling
@@ -264,7 +261,7 @@ def get_Trinity_Raincloud(species_selected):
     #filter by user selection
     if species_selected != None and species_selected != "None":
         Trinity_df = pd.read_csv('./data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
-        subset_Trinity = Trinity_df.loc[species_selected]
+        subset_Trinity = Trinity_df.loc[Trinity_df.index.isin(species_selected)]
 
         #print("Subset Trinity: ",subset_Trinity)    
         #data wrangling
@@ -308,7 +305,6 @@ def download_Raincloud_Trinity(n_clicks, figure):
         print("wrote Trinity Raincloud")
         # Send the file to the client
         return send_file('Trinity_stacked_area.png')
-
 #----------------------------------------------------------
 #TODO Raincloud Proteins
 
@@ -329,8 +325,8 @@ def download_Raincloud_Trinity(n_clicks, figure):
 def update_align(species_selected, busco_name_selector, type_selector):
     if species_selected != None and species_selected != "None" and busco_name_selector != None and busco_name_selector != "None":
         data = read_in_alignment(species_selected, busco_name_selector)
-        print("returning data")
-        print(data)
+        #print("returning data")
+        #print(data)
         return data
     else:
         print("Both species and busco must be selected")
