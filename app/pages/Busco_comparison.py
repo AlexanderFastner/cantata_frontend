@@ -69,32 +69,26 @@ layout = html.Div(
 
 #----------------------------------------------------------
 #Callbacks
+#----------------------------------------------------------
+#species checklist
 @callback(
     Output('species_selected', 'value'),
     Input('group_dropdown', 'value'),
     prevent_initial_call=True,
 )
-def update_checklist_options(selected_value):
-    print("update checklist values: ", selected_value)
-    if selected_value == "None":
-        updated_options = []
-    if selected_value == "All":
+def update_checklist_options(group_value):
+    print("update checklist values: ", group_value)
+    if group_value == "All":
         #TODO add all options
         updated_options = ["Abeoforma_whisleri"]
-    updated_options = [selected_value]
+    #TODO convert from , seperated string into array of strings
+    updated_options = group_value.split(',')
     print("updated_options: ", updated_options)
     return updated_options
-
-def get_updated_species_list(selected_value):
-    # Implement your logic here to generate updated species list based on selected value
-    # Return a list of dictionaries with 'label' and 'value' keys for each option
-    pass
-
 
 #----------------------------------------------------------
 #Heatmap
 #TODO add selector for which dataset you want.
-#restrict species selection to that dataset?
 
 @callback(
     Output(component_id="busco_heatmap", component_property="figure"),
@@ -102,11 +96,13 @@ def get_updated_species_list(selected_value):
     prevent_initial_call=True
 )
 def get_heatmap_df(species_selected):
-    #print("Selected species Heatmap:", species_selected)
+    print("Selected species Heatmap:", species_selected)
     #filter by user selection
     if species_selected != None and species_selected != "None":
         heatmap_df = pd.read_csv('./data/prot_busco_df_numbers.csv', index_col=0)
-        subset = heatmap_df.loc[species_selected]
+        #print(heatmap_df.index.isin(['Acanthoeca_spectabilis', 'Helgoeca_nana', 'Salpingoeca_infusionum']))
+        subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
+        print(subset)
     else:
         return None
     #print(subset)

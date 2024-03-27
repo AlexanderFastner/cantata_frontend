@@ -2,13 +2,13 @@
 #----------------------------------------------------------
 import os
 import dash
+import sys
 import dash_bootstrap_components as dbc
 from flask import Flask
 #----------------------------------------------------------
 FONT_AWESOME = (
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 )
-
 server = Flask(__name__)
 app = dash.Dash(
     __name__,
@@ -41,8 +41,15 @@ app.layout = dbc.Container(
     ],
     fluid=True,
 )
+
 #----------------------------------------------------------
-if __name__ == "__main__":
+def run_dash_app():
+    print("NEW RUN")
+    print("---------------------------------------------------")
+    # Run the Dash app
     debug = os.getenv("DEBUG", "True") == "True"
     app.run_server(port=8040, debug=debug)
+#----------------------------------------------------------
+if __name__ == "__main__":
+    run_dash_app()
 #----------------------------------------------------------

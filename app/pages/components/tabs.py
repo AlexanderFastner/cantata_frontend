@@ -127,12 +127,11 @@ tab_alignment= html.Div(
                 dbc.Col(
                     html.Div(
                         [
-                            #TODO fix this somehow
-                            #get 3 letter code dict from molpal excel sheet
                             dashbio.AlignmentChart(
                                 id="alignment_viewer",
                                 data=alignment_data,
                                 height=700,
+                                width=1600,
                                 tilewidth=30, 
                             ),
                             
