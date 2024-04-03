@@ -90,7 +90,6 @@ def update_checklist_options(group_value):
     updated_options = group_value.split(',')
     #print("updated_options: ", updated_options)
     return updated_options
-
 #----------------------------------------------------------
 #Heatmap selector for which dataset you want.
 @callback(
@@ -98,29 +97,32 @@ def update_checklist_options(group_value):
     State(component_id="species_selected", component_property="value"),
     Input(component_id="heatmap_selector", component_property="value"),
     Input(component_id="difference_switch", component_property="value"),
+    Input(component_id="tabs", component_property="active_tab"),
     Input(component_id="update_species_button", component_property="n_clicks"),
     prevent_initial_call=True
 )
-def get_heatmap_df(species_selected, heatmap_selector, difference_switch, update_species_button):
-    print("Selected species Heatmap:", species_selected)
-    print("heatmap selector: ", heatmap_selector)
-    print("difference_switch: ", difference_switch)
+def get_heatmap_df(species_selected, heatmap_selector, difference_switch, active_tab, update_species_button):
+    if "tab_heatmap" not in active_tab:
+        return html.P("Not active")
+    # print("Selected species Heatmap:", species_selected)
+    # print("heatmap selector: ", heatmap_selector)
+    # print("difference_switch: ", difference_switch)
     fig_array=[]
     #filter by user selection
-    if species_selected != None and species_selected != "None":
+    if species_selected != None and species_selected != "None" and species_selected !=[]:
         #check which dataset the user wants to see
         for selected in heatmap_selector:   
             if selected == "Protein":
-                fig_array.append("Protein_fig")
+                fig_array.append("Protein_heatmap")
             elif selected == "Trinity":
-                fig_array.append("Trinity_fig")
+                fig_array.append("Trinity_heatmap")
             elif selected == "TransPi":
-                fig_array.append("TransPi_fig")
+                fig_array.append("TransPi_heatmap")
     else:
         return None
     
     if len(fig_array) >= 2 and difference_switch:
-        fig_array.append("Difference_fig")
+        fig_array.append("Difference_heatmap")
     #return Div with figures and names
     #add callbacks that those newly created graph ids get updated
     #add dcc.Graph elements to array and return child
@@ -152,12 +154,12 @@ def get_heatmap_df(species_selected, heatmap_selector, difference_switch, update
     #compute the difference between the other heatmaps
     #display that
 @callback(
-    Output(component_id="Difference_fig", component_property="figure"),
+    Output(component_id="Difference_heatmap", component_property="figure"),
     State(component_id="species_selected", component_property="value"),
     Input(component_id="busco_heatmap", component_property="children"),
 )
 def update_Difference(species_selected, children):
-    print("children diff", children)
+    #print("children diff", children)
     #for everything in children get the heatmap_df
     #after this find a way to calculate the difference between all these
     Prot_subset = None
@@ -165,13 +167,13 @@ def update_Difference(species_selected, children):
     TransPi_subset = None
     for item in children:
         #print(item)
-        if "Protein_fig" in item.get("props").get("id"):
+        if "Protein_heatmap" in item.get("props").get("id"):
             Prot_heatmap_df = pd.read_csv('./data/busco5_full_table_Proteome_df_numbers.csv', index_col=0)
             Prot_subset = Prot_heatmap_df.loc[Prot_heatmap_df.index.isin(species_selected)]
-        if "Trinity_fig" in item.get("props").get("id"):
+        if "Trinity_heatmap" in item.get("props").get("id"):
             Trinity_heatmap_df = pd.read_csv('./data/busco4_full_table_Trinity_df_numbers.csv', index_col=0)
             Trinity_subset = Trinity_heatmap_df.loc[Trinity_heatmap_df.index.isin(species_selected)]
-        if "TransPi_fig" in item.get("props").get("id"):
+        if "TransPi_heatmap" in item.get("props").get("id"):
             TransPi_heatmap_df = pd.read_csv('./data/busco4_full_table_TransPi_df_numbers.csv', index_col=0)
             TransPi_subset = TransPi_heatmap_df.loc[TransPi_heatmap_df.index.isin(species_selected)]        
         
@@ -223,13 +225,13 @@ def update_Difference(species_selected, children):
 #----------------------------------------------------------
 #update Protein fig if selected
 @callback(
-    Output(component_id="Protein_fig", component_property="figure"),
+    Output(component_id="Protein_heatmap", component_property="figure"),
     State(component_id="species_selected", component_property="value"),
     Input(component_id="busco_heatmap", component_property="children"),
 )
 def update_Protein(species_selected, children):
     for item in children:
-        if "Protein_fig" in item.get("props").get("id"):
+        if "Protein_heatmap" in item.get("props").get("id"):
             heatmap_df = pd.read_csv('./data/busco5_full_table_Proteome_df_numbers.csv', index_col=0)
             subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
             Protein_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF"], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
@@ -240,13 +242,13 @@ def update_Protein(species_selected, children):
 #----------------------------------------------------------
 #update Trinity fig if selected
 @callback(
-    Output(component_id="Trinity_fig", component_property="figure"),
+    Output(component_id="Trinity_heatmap", component_property="figure"),
     State(component_id="species_selected", component_property="value"),
     Input(component_id="busco_heatmap", component_property="children"),
 )
 def update_Trinity(species_selected, children):
     for item in children:
-        if "Trinity_fig" in item.get("props").get("id"):
+        if "Trinity_heatmap" in item.get("props").get("id"):
             heatmap_df = pd.read_csv('./data/busco4_full_table_Trinity_df_numbers.csv', index_col=0)
             subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
             Trinity_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF"], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
@@ -257,13 +259,13 @@ def update_Trinity(species_selected, children):
 #----------------------------------------------------------
 #update TransPi fig if selected
 @callback(
-    Output(component_id="TransPi_fig", component_property="figure"),
+    Output(component_id="TransPi_heatmap", component_property="figure"),
     State(component_id="species_selected", component_property="value"),
     Input(component_id="busco_heatmap", component_property="children"),
 )
 def update_TransPi(species_selected, children):
     for item in children:
-        if "TransPi_fig" in item.get("props").get("id"):
+        if "TransPi_heatmap" in item.get("props").get("id"):
             heatmap_df = pd.read_csv('./data/busco4_full_table_TransPi_df_numbers.csv', index_col=0)
             subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
             TransPi_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF"], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
@@ -272,40 +274,61 @@ def update_TransPi(species_selected, children):
             TransPi_fig.update_layout(title="TransPi Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
             return TransPi_fig
 #----------------------------------------------------------    
-#TransPi area
-@callback(
-    Output(component_id="TransPi_area", component_property="figure"),
-    Input(component_id="species_selected", component_property="value"),
-    prevent_initial_call=True
-)
-def get_TransPi_barplot(species_selected):
-    #print("species_selected ",species_selected)
-    #filter by user selection
-    if species_selected != None and species_selected != "None":
-        TransPi_area_df = pd.read_csv('./data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
-        TransPi_area_df = TransPi_area_df.drop(columns=["Complete_BUSCOs", "Total"])
-        subset_TransPi = TransPi_area_df.loc[TransPi_area_df.index.isin(species_selected)]
-        fig = go.Figure(data=ex.area(subset_TransPi, color_discrete_sequence=["#648FFF", "#DC267F", "#FE6100", "#FFB000"],
-                        title="TransPi"))
-        return fig
-    else:
-        print("return none TransPi")
-        fig = None
-        return fig
-
-@callback(
-    Output('busco_stacked_area_TransPi', 'config'),
-    Input('download-stacked-area-TransPi', 'n_clicks'),
-    State('TransPi_area', 'figure')
-)
-def download_stacked_area_TransPi(n_clicks, figure):
-    if n_clicks is not None and n_clicks > 0:
-        # Save the current figure as a .png image
-        pio.write_image(figure, 'TransPi_stacked_area.png')
-        print("wrote TransPi stacked")
-        # Send the file to the client
-        return send_file('TransPi_stacked_area.png')
+#Stacked Area plots       
 #----------------------------------------------------------
+#Dynamicly generate Stacked Area plots  
+#TODO ask about possible overlay
+@callback(
+    Output(component_id="Stacked_area", component_property="children"),
+    State(component_id="species_selected", component_property="value"),
+    Input(component_id="Stacked_area", component_property="value"),
+    Input(component_id="tabs", component_property="active_tab"),
+    Input(component_id="update_species_button", component_property="n_clicks"),
+    prevent_initial_call=True
+)     
+def get_stacked_area(species_selected, Stacked_area, active_tab, update_species_button):
+    if "tab_stacked_area" not in active_tab:
+        return html.P("Not active")
+    fig_array=[]
+    #filter by user selection
+    if species_selected != None and species_selected != "None" and species_selected !=[]:
+        #check which dataset the user wants to see
+        for selected in Stacked_area:   
+            if selected == "Protein":
+                fig_array.append("Protein_stacked_area")
+            elif selected == "Trinity":
+                fig_array.append("Trinity_stacked_area")
+            elif selected == "TransPi":
+                fig_array.append("TransPi_stacked_area")
+    else:
+        return None
+    child = []
+    for fig in fig_array:
+        #update children of output
+        child.append(dcc.Graph(id=fig))
+        print(child)
+    return child
+#----------------------------------------------------------            
+#Protein area
+@callback(
+    Output(component_id="Protein_stacked_area", component_property="figure"),
+    State(component_id="species_selected", component_property="value"),
+    Input(component_id="Stacked_area", component_property="children"),
+)
+def update_TransPi(species_selected, children):
+    for item in children:
+        if "Protein_stacked_area" in item.get("props").get("id"):
+            if species_selected != None and species_selected != "None" and species_selected !=[]:
+                Protein_area_df = pd.read_csv('./data/busco5_short_summary_Proteome.tsv', sep="\t", index_col=0)
+                Protein_area_df = Protein_area_df.drop(columns=["Complete_BUSCOs", "Total"])
+                subset_Protein = Protein_area_df.loc[Protein_area_df.index.isin(species_selected)]
+                fig = go.Figure(data=ex.area(subset_Protein, color_discrete_sequence=["#648FFF", "#DC267F", "#FE6100", "#FFB000"],
+                                title="Protein"))
+                return fig
+            else:
+                fig = None
+                return fig
+#----------------------------------------------------------       
 #Trinity area
 @callback(
     Output(component_id="Trinity_area", component_property="figure"),
@@ -314,7 +337,7 @@ def download_stacked_area_TransPi(n_clicks, figure):
 )
 def get_Trinity_barplot(species_selected):
     #filter by user selection
-    if species_selected != None and species_selected != "None":
+    if species_selected != None and species_selected != "None" and species_selected !=[]:
         #print("Trinity", species_selected)
         Trinity_area_df = pd.read_csv('./data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
         Trinity_area_df = Trinity_area_df.drop(columns=["Complete_BUSCOs", "Total"])
@@ -341,61 +364,46 @@ def get_Trinity_barplot(species_selected):
 #         # Send the file to the client
 #         return send_file('Trinity_stacked_area.png')
 #----------------------------------------------------------
-#Raincloud TransPi
+#TransPi area
 @callback(
-    Output(component_id="TransPi_Raincloud", component_property="figure"),
+    Output(component_id="TransPi_area", component_property="figure"),
     Input(component_id="species_selected", component_property="value"),
+    #Input(component_id="update_species_button", component_property="n_clicks"),
     prevent_initial_call=True
 )
-def get_TransPi_Raincloud(species_selected):
+def get_TransPi_barplot(species_selected):
+    #print("species_selected ",species_selected)
     #filter by user selection
-    if species_selected != None and species_selected != "None":
-        TransPi_df = pd.read_csv('./data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
-        subset_TransPi = TransPi_df.loc[TransPi_df.index.isin(species_selected)]
-
-        #print("Subset TransPi: ",subset_TransPi)    
-        #data wrangling
-        TransPi_column_names = subset_TransPi.columns.to_list()[:-1]
-        all_column_values=[]
-        for column in TransPi_column_names:
-            column_values_TransPi = subset_TransPi[column].values
-            all_column_values.append(column_values_TransPi)
-        #Construct Plot
-        #colors = ["purple","blue","red","orange","gold"]
-        fig = go.Figure()
-
-        data = []
-        for i in range(len(TransPi_column_names)):
-            data.append(go.Violin(x=all_column_values[i], name=TransPi_column_names[i], meanline_visible=True, opacity=0.4, fillcolor=color_map.get(TransPi_column_names[i]), line=dict(color=color_map.get(TransPi_column_names[i])), side='positive'))
-            # Scatter
-            # Build (x,y) pairs for each category
-            fig = go.Figure(data=data)
-        for values, category in zip(all_column_values, TransPi_column_names):
-            c = [category for _ in range(len(values))]
-            fig.add_trace(go.Scatter(x=values, y=c, mode='markers', showlegend=False, marker=dict(color=color_map.get(category))))
-        
-        fig.update_layout(title='TransPi Raincloud Plot of BUSCOs Data',
-                        xaxis_title='Counts',
-                        xaxis=dict(range=[0, None]))
+    if species_selected != None and species_selected != "None" and species_selected !=[]:
+        TransPi_area_df = pd.read_csv('./data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
+        TransPi_area_df = TransPi_area_df.drop(columns=["Complete_BUSCOs", "Total"])
+        subset_TransPi = TransPi_area_df.loc[TransPi_area_df.index.isin(species_selected)]
+        fig = go.Figure(data=ex.area(subset_TransPi, color_discrete_sequence=["#648FFF", "#DC267F", "#FE6100", "#FFB000"],
+                        title="TransPi"))
         return fig
     else:
+        print("return none TransPi")
         fig = None
         return fig
 
 #TODO fix button
 # @callback(
-#     Output('busco_Raincloud_TransPi', 'config'),
-#     Input('download-Raincloud-TransPi', 'n_clicks'),
-#     State('TransPi_Raincloud', 'figure')
+#     Output('busco_stacked_area_TransPi', 'config'),
+#     Input('download-stacked-area-TransPi', 'n_clicks'),
+#     State('TransPi_area', 'figure')
 # )
-# def download_Raincloud_TransPi(n_clicks, figure):
+# def download_stacked_area_TransPi(n_clicks, figure):
 #     if n_clicks is not None and n_clicks > 0:
 #         # Save the current figure as a .png image
-#         pio.write_image(figure, 'TransPi_Raincloud.png')
-#         print("wrote TransPi Raincloud")
+#         pio.write_image(figure, 'TransPi_stacked_area.png')
+#         print("wrote TransPi stacked")
 #         # Send the file to the client
 #         return send_file('TransPi_stacked_area.png')
 #----------------------------------------------------------
+#Raincloud selection
+#----------------------------------------------------------
+#Raincould Protein
+#----------------------------------------------------------    
 #Raincloud Trinity
 @callback(
     Output(component_id="Trinity_Raincloud", component_property="figure"),
@@ -404,7 +412,7 @@ def get_TransPi_Raincloud(species_selected):
 )
 def get_Trinity_Raincloud(species_selected):
     #filter by user selection
-    if species_selected != None and species_selected != "None":
+    if species_selected != None and species_selected != "None" and species_selected !=[]:
         Trinity_df = pd.read_csv('./data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
         subset_Trinity = Trinity_df.loc[Trinity_df.index.isin(species_selected)]
 
@@ -451,17 +459,71 @@ def get_Trinity_Raincloud(species_selected):
 #         # Send the file to the client
 #         return send_file('Trinity_stacked_area.png')
 #----------------------------------------------------------
-#TODO Raincloud Proteins
-#TODO add new data first
+#Raincloud TransPi
+@callback(
+    Output(component_id="TransPi_Raincloud", component_property="figure"),
+    Input(component_id="species_selected", component_property="value"),
+    prevent_initial_call=True
+)
+def get_TransPi_Raincloud(species_selected):
+    #filter by user selection
+    if species_selected != None and species_selected != "None" and species_selected !=[]:
+        TransPi_df = pd.read_csv('./data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
+        subset_TransPi = TransPi_df.loc[TransPi_df.index.isin(species_selected)]
 
-#----------------------------------------------------------    
+        #print("Subset TransPi: ",subset_TransPi)    
+        #data wrangling
+        TransPi_column_names = subset_TransPi.columns.to_list()[:-1]
+        all_column_values=[]
+        for column in TransPi_column_names:
+            column_values_TransPi = subset_TransPi[column].values
+            all_column_values.append(column_values_TransPi)
+        #Construct Plot
+        #colors = ["purple","blue","red","orange","gold"]
+        fig = go.Figure()
+
+        data = []
+        for i in range(len(TransPi_column_names)):
+            data.append(go.Violin(x=all_column_values[i], name=TransPi_column_names[i], meanline_visible=True, opacity=0.4, fillcolor=color_map.get(TransPi_column_names[i]), line=dict(color=color_map.get(TransPi_column_names[i])), side='positive'))
+            # Scatter
+            # Build (x,y) pairs for each category
+            fig = go.Figure(data=data)
+        for values, category in zip(all_column_values, TransPi_column_names):
+            c = [category for _ in range(len(values))]
+            fig.add_trace(go.Scatter(x=values, y=c, mode='markers', showlegend=False, marker=dict(color=color_map.get(category))))
+        
+        fig.update_layout(title='TransPi Raincloud Plot of BUSCOs Data',
+                        xaxis_title='Counts',
+                        xaxis=dict(range=[0, None]))
+        return fig
+    else:
+        fig = None
+        return fig
+
+#TODO fix button
+# @callback(
+#     Output('busco_Raincloud_TransPi', 'config'),
+#     Input('download-Raincloud-TransPi', 'n_clicks'),
+#     State('TransPi_Raincloud', 'figure')
+# )
+# def download_Raincloud_TransPi(n_clicks, figure):
+#     if n_clicks is not None and n_clicks > 0:
+#         # Save the current figure as a .png image
+#         pio.write_image(figure, 'TransPi_Raincloud.png')
+#         print("wrote TransPi Raincloud")
+#         # Send the file to the client
+#         return send_file('TransPi_stacked_area.png')
+#----------------------------------------------------------  
 #TODO Raincloud Combined
 
 
-#---------------------------------------------------------- 
-#callback for alignment
-#TODO fix this so it updates properly
 
+
+#---------------------------------------------------------- 
+#Alignment
+#----------------------------------------------------------
+#Add selector
+#----------------------------------------------------------
 @callback(
     Output(component_id="alignment_viewer", component_property="data"),
     State(component_id="species_selected", component_property="value"),
@@ -470,7 +532,7 @@ def get_Trinity_Raincloud(species_selected):
     prevent_initial_call=True
 )
 def update_align(species_selected, busco_name_selector, type_selector):
-    if species_selected != None and species_selected != "None" and busco_name_selector != None and busco_name_selector != "None":
+    if species_selected != None and species_selected != "None" and species_selected !=[] and busco_name_selector != None and busco_name_selector != "None" and busco_name_selector !=[]:
         data = read_in_alignment(species_selected, busco_name_selector)
         #print("returning data")
         #print(data)

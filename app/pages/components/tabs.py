@@ -8,6 +8,28 @@ import dash_bio as dashbio
 #----------------------------------------------------------
 #TODO for each tab add download buttons
 #----------------------------------------------------------
+def create_transcriptome_selector(id):
+    return dbc.Col(
+        [
+            dbc.Card(
+                dbc.CardBody(
+                    dcc.Dropdown(
+                        id=id,
+                        options=[
+                            {"label": "Protein", "value": "Protein"},
+                            {"label": "TransPi", "value": "TransPi"},
+                            {"label": "Trinity", "value": "Trinity"},
+                        ],
+                        multi=True,
+                        placeholder="Select transciptome",
+                    )
+                ),
+            )
+        ],
+        width=2,
+    )
+
+#----------------------------------------------------------
 tab_heatmap = html.Div(
     [
         dbc.Row(
@@ -15,25 +37,8 @@ tab_heatmap = html.Div(
         ),
         dbc.Row(
             [
-                #selector to switch between the Protein buscos and the transpi/trinity ones
-                dbc.Col(
-                    [
-                        dbc.Card(
-                            dbc.CardBody(
-                                dcc.Dropdown(
-                                    id="heatmap_selector",
-                                    options=[
-                                        {"label": "Protein", "value": "Protein"},
-                                        {"label": "TransPi", "value": "TransPi"},
-                                        {"label": "Trinity", "value": "Trinity"},
-                                        ],
-                                    multi=True,
-                                    placeholder="Select transciptome",
-                                )
-                            ),
-                        )
-                    ],width=2,
-                ),
+                #selector to switch between the Protein and the transpi/trinity
+                create_transcriptome_selector("heatmap_selector"),
                 #empty place holder
                 dbc.Col(
                     width=1
@@ -58,10 +63,7 @@ tab_heatmap = html.Div(
         dbc.Row(
             dbc.Col(
                 [
-                    #get div as output from callback
                     html.Div(id='busco_heatmap'),
-                    #dcc.Graph(id='busco_heatmap'),
-                    #TODO dif heatmp is the difference calculated betweeen the different heatmaps to more easily spot differences
                     html.Hr(),
                 ],
             ),
@@ -69,8 +71,8 @@ tab_heatmap = html.Div(
         dbc.Row(
             dbc.Col(
                 [
-                    html.Button('Download Heatmap', id='download-heatmap'),
-                    html.Button('Download Difference Heatmap', id='download-difference-heatmap', n_clicks=0),
+                    # html.Button('Download Heatmap', id='download-heatmap'),
+                    # html.Button('Download Difference Heatmap', id='download-difference-heatmap', n_clicks=0),
                 ],
             ),
         ),
@@ -80,13 +82,29 @@ tab_heatmap = html.Div(
 #----------------------------------------------------------
 tab_stacked_area= html.Div(
     [
-        dbc.Row(html.H1("Stacked Area Plots of TransPi and Trinity Buscos")),
-        #stacked area plots for Transpi/Trinity
-        dcc.Graph(id='TransPi_area'),
-        html.Hr(),
-        dcc.Graph(id='Trinity_area'),
-        html.Button('Download Stacked Area TransPi', id='download-stacked-area-TransPi', n_clicks=0),
-        html.Button('Download Stacked Area Trinity', id='download-stacked-area-Trinity', n_clicks=0),
+        dbc.Row(html.H1("Stacked Area Plots")),
+        dbc.Row(
+            [
+                create_transcriptome_selector("Stacked_area"),
+            ]
+        ),
+        dbc.Row(
+            dbc.Col(
+                [
+                    #stacked area plots
+                    html.Div(id='Stacked_area'),
+                    html.Hr(),
+                ],
+            ),
+        ),
+        dbc.Row(
+            dbc.Col(
+                [
+                    # html.Button('Download Stacked Area TransPi', id='download-stacked-area-TransPi', n_clicks=0),
+                    # html.Button('Download Stacked Area Trinity', id='download-stacked-area-Trinity', n_clicks=0),
+                ],
+            ),
+        ),  
     ],
     className="mt-3",
 )
