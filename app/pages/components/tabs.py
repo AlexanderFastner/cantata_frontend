@@ -42,9 +42,9 @@ tab_heatmap = html.Div(
                 dbc.Col(
                     [
                         dbc.Switch(
-                            id="difference-switch",
+                            id="difference_switch",
                             label=dbc.Label("Show difference Heatmap", style={"font-size": "20px"}),
-                            value=False,
+                            value=True,
                             style={
                                 "display": "block",
                                 "margin": "20px",

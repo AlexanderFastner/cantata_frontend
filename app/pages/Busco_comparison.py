@@ -40,6 +40,8 @@ layout = html.Div(
                                             placeholder="Select a Group",
                                         ),
                                         html.Hr(),
+                                        html.Button("Update Species", id='update_species_button', n_clicks=0),
+                                        html.Hr(),
                                         #TODO Show only those inlcuded in the group/groups selected above
                                         #TODO Start with All, then restrict
                                         dcc.Checklist(
@@ -90,18 +92,19 @@ def update_checklist_options(group_value):
     return updated_options
 
 #----------------------------------------------------------
-#Heatmap
-#TODO add selector for which dataset you want.
-
+#Heatmap selector for which dataset you want.
 @callback(
     Output(component_id="busco_heatmap", component_property="children"),
     State(component_id="species_selected", component_property="value"),
     Input(component_id="heatmap_selector", component_property="value"),
+    Input(component_id="difference_switch", component_property="value"),
+    Input(component_id="update_species_button", component_property="n_clicks"),
     prevent_initial_call=True
 )
-def get_heatmap_df(species_selected, heatmap_selector):
+def get_heatmap_df(species_selected, heatmap_selector, difference_switch, update_species_button):
     print("Selected species Heatmap:", species_selected)
     print("heatmap selector: ", heatmap_selector)
+    print("difference_switch: ", difference_switch)
     fig_array=[]
     #filter by user selection
     if species_selected != None and species_selected != "None":
@@ -113,13 +116,11 @@ def get_heatmap_df(species_selected, heatmap_selector):
                 fig_array.append("Trinity_fig")
             elif selected == "TransPi":
                 fig_array.append("TransPi_fig")
-            elif selected == "Difference":
-                fig_array.append("Difference_fig")
-            else:
-                subset = []
     else:
         return None
     
+    if len(fig_array) >= 2 and difference_switch:
+        fig_array.append("Difference_fig")
     #return Div with figures and names
     #add callbacks that those newly created graph ids get updated
     #add dcc.Graph elements to array and return child
@@ -127,7 +128,7 @@ def get_heatmap_df(species_selected, heatmap_selector):
     for fig in fig_array:
         #update children of output
         child.append(dcc.Graph(id=fig))
-    print("child: ", child)
+    #print("child: ", child)
     #output = html.Div(child)
     return child
 
@@ -146,6 +147,80 @@ def get_heatmap_df(species_selected, heatmap_selector):
 #         # Send the file to the client
 #         return send_file('heatmap.png')
 #----------------------------------------------------------
+#heatmap difference selector update
+#for each item in children
+    #compute the difference between the other heatmaps
+    #display that
+@callback(
+    Output(component_id="Difference_fig", component_property="figure"),
+    State(component_id="species_selected", component_property="value"),
+    Input(component_id="busco_heatmap", component_property="children"),
+)
+def update_Difference(species_selected, children):
+    print("children diff", children)
+    #for everything in children get the heatmap_df
+    #after this find a way to calculate the difference between all these
+    Prot_subset = None
+    Trinity_subset = None
+    TransPi_subset = None
+    for item in children:
+        #print(item)
+        if "Protein_fig" in item.get("props").get("id"):
+            Prot_heatmap_df = pd.read_csv('./data/busco5_full_table_Proteome_df_numbers.csv', index_col=0)
+            Prot_subset = Prot_heatmap_df.loc[Prot_heatmap_df.index.isin(species_selected)]
+        if "Trinity_fig" in item.get("props").get("id"):
+            Trinity_heatmap_df = pd.read_csv('./data/busco4_full_table_Trinity_df_numbers.csv', index_col=0)
+            Trinity_subset = Trinity_heatmap_df.loc[Trinity_heatmap_df.index.isin(species_selected)]
+        if "TransPi_fig" in item.get("props").get("id"):
+            TransPi_heatmap_df = pd.read_csv('./data/busco4_full_table_TransPi_df_numbers.csv', index_col=0)
+            TransPi_subset = TransPi_heatmap_df.loc[TransPi_heatmap_df.index.isin(species_selected)]        
+        
+    #difference between all 3
+    diff_df = None
+    if Prot_subset is not None and Trinity_subset is not None and TransPi_subset is not None:
+        diff1 = pd.DataFrame(np.where(Prot_subset == Trinity_subset, 1, 0), columns=Prot_subset.columns, index=Prot_subset.index)
+        diff2 = pd.DataFrame(np.where(Prot_subset == TransPi_subset, 1, 0), columns=Prot_subset.columns, index=Prot_subset.index)
+        diff_df = pd.DataFrame(np.where(diff1 == diff2, 1, 0), columns=diff1.columns, index=diff1.index)
+        #print("all3", diff_df)
+        #make difference heatmap
+        Difference_fig = go.Figure(data=go.Heatmap(z=diff_df.astype(int).values, colorscale=[[0, "#E52B50"], [1, "#BCBCBC"]], colorbar=dict(tickmode='array',
+            tickvals=[0, 1], ticktext=["Different", "Same"], title="Difference heatmap"),x=diff_df.columns, y=diff_df.index))
+        Difference_fig.update_xaxes(showticklabels=False)
+        Difference_fig.update_layout(title="Difference heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
+        return Difference_fig
+        
+    #difference between 2
+    elif Prot_subset is not None and Trinity_subset is not None:
+        diff_df = pd.DataFrame(np.where(Prot_subset==Trinity_subset,1,0),columns=Prot_subset.columns, index=Prot_subset.index) 
+        #print("Prot Trin", diff_df)
+        #make difference heatmap
+        Difference_fig = go.Figure(data=go.Heatmap(z=diff_df.astype(int).values, colorscale=[[0, "#E52B50"], [1, "#BCBCBC"]], colorbar=dict(tickmode='array',
+            tickvals=[0, 1], ticktext=["Different", "Same"], title="Difference heatmap"),x=diff_df.columns, y=diff_df.index))
+        Difference_fig.update_xaxes(showticklabels=False)
+        Difference_fig.update_layout(title="Difference heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
+        return Difference_fig
+    elif Trinity_subset is not None and Prot_subset is not None:
+        diff_df = pd.DataFrame(np.where(Trinity_subset==TransPi_subset,1,0),columns=Trinity_subset.columns, index=Trinity_subset.index) 
+        #print("Trin Trans", diff_df)
+        #make difference heatmap
+        Difference_fig = go.Figure(data=go.Heatmap(z=diff_df.astype(int).values, colorscale=[[0, "#E52B50"], [1, "#BCBCBC"]], colorbar=dict(tickmode='array',
+            tickvals=[0, 1], ticktext=["Different", "Same"], title="Difference heatmap"),x=diff_df.columns, y=diff_df.index))
+        Difference_fig.update_xaxes(showticklabels=False)
+        Difference_fig.update_layout(title="Difference heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
+        return Difference_fig
+    elif Prot_subset is not None and TransPi_subset is not None:
+        diff_df = pd.DataFrame(np.where(Prot_subset==TransPi_subset,1,0),columns=Prot_subset.columns, index=Prot_subset.index) 
+        #print("Prot Trans", diff_df)   
+        #make difference heatmap
+        Difference_fig = go.Figure(data=go.Heatmap(z=diff_df.astype(int).values, colorscale=[[0, "#E52B50"], [1, "#BCBCBC"]], colorbar=dict(tickmode='array',
+            tickvals=[0, 1], ticktext=["Different", "Same"], title="Difference heatmap"),x=diff_df.columns, y=diff_df.index))
+        Difference_fig.update_xaxes(showticklabels=False)
+        Difference_fig.update_layout(title="Difference heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
+        return Difference_fig    
+    
+    return None
+
+#----------------------------------------------------------
 #update Protein fig if selected
 @callback(
     Output(component_id="Protein_fig", component_property="figure"),
@@ -157,10 +232,10 @@ def update_Protein(species_selected, children):
         if "Protein_fig" in item.get("props").get("id"):
             heatmap_df = pd.read_csv('./data/busco5_full_table_Proteome_df_numbers.csv', index_col=0)
             subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
-            Protein_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF",], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
+            Protein_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF"], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
                 tickvals=[0, 1, 2, 3], ticktext=["single", "fragmented", "multi", "missing"], title="Busco type"),x=subset.columns, y=subset.index))
             Protein_fig.update_xaxes(showticklabels=False)
-            Protein_fig.update_layout(title="Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
+            Protein_fig.update_layout(title="Protein Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
             return Protein_fig
 #----------------------------------------------------------
 #update Trinity fig if selected
@@ -174,10 +249,10 @@ def update_Trinity(species_selected, children):
         if "Trinity_fig" in item.get("props").get("id"):
             heatmap_df = pd.read_csv('./data/busco4_full_table_Trinity_df_numbers.csv', index_col=0)
             subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
-            Trinity_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF",], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
+            Trinity_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF"], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
                 tickvals=[0, 1, 2, 3], ticktext=["single", "fragmented", "multi", "missing"], title="Busco type"),x=subset.columns, y=subset.index))
             Trinity_fig.update_xaxes(showticklabels=False)
-            Trinity_fig.update_layout(title="Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
+            Trinity_fig.update_layout(title="Trinity Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
             return Trinity_fig
 #----------------------------------------------------------
 #update TransPi fig if selected
@@ -191,36 +266,11 @@ def update_TransPi(species_selected, children):
         if "TransPi_fig" in item.get("props").get("id"):
             heatmap_df = pd.read_csv('./data/busco4_full_table_TransPi_df_numbers.csv', index_col=0)
             subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
-            TransPi_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF",], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
+            TransPi_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF"], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
                 tickvals=[0, 1, 2, 3], ticktext=["single", "fragmented", "multi", "missing"], title="Busco type"),x=subset.columns, y=subset.index))
             TransPi_fig.update_xaxes(showticklabels=False)
-            TransPi_fig.update_layout(title="Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
+            TransPi_fig.update_layout(title="TransPi Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
             return TransPi_fig
-#----------------------------------------------------------
-#difference heatmap to show any differences between selected    
-@callback(
-    Output(component_id="Difference_fig", component_property="figure"),
-    State(component_id="species_selected", component_property="value"),
-    Input(component_id="busco_heatmap", component_property="children"),
-)
-def update_Difference(species_selected, children):
-    #check if children length is at least 2
-    #for each item in children
-    #compute the difference between the two heatmaps
-    #display that
-    if len(children) >= 2:
-        for item in children:
-            if "TransPi_fig" in item.get("props").get("id"):
-                heatmap_df = pd.read_csv('./data/busco4_full_table_TransPi_df_numbers.csv', index_col=0)
-                subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
-                TransPi_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF",], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
-                    tickvals=[0, 1, 2, 3], ticktext=["single", "fragmented", "multi", "missing"], title="Busco type"),x=subset.columns, y=subset.index))
-                TransPi_fig.update_xaxes(showticklabels=False)
-                TransPi_fig.update_layout(title="Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
-                return TransPi_fig
-    
-
-
 #----------------------------------------------------------    
 #TransPi area
 @callback(
