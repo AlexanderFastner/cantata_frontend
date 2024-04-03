@@ -4,7 +4,7 @@
 
 def get_species_list():
     species_list = []
-    with open("./data/prot_busco_df_numbers.csv") as f:
+    with open("./data/busco5_full_table_Proteome_df_numbers.csv") as f:
         species = [row.split(",")[0] for row in f]
         species=sorted(species[1:])
     return species

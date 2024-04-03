@@ -94,44 +94,131 @@ def update_checklist_options(group_value):
 #TODO add selector for which dataset you want.
 
 @callback(
-    Output(component_id="busco_heatmap", component_property="figure"),
-    Input(component_id="species_selected", component_property="value"),
+    Output(component_id="busco_heatmap", component_property="children"),
+    State(component_id="species_selected", component_property="value"),
+    Input(component_id="heatmap_selector", component_property="value"),
     prevent_initial_call=True
 )
-def get_heatmap_df(species_selected):
+def get_heatmap_df(species_selected, heatmap_selector):
     print("Selected species Heatmap:", species_selected)
+    print("heatmap selector: ", heatmap_selector)
+    fig_array=[]
     #filter by user selection
     if species_selected != None and species_selected != "None":
-        heatmap_df = pd.read_csv('./data/prot_busco_df_numbers.csv', index_col=0)
-        subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
+        #check which dataset the user wants to see
+        for selected in heatmap_selector:   
+            if selected == "Protein":
+                fig_array.append("Protein_fig")
+            elif selected == "Trinity":
+                fig_array.append("Trinity_fig")
+            elif selected == "TransPi":
+                fig_array.append("TransPi_fig")
+            elif selected == "Difference":
+                fig_array.append("Difference_fig")
+            else:
+                subset = []
     else:
         return None
     
-    fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF",], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
-                    tickvals=[0, 1, 2, 3], ticktext=["single", "fragmented", "multi", "missing"], title="Busco type"),x=subset.columns, y=subset.index))
-    fig.update_xaxes(showticklabels=False)
-    fig.update_layout(title="Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
-    return fig
+    #return Div with figures and names
+    #add callbacks that those newly created graph ids get updated
+    #add dcc.Graph elements to array and return child
+    child = []
+    for fig in fig_array:
+        #update children of output
+        child.append(dcc.Graph(id=fig))
+    print("child: ", child)
+    #output = html.Div(child)
+    return child
 
-#TODO fix/implement this button
-@callback(
-    Output('heatmap', 'config'),
-    Input('download-heatmap', 'n_clicks'),
-    State('busco_heatmap', 'figure')
-)
-def download_heatmap(n_clicks, figure):
-    if n_clicks is not None and n_clicks > 0:
-        print("HEATMAP DOWNLOAD")
-        # Save the current figure as a .png image
-        pio.write_image(figure, 'heatmap.png')
-        print("wrote image")
-        # Send the file to the client
-        return send_file('heatmap.png')
+#TODO fix/implement this button for each heatmap
+# @callback(
+#     Output('heatmap', 'config'),
+#     Input('download-heatmap', 'n_clicks'),
+#     State('busco_heatmap', 'figure')
+# )
+# def download_heatmap(n_clicks, figure):
+#     if n_clicks is not None and n_clicks > 0:
+#         print("HEATMAP DOWNLOAD")
+#         # Save the current figure as a .png image
+#         pio.write_image(figure, 'heatmap.png')
+#         print("wrote image")
+#         # Send the file to the client
+#         return send_file('heatmap.png')
 #----------------------------------------------------------
-#TODO add heatmap data from the others
-#TODO be able to select between them
-#TODO make a difference heatmap to show any differences between TransPi, Trinity and direct Protein    
-
+#update Protein fig if selected
+@callback(
+    Output(component_id="Protein_fig", component_property="figure"),
+    State(component_id="species_selected", component_property="value"),
+    Input(component_id="busco_heatmap", component_property="children"),
+)
+def update_Protein(species_selected, children):
+    for item in children:
+        if "Protein_fig" in item.get("props").get("id"):
+            heatmap_df = pd.read_csv('./data/busco5_full_table_Proteome_df_numbers.csv', index_col=0)
+            subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
+            Protein_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF",], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
+                tickvals=[0, 1, 2, 3], ticktext=["single", "fragmented", "multi", "missing"], title="Busco type"),x=subset.columns, y=subset.index))
+            Protein_fig.update_xaxes(showticklabels=False)
+            Protein_fig.update_layout(title="Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
+            return Protein_fig
+#----------------------------------------------------------
+#update Trinity fig if selected
+@callback(
+    Output(component_id="Trinity_fig", component_property="figure"),
+    State(component_id="species_selected", component_property="value"),
+    Input(component_id="busco_heatmap", component_property="children"),
+)
+def update_Trinity(species_selected, children):
+    for item in children:
+        if "Trinity_fig" in item.get("props").get("id"):
+            heatmap_df = pd.read_csv('./data/busco4_full_table_Trinity_df_numbers.csv', index_col=0)
+            subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
+            Trinity_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF",], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
+                tickvals=[0, 1, 2, 3], ticktext=["single", "fragmented", "multi", "missing"], title="Busco type"),x=subset.columns, y=subset.index))
+            Trinity_fig.update_xaxes(showticklabels=False)
+            Trinity_fig.update_layout(title="Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
+            return Trinity_fig
+#----------------------------------------------------------
+#update TransPi fig if selected
+@callback(
+    Output(component_id="TransPi_fig", component_property="figure"),
+    State(component_id="species_selected", component_property="value"),
+    Input(component_id="busco_heatmap", component_property="children"),
+)
+def update_TransPi(species_selected, children):
+    for item in children:
+        if "TransPi_fig" in item.get("props").get("id"):
+            heatmap_df = pd.read_csv('./data/busco4_full_table_TransPi_df_numbers.csv', index_col=0)
+            subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
+            TransPi_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF",], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
+                tickvals=[0, 1, 2, 3], ticktext=["single", "fragmented", "multi", "missing"], title="Busco type"),x=subset.columns, y=subset.index))
+            TransPi_fig.update_xaxes(showticklabels=False)
+            TransPi_fig.update_layout(title="Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
+            return TransPi_fig
+#----------------------------------------------------------
+#difference heatmap to show any differences between selected    
+@callback(
+    Output(component_id="Difference_fig", component_property="figure"),
+    State(component_id="species_selected", component_property="value"),
+    Input(component_id="busco_heatmap", component_property="children"),
+)
+def update_Difference(species_selected, children):
+    #check if children length is at least 2
+    #for each item in children
+    #compute the difference between the two heatmaps
+    #display that
+    if len(children) >= 2:
+        for item in children:
+            if "TransPi_fig" in item.get("props").get("id"):
+                heatmap_df = pd.read_csv('./data/busco4_full_table_TransPi_df_numbers.csv', index_col=0)
+                subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
+                TransPi_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF",], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
+                    tickvals=[0, 1, 2, 3], ticktext=["single", "fragmented", "multi", "missing"], title="Busco type"),x=subset.columns, y=subset.index))
+                TransPi_fig.update_xaxes(showticklabels=False)
+                TransPi_fig.update_layout(title="Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
+                return TransPi_fig
+    
 
 
 #----------------------------------------------------------    
@@ -191,18 +278,18 @@ def get_Trinity_barplot(species_selected):
         return fig
 
 #TODO fix button
-@callback(
-    Output('busco_stacked_area_Trinity', 'config'),
-    Input('download-stacked-area-Trinity', 'n_clicks'),
-    State('Trinity_area', 'figure')
-)
-def download_stacked_area_Trinity(n_clicks, figure):
-    if n_clicks is not None and n_clicks > 0:
-        # Save the current figure as a .png image
-        pio.write_image(figure, 'Trinity_stacked_area.png')
-        print("wrote Trinity stacked")
-        # Send the file to the client
-        return send_file('Trinity_stacked_area.png')
+# @callback(
+#     Output('busco_stacked_area_Trinity', 'config'),
+#     Input('download-stacked-area-Trinity', 'n_clicks'),
+#     State('Trinity_area', 'figure')
+# )
+# def download_stacked_area_Trinity(n_clicks, figure):
+#     if n_clicks is not None and n_clicks > 0:
+#         # Save the current figure as a .png image
+#         pio.write_image(figure, 'Trinity_stacked_area.png')
+#         print("wrote Trinity stacked")
+#         # Send the file to the client
+#         return send_file('Trinity_stacked_area.png')
 #----------------------------------------------------------
 #Raincloud TransPi
 @callback(
@@ -246,20 +333,18 @@ def get_TransPi_Raincloud(species_selected):
         return fig
 
 #TODO fix button
-@callback(
-    Output('busco_Raincloud_TransPi', 'config'),
-    Input('download-Raincloud-TransPi', 'n_clicks'),
-    State('TransPi_Raincloud', 'figure')
-)
-def download_Raincloud_TransPi(n_clicks, figure):
-    if n_clicks is not None and n_clicks > 0:
-        # Save the current figure as a .png image
-        pio.write_image(figure, 'TransPi_Raincloud.png')
-        print("wrote TransPi Raincloud")
-        # Send the file to the client
-        return send_file('TransPi_stacked_area.png')
-
-
+# @callback(
+#     Output('busco_Raincloud_TransPi', 'config'),
+#     Input('download-Raincloud-TransPi', 'n_clicks'),
+#     State('TransPi_Raincloud', 'figure')
+# )
+# def download_Raincloud_TransPi(n_clicks, figure):
+#     if n_clicks is not None and n_clicks > 0:
+#         # Save the current figure as a .png image
+#         pio.write_image(figure, 'TransPi_Raincloud.png')
+#         print("wrote TransPi Raincloud")
+#         # Send the file to the client
+#         return send_file('TransPi_stacked_area.png')
 #----------------------------------------------------------
 #Raincloud Trinity
 @callback(
@@ -303,18 +388,18 @@ def get_Trinity_Raincloud(species_selected):
         return fig
 
 #TODO fix button
-@callback(
-    Output('busco_Raincloud_Trinity', 'config'),
-    Input('download-Raincloud-Trinity', 'n_clicks'),
-    State('Trinity_Raincloud', 'figure')
-)
-def download_Raincloud_Trinity(n_clicks, figure):
-    if n_clicks is not None and n_clicks > 0:
-        # Save the current figure as a .png image
-        pio.write_image(figure, 'Trinity_Raincloud.png')
-        print("wrote Trinity Raincloud")
-        # Send the file to the client
-        return send_file('Trinity_stacked_area.png')
+# @callback(
+#     Output('busco_Raincloud_Trinity', 'config'),
+#     Input('download-Raincloud-Trinity', 'n_clicks'),
+#     State('Trinity_Raincloud', 'figure')
+# )
+# def download_Raincloud_Trinity(n_clicks, figure):
+#     if n_clicks is not None and n_clicks > 0:
+#         # Save the current figure as a .png image
+#         pio.write_image(figure, 'Trinity_Raincloud.png')
+#         print("wrote Trinity Raincloud")
+#         # Send the file to the client
+#         return send_file('Trinity_stacked_area.png')
 #----------------------------------------------------------
 #TODO Raincloud Proteins
 #TODO add new data first

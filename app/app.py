@@ -11,6 +11,7 @@ FONT_AWESOME = (
 )
 server = Flask(__name__)
 app = dash.Dash(
+    #app.config.suppress_callback_exceptions = True
     __name__,
     server=server,
     title="Cantata",

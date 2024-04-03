@@ -10,35 +10,69 @@ import dash_bio as dashbio
 #----------------------------------------------------------
 tab_heatmap = html.Div(
     [
-        html.H1("Species v. Buscos Heatmap"),
-        #selector to switch between the Protein buscos and the transpi/trinity ones
-        dbc.Col(
+        dbc.Row(
+            html.H1("Species v. Buscos Heatmap"),
+        ),
+        dbc.Row(
             [
-                dbc.Card(
-                    dbc.CardBody(
-                        dcc.Dropdown(
-                            id="heatmap_selector",
-                            options=["Protein","TransPi","Trinity"],
-                            multi=True,
-                            placeholder="Select transciptome",
+                #selector to switch between the Protein buscos and the transpi/trinity ones
+                dbc.Col(
+                    [
+                        dbc.Card(
+                            dbc.CardBody(
+                                dcc.Dropdown(
+                                    id="heatmap_selector",
+                                    options=[
+                                        {"label": "Protein", "value": "Protein"},
+                                        {"label": "TransPi", "value": "TransPi"},
+                                        {"label": "Trinity", "value": "Trinity"},
+                                        ],
+                                    multi=True,
+                                    placeholder="Select transciptome",
+                                )
+                            ),
                         )
-                    ),
-                )
-            ],width=2,
+                    ],width=2,
+                ),
+                #empty place holder
+                dbc.Col(
+                    width=1
+                ),
+                #select whether to show the difference
+                dbc.Col(
+                    [
+                        dbc.Switch(
+                            id="difference-switch",
+                            label=dbc.Label("Show difference Heatmap", style={"font-size": "20px"}),
+                            value=False,
+                            style={
+                                "display": "block",
+                                "margin": "20px",
+                                "transform": "scale(1.4)",
+                            },
+                        )
+                    ],width=2,
+                ),
+            ]
         ),
-        dbc.Col(
-            [
-                dcc.Graph(id='busco_heatmap'),
-                html.Hr(),
-                #TODO dif heatmp is the difference calculated betweeen the different heatmaps to more easily spot differences
-                #TODO dcc.Graph(id='busco_difference_heatmap'),
-            ],
+        dbc.Row(
+            dbc.Col(
+                [
+                    #get div as output from callback
+                    html.Div(id='busco_heatmap'),
+                    #dcc.Graph(id='busco_heatmap'),
+                    #TODO dif heatmp is the difference calculated betweeen the different heatmaps to more easily spot differences
+                    html.Hr(),
+                ],
+            ),
         ),
-        dbc.Col(
-            [
-                html.Button('Download Heatmap', id='download-heatmap'),
-                html.Button('Download Difference Heatmap', id='download-difference-heatmap', n_clicks=0),
-            ],
+        dbc.Row(
+            dbc.Col(
+                [
+                    html.Button('Download Heatmap', id='download-heatmap'),
+                    html.Button('Download Difference Heatmap', id='download-difference-heatmap', n_clicks=0),
+                ],
+            ),
         ),
     ],
     className="mt-3",
