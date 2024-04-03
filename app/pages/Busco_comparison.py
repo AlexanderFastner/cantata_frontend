@@ -33,12 +33,15 @@ layout = html.Div(
                                 dbc.CardHeader(html.H5("Select species for comparison")),
                                 dbc.CardBody(
                                     [
+                                        #TODO Make this a multiselector, with All as default
                                         dcc.Dropdown(
                                             id="group_dropdown",
                                             options=[{'label': category['label'], 'value': category['value']} for category in group_options],
                                             placeholder="Select a Group",
                                         ),
                                         html.Hr(),
+                                        #TODO Show only those inlcuded in the group/groups selected above
+                                        #TODO Start with All, then restrict
                                         dcc.Checklist(
                                             id='species_selected',
                                             options=get_species_list(),
@@ -125,6 +128,13 @@ def download_heatmap(n_clicks, figure):
         # Send the file to the client
         return send_file('heatmap.png')
 #----------------------------------------------------------
+#TODO add heatmap data from the others
+#TODO be able to select between them
+#TODO make a difference heatmap to show any differences between TransPi, Trinity and direct Protein    
+
+
+
+#----------------------------------------------------------    
 #TransPi area
 @callback(
     Output(component_id="TransPi_area", component_property="figure"),
@@ -307,7 +317,7 @@ def download_Raincloud_Trinity(n_clicks, figure):
         return send_file('Trinity_stacked_area.png')
 #----------------------------------------------------------
 #TODO Raincloud Proteins
-
+#TODO add new data first
 
 #----------------------------------------------------------    
 #TODO Raincloud Combined
@@ -315,6 +325,8 @@ def download_Raincloud_Trinity(n_clicks, figure):
 
 #---------------------------------------------------------- 
 #callback for alignment
+#TODO fix this so it updates properly
+
 @callback(
     Output(component_id="alignment_viewer", component_property="data"),
     State(component_id="species_selected", component_property="value"),
