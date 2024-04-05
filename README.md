@@ -11,8 +11,8 @@ Alignment comparison
 #### V0
 Sergio: text for main page
 Sergio: Cantata logo
-comparison for stacked area plots
-raincloud plots adjust df so user can mouse over scatterplot point and get species
+comparison for stacked area plots --done
+raincloud plots adjust df so user can mouse over scatterplot point and get species --done
 Styling overhaul
 dockerize
 

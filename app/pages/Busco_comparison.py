@@ -434,7 +434,7 @@ def update_Trinity_TransPi_area(species_selected, children, busco_type_selector_
                 #...
 
                 #subset by selected type
-                print(busco_type_selector_area)
+                # print(busco_type_selector_area)
                 if "All" not in busco_type_selector_area:
                     barplot_df = barplot_df[busco_type_selector_area]
                 if busco_type_selector_area == []:
@@ -455,10 +455,6 @@ def update_Trinity_TransPi_area(species_selected, children, busco_type_selector_
             else:
                 fig = None
                 return fig
-
-
-
-
 #----------------------------------------------------------
 #Raincloud selection
 #----------------------------------------------------------
@@ -526,13 +522,15 @@ def update_Protein_Raincloud(species_selected, children):
                     # Scatter
                     # Build (x,y) pairs for each category
                     fig = go.Figure(data=data)
+
                 for values, category in zip(all_column_values, Protein_column_names):
                     c = [category for _ in range(len(values))]
-                    fig.add_trace(go.Scatter(x=values, y=c, mode='markers', showlegend=False, marker=dict(color=color_map.get(category))))
+                    fig.add_trace(go.Scatter(x=values, y=c, mode='markers', showlegend=False, marker=dict(color=color_map.get(category)), text=subset_Protein.index.tolist()))
                 
                 fig.update_layout(title='Protein Raincloud Plot of BUSCOs Data',
                                 xaxis_title='Counts',
-                                xaxis=dict(range=[0, None]))
+                                xaxis=dict(range=[0, None]),
+                                hovermode='closest')
                 return fig
             else:
                 fig = None
@@ -569,11 +567,12 @@ def update_TransPi_Raincloud(species_selected, children):
                     fig = go.Figure(data=data)
                 for values, category in zip(all_column_values, TransPi_column_names):
                     c = [category for _ in range(len(values))]
-                    fig.add_trace(go.Scatter(x=values, y=c, mode='markers', showlegend=False, marker=dict(color=color_map.get(category))))
+                    fig.add_trace(go.Scatter(x=values, y=c, mode='markers', showlegend=False, marker=dict(color=color_map.get(category)), text=subset_TransPi.index.tolist()))
                 
                 fig.update_layout(title='TransPi Raincloud Plot of BUSCOs Data',
                                 xaxis_title='Counts',
-                                xaxis=dict(range=[0, None]))
+                                xaxis=dict(range=[0, None]),
+                                hovermode='closest')
                 return fig
             else:
                 fig = None
@@ -624,11 +623,12 @@ def update_Trinity_Raincloud(species_selected, children):
                     fig = go.Figure(data=data)
                 for values, category in zip(all_column_values, Trinity_column_names):
                     c = [category for _ in range(len(values))]
-                    fig.add_trace(go.Scatter(x=values, y=c, mode='markers', showlegend=False, marker=dict(color=color_map.get(category))))
+                    fig.add_trace(go.Scatter(x=values, y=c, mode='markers', showlegend=False, marker=dict(color=color_map.get(category)), text=subset_Trinity.index.tolist()))
                 
                 fig.update_layout(title='Trinity Raincloud Plot of BUSCOs Data',
                                 xaxis_title='Counts',
-                                xaxis=dict(range=[0, None]))
+                                xaxis=dict(range=[0, None]),
+                                hovermode='closest')
                 return fig
             else:
                 fig = None
