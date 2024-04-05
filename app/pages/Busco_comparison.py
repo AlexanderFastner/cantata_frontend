@@ -183,7 +183,7 @@ def update_Difference(species_selected, children):
         #print("all3", diff_df)
         #make difference heatmap
         Difference_fig = go.Figure(data=go.Heatmap(z=diff_df.astype(int).values, colorscale=[[0, "#E52B50"], [1, "#BCBCBC"]], colorbar=dict(tickmode='array',
-            tickvals=[0, 1], ticktext=["Different", "Same"], title="Difference heatmap"),x=diff_df.columns, y=diff_df.index))
+            tickvals=[0, 1], ticktext=["Different", "Same"], title="Diff plot  "),x=diff_df.columns, y=diff_df.index))
         Difference_fig.update_xaxes(showticklabels=False)
         Difference_fig.update_layout(title="Difference heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
         return Difference_fig
@@ -194,16 +194,16 @@ def update_Difference(species_selected, children):
         #print("Prot Trin", diff_df)
         #make difference heatmap
         Difference_fig = go.Figure(data=go.Heatmap(z=diff_df.astype(int).values, colorscale=[[0, "#E52B50"], [1, "#BCBCBC"]], colorbar=dict(tickmode='array',
-            tickvals=[0, 1], ticktext=["Different", "Same"], title="Difference heatmap"),x=diff_df.columns, y=diff_df.index))
+            tickvals=[0, 1], ticktext=["Different", "Same"], title="Diff plot  "),x=diff_df.columns, y=diff_df.index))
         Difference_fig.update_xaxes(showticklabels=False)
         Difference_fig.update_layout(title="Difference heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
         return Difference_fig
-    elif Trinity_subset is not None and Prot_subset is not None:
+    elif Trinity_subset is not None and TransPi_subset is not None:
         diff_df = pd.DataFrame(np.where(Trinity_subset==TransPi_subset,1,0),columns=Trinity_subset.columns, index=Trinity_subset.index) 
         #print("Trin Trans", diff_df)
         #make difference heatmap
         Difference_fig = go.Figure(data=go.Heatmap(z=diff_df.astype(int).values, colorscale=[[0, "#E52B50"], [1, "#BCBCBC"]], colorbar=dict(tickmode='array',
-            tickvals=[0, 1], ticktext=["Different", "Same"], title="Difference heatmap"),x=diff_df.columns, y=diff_df.index))
+            tickvals=[0, 1], ticktext=["Different", "Same"], title="Diff plot  "),x=diff_df.columns, y=diff_df.index))
         Difference_fig.update_xaxes(showticklabels=False)
         Difference_fig.update_layout(title="Difference heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
         return Difference_fig
@@ -212,7 +212,7 @@ def update_Difference(species_selected, children):
         #print("Prot Trans", diff_df)   
         #make difference heatmap
         Difference_fig = go.Figure(data=go.Heatmap(z=diff_df.astype(int).values, colorscale=[[0, "#E52B50"], [1, "#BCBCBC"]], colorbar=dict(tickmode='array',
-            tickvals=[0, 1], ticktext=["Different", "Same"], title="Difference heatmap"),x=diff_df.columns, y=diff_df.index))
+            tickvals=[0, 1], ticktext=["Different", "Same"], title="Diff plot  "),x=diff_df.columns, y=diff_df.index))
         Difference_fig.update_xaxes(showticklabels=False)
         Difference_fig.update_layout(title="Difference heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
         return Difference_fig    
@@ -615,5 +615,10 @@ def update_align(species_selected, busco_name_selector, type_selector):
         print("Both species and busco must be selected")
         return ""
 #----------------------------------------------------------
+# make this a checkbox for single
+# update chart button
+# filter dataframe and only allow non-duplicates
+# or for duplicated only allow if duplicate row names
+
 
 #----------------------------------------------------------    

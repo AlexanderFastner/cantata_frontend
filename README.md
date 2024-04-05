@@ -8,19 +8,22 @@ Raincloud plots
 Alignment comparison
 
 ### upcoming additions
-#### V1
+#### V0
 Sergio: text for main page
-Sergio: cantata logo
-
+Sergio: Cantata logo
+comparison for stacked area plots
+raincloud plots adjust df so user can mouse over scatterplot point and get species
+Styling overhaul
 dockerize
+
 host on heroku
 
-#### V2
+#### V1
 general: ortho groups tab
+    make its own page + own tab groups
 phylogenetic trees
-user upload data
 download buttons for all plots
-some kind of overlay for stacked area plots
-combined raincloud plots if user selects multiple
 
-
+#### V2 
+user upload data
+make this work better client side
