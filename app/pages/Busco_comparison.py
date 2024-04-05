@@ -120,7 +120,7 @@ def get_heatmap_df(species_selected, heatmap_selector, difference_switch, active
         return None
     
     if len(fig_array) >= 2 and difference_switch:
-        fig_array.append("Difference_heatmap")
+        fig_array = ["Difference_heatmap"] + fig_array
     #return Div with figures and names
     #add callbacks that those newly created graph ids get updated
     #add dcc.Graph elements to array and return child
@@ -281,9 +281,10 @@ def update_TransPi(species_selected, children):
     Input(component_id="Stacked_area_selector", component_property="value"),
     Input(component_id="tabs", component_property="active_tab"),
     Input(component_id="update_species_button", component_property="n_clicks"),
+    Input(component_id="Trinity_TransPi_log_comparison_switch", component_property="value"),
     prevent_initial_call=True
 )     
-def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update_species_button):
+def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update_species_button, Trinity_TransPi_log_comparison_switch):
     if "tab_stacked_area" not in active_tab:
         return html.P("Not active (This shouldn't happen)") 
     fig_array=[]
@@ -300,6 +301,8 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
                 fig_array.append("TransPi_stacked_area")
     else:
         return None
+    if "Trinity_stacked_area" in fig_array and "TransPi_stacked_area" in fig_array and Trinity_TransPi_log_comparison_switch:
+        fig_array = ["Trinity_TransPi_log_comparison"] + fig_array
     child = []
     if fig_array == []:
         fig_array.append("None")
@@ -314,7 +317,7 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
     State(component_id="species_selected", component_property="value"),
     Input(component_id="Stacked_area", component_property="children"),
 )
-def update_TransPi(species_selected, children):
+def update_TransPi_area(species_selected, children):
     for item in children:
         if "Protein_stacked_area" in item.get("props").get("id"):
             if species_selected != None and species_selected != "None" and species_selected !=[]:
@@ -334,7 +337,7 @@ def update_TransPi(species_selected, children):
     State(component_id="species_selected", component_property="value"),
     Input(component_id="Stacked_area", component_property="children"),
 )
-def get_Trinity_barplot(species_selected, children):
+def update_Trinity_area(species_selected, children):
     #filter by user selection
     for item in children:
         if "Trinity_stacked_area" in item.get("props").get("id"):
@@ -371,7 +374,7 @@ def get_Trinity_barplot(species_selected, children):
     State(component_id="species_selected", component_property="value"),
     Input(component_id="Stacked_area", component_property="children"),
 )
-def get_TransPi_barplot(species_selected, children):
+def update_TransPi_area(species_selected, children):
     #print("species_selected ",species_selected)
     for item in children:
         if "TransPi_stacked_area" in item.get("props").get("id"):
@@ -399,6 +402,63 @@ def get_TransPi_barplot(species_selected, children):
 #         print("wrote TransPi stacked")
 #         # Send the file to the client
 #         return send_file('TransPi_stacked_area.png')
+#----------------------------------------------------------
+#log comparison of Trinity TransPi
+@callback(
+    Output(component_id="Trinity_TransPi_log_comparison", component_property="figure"),
+    State(component_id="species_selected", component_property="value"),
+    Input(component_id="Stacked_area", component_property="children"),
+    Input(component_id="busco_type_selector_area", component_property="value"),
+)
+def update_Trinity_TransPi_area(species_selected, children, busco_type_selector_area):
+    #print("species_selected ",species_selected)
+    for item in children:
+        if "Trinity_TransPi_log_comparison" in item.get("props").get("id"):
+            if species_selected != None and species_selected != "None" and species_selected !=[]:
+                TransPi_area_df = pd.read_csv('./data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
+                Trinity_area_df = pd.read_csv('./data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
+                TransPi_area_df = TransPi_area_df.drop(columns=["Complete_BUSCOs", "Total"])
+                Trinity_area_df = Trinity_area_df.drop(columns=["Complete_BUSCOs", "Total"])
+                #format of subsets
+                # species_name  Complete_&_single-copy	Complete_&_duplicated	Fragmented	Missing
+                # species1      100 50  40  10
+                # species2      140 10  30  20
+                subset_TransPi = TransPi_area_df.loc[TransPi_area_df.index.isin(species_selected)]
+                subset_Trinity = Trinity_area_df.loc[Trinity_area_df.index.isin(species_selected)]
+                barplot_df = pd.DataFrame(np.log2(subset_Trinity.values / subset_TransPi.values), index=subset_TransPi.index, columns=subset_TransPi.columns)
+                # print(barplot_df)
+                #format for barplot
+                # species name   Complete_&_single-copy  Complete_&_duplicated  Fragmented  Missing
+                #species1        log2(Trinity.value/TransPi.value) value value value
+                #species2        value value value value
+                #...
+
+                #subset by selected type
+                print(busco_type_selector_area)
+                if "All" not in busco_type_selector_area:
+                    barplot_df = barplot_df[busco_type_selector_area]
+                if busco_type_selector_area == []:
+                    fig = None
+                    return fig
+                fig = go.Figure()
+                for col in barplot_df.columns:
+                    fig.add_trace(go.Bar(x=barplot_df.index, y=barplot_df[col], name=col))
+
+                fig.update_layout(
+                    title='Log2 difference Trinity vs. TransPi (Trinity on Top)',
+                    xaxis_title='Species',
+                    yaxis_title='Log2',
+                    barmode='group'
+                )
+                
+                return fig
+            else:
+                fig = None
+                return fig
+
+
+
+
 #----------------------------------------------------------
 #Raincloud selection
 #----------------------------------------------------------

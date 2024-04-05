@@ -86,6 +86,44 @@ tab_stacked_area= html.Div(
         dbc.Row(
             [
                 create_transcriptome_selector("Stacked_area_selector"),
+                #empty place holder
+                dbc.Col(
+                    width=1
+                ),
+                #log comparison of Trinity/TransPi
+                dbc.Col(
+                    [
+                        dbc.Switch(
+                            id="Trinity_TransPi_log_comparison_switch",
+                            label=dbc.Label("Log Comparison of Trinity vs. TransPi Busco Genes", style={"font-size": "20px"}),
+                            value=True,
+                            style={
+                                "display": "block",
+                                "margin": "20px",
+                                "transform": "scale(1.4)",
+                            },
+                        )
+                    ],width=3,
+                ),
+                dbc.Col(
+                    [
+                        #TODO only display this when the switch for comparing has been selected
+                        #multi selector to choose what to track in Trinity vs. TransPi
+                        dcc.Dropdown(
+                        id="busco_type_selector_area",
+                        options=[
+                            {"label": "Complete_&_single-copy", "value": "Complete_&_single-copy"},
+                            {"label": "Complete_&_duplicated", "value": "Complete_&_duplicated"},
+                            {"label": "Fragmented", "value": "Fragmented"},
+                            {"label": "Missing", "value": "Missing"},
+                            {"label": "All", "value": "All"},
+                        ],
+                        multi=True,
+                        placeholder="Select type of Busco",
+                        value="All",
+                        )
+                    ],width=2
+                ),
             ]
         ),
         dbc.Row(
