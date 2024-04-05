@@ -239,6 +239,7 @@ plot_selector_tabs = html.Div(
                 dbc.Tab(tab_stacked_area, label="Stacked Area", tab_id="tab_stacked_area"),
                 dbc.Tab(tab_raincloud, label="Raincloud Plot", tab_id="tab_raincloud"),
                 dbc.Tab(tab_alignment, label="Busco Alignment", tab_id="tab_alignment"),
+                
             ],
         ),
         html.Div(id="tab-content", style={"marginBottom": "10px"}),

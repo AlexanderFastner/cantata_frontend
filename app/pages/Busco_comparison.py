@@ -71,7 +71,6 @@ layout = html.Div(
     ],
     style={"width": "100%", 'display': 'inline-block'}
 )
-
 #----------------------------------------------------------
 #Callbacks
 #----------------------------------------------------------
@@ -106,12 +105,8 @@ def update_checklist_options(group_value):
 def get_heatmap_df(species_selected, heatmap_selector, difference_switch, active_tab, update_species_button):
     if "tab_heatmap" not in active_tab:
         return html.P("Not active")
-    # print("Selected species Heatmap:", species_selected)
-    # print("heatmap selector: ", heatmap_selector)
-    # print("difference_switch: ", difference_switch)
     fig_array=[]
     #filter by user selection
-    #print("heatmap", species_selected)
     if species_selected != None and species_selected != "None" and species_selected !=[] and heatmap_selector is not None and heatmap_selector != "None":
         #check which dataset the user wants to see
         for selected in heatmap_selector:   
@@ -135,8 +130,6 @@ def get_heatmap_df(species_selected, heatmap_selector, difference_switch, active
     for fig in fig_array:
         #update children of output
         child.append(dcc.Graph(id=fig))
-    #print("child: ", child)
-    #output = html.Div(child)
     return child
 
 #TODO fix/implement this button for each heatmap
@@ -157,14 +150,13 @@ def get_heatmap_df(species_selected, heatmap_selector, difference_switch, active
 #heatmap difference selector update
 #for each item in children
     #compute the difference between the other heatmaps
-    #display that
+    #update that dynamic div
 @callback(
     Output(component_id="Difference_heatmap", component_property="figure"),
     State(component_id="species_selected", component_property="value"),
     Input(component_id="busco_heatmap", component_property="children"),
 )
 def update_Difference(species_selected, children):
-    #print("children diff", children)
     #for everything in children get the heatmap_df
     #after this find a way to calculate the difference between all these
     Prot_subset = None
@@ -459,7 +451,6 @@ def update_Protein_Raincloud(species_selected, children):
                 Protein_df = pd.read_csv('./data/busco5_short_summary_Proteome.tsv', sep="\t", index_col=0)
                 subset_Protein = Protein_df.loc[Protein_df.index.isin(species_selected)]
 
-                #print("Subset Protein: ",subset_Protein)    
                 #data wrangling
                 Protein_column_names = subset_Protein.columns.to_list()[:-1]
                 all_column_values=[]
@@ -467,7 +458,6 @@ def update_Protein_Raincloud(species_selected, children):
                     column_values_Protein = subset_Protein[column].values
                     all_column_values.append(column_values_Protein)
                 #Construct Plot
-                #colors = ["purple","blue","red","orange","gold"]
                 fig = go.Figure()
 
                 data = []
@@ -502,7 +492,6 @@ def update_TransPi_Raincloud(species_selected, children):
                 TransPi_df = pd.read_csv('./data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
                 subset_TransPi = TransPi_df.loc[TransPi_df.index.isin(species_selected)]
 
-                #print("Subset TransPi: ",subset_TransPi)    
                 #data wrangling
                 TransPi_column_names = subset_TransPi.columns.to_list()[:-1]
                 all_column_values=[]
@@ -510,7 +499,6 @@ def update_TransPi_Raincloud(species_selected, children):
                     column_values_TransPi = subset_TransPi[column].values
                     all_column_values.append(column_values_TransPi)
                 #Construct Plot
-                #colors = ["purple","blue","red","orange","gold"]
                 fig = go.Figure()
 
                 data = []
@@ -559,7 +547,6 @@ def update_Trinity_Raincloud(species_selected, children):
                 Trinity_df = pd.read_csv('./data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
                 subset_Trinity = Trinity_df.loc[Trinity_df.index.isin(species_selected)]
 
-                #print("Subset Trinity: ",subset_Trinity)    
                 #data wrangling
                 Trinity_column_names = subset_Trinity.columns.to_list()[:-1]
                 all_column_values=[]
@@ -567,7 +554,6 @@ def update_Trinity_Raincloud(species_selected, children):
                     column_values_Trinity = subset_Trinity[column].values
                     all_column_values.append(column_values_Trinity)
                 #Construct Plot
-                #colors = ["purple","blue","red","orange","gold"]
                 fig = go.Figure()
 
                 data = []
