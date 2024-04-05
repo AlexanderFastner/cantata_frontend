@@ -13,7 +13,6 @@ from pages.components.alignment_functions import read_in_alignment
 from dash import dcc, html, callback
 from dash.dependencies import Input, Output, State
 from flask import send_file
-
 #----------------------------------------------------------
 color_map = {"Complete_BUSCOs": "#785EF0",
                     "Complete_&_single-copy": "#648FFF",
@@ -112,7 +111,7 @@ def get_heatmap_df(species_selected, heatmap_selector, difference_switch, active
     # print("difference_switch: ", difference_switch)
     fig_array=[]
     #filter by user selection
-    print("heatmap", species_selected)
+    #print("heatmap", species_selected)
     if species_selected != None and species_selected != "None" and species_selected !=[] and heatmap_selector is not None and heatmap_selector != "None":
         #check which dataset the user wants to see
         for selected in heatmap_selector:   
@@ -297,12 +296,10 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
         return html.P("Not active (This shouldn't happen)") 
     fig_array=[]
     #filter by user selection
-    print("stacked ", species_selected)
-    print("selector: ", Stacked_area_selector)
     if species_selected != None and species_selected != "None" and species_selected !=[] and Stacked_area_selector != "None" and Stacked_area_selector is not None:
         #check which dataset the user wants to see
         for selected in Stacked_area_selector:   
-            print("selected", selected)
+            #print("selected", selected)
             if selected == "Protein":
                 fig_array.append("Protein_stacked_area")
             elif selected == "Trinity":
@@ -394,7 +391,6 @@ def get_TransPi_barplot(species_selected, children):
                                 title="TransPi"))
                 return fig
             else:
-                print("return none TransPi")
                 fig = None
                 return fig
 
@@ -428,7 +424,7 @@ def get_Rainclouds(species_selected, Raincloud_selector, active_tab, update_spec
         return html.P("Not active")
     fig_array=[]
     #filter by user selection
-    print("raincloud: ", species_selected)
+    #print("raincloud: ", species_selected)
     if species_selected is not None and species_selected != "None" and species_selected !=[] and Raincloud_selector != "None" and Raincloud_selector is not None:
         #check which dataset the user wants to see
         for selected in Raincloud_selector:   
@@ -456,7 +452,6 @@ def get_Rainclouds(species_selected, Raincloud_selector, active_tab, update_spec
     Input(component_id="Rainclouds", component_property="children"),
 )
 def update_Protein_Raincloud(species_selected, children):
-    print("raincloud protein children: ", children)
     #filter by user selection
     for item in children:
         if "Protein_raincloud" in item.get("props").get("id"):

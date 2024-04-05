@@ -218,8 +218,8 @@ tab_alignment= html.Div(
             [
                 dbc.Col(
                     [
-                        html.Button('Download Raw Alignment', id='download-Raw-Alignment', n_clicks=0),
-                        html.Button('Download Alignment Figure', id='download-Alignment-Figure', n_clicks=0),
+                        # html.Button('Download Raw Alignment', id='download-Raw-Alignment', n_clicks=0),
+                        # html.Button('Download Alignment Figure', id='download-Alignment-Figure', n_clicks=0),
                     ], width=4,
                 )
             ],
