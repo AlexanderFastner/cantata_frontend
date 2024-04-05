@@ -1,26 +1,22 @@
 #What the user selects/can select
 #----------------------------------------------------------
-#TODO prot_buscso ids need to match ids in TransPi/Trinity .tsv
-
 def get_species_list():
-    species_list = []
     with open("./data/busco5_full_table_Proteome_df_numbers.csv") as f:
         species = [row.split(",")[0] for row in f]
         species=sorted(species[1:])
     return species
 #----------------------------------------------------------
 def get_busco_genes():
-    #print("activated get_busco_genes")
-    #return a list of all the busco genes
-    #TODO get this and functions list from sergio
-    #add that too data and query here
-    busco_genes = ["55162at33208"]
-
+    #return a list of all the busco genes    
+    #read in col names of busco5
+    with open("./data/busco5_full_table_Proteome_df_numbers.csv") as f:
+        busco_genes = f.readline().split(",")
+        busco_genes = busco_genes[1:]
     return busco_genes
 #----------------------------------------------------------
 def get_busco_functions():
     #print("activated get_busco_functions")
-    #return a list of the various busco functions
+    #TODO return a list of the various busco functions
 
     busco_function = ["do something"]
     return busco_function

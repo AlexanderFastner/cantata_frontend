@@ -85,7 +85,7 @@ tab_stacked_area= html.Div(
         dbc.Row(html.H1("Stacked Area Plots")),
         dbc.Row(
             [
-                create_transcriptome_selector("Stacked_area"),
+                create_transcriptome_selector("Stacked_area_selector"),
             ]
         ),
         dbc.Row(
@@ -112,11 +112,30 @@ tab_stacked_area= html.Div(
 tab_raincloud= html.Div(
     [
         dbc.Row(html.H1("TransPi v. Trinity Raincloud Plots")),
-        dcc.Graph(id='TransPi_Raincloud'),
         html.Hr(),
-        dcc.Graph(id='Trinity_Raincloud'),
-        html.Button('Download Raincloud TransPi', id='download-Raincloud-TransPi', n_clicks=0),
-        html.Button('Download Raincloud Trinity', id='download-Raincloud-Trinity', n_clicks=0),
+        dbc.Row(
+            [
+                create_transcriptome_selector("Raincloud_selector"),
+            ]
+        ),
+        dbc.Row(
+            dbc.Col(
+                [
+                    #Raincloud plots
+                    html.Div(id='Rainclouds'),
+                    html.Hr(),
+                ],
+            ),
+        ),
+        dbc.Row(
+            dbc.Col(
+                [
+                    # html.Button('Download Raincloud Protein', id='download-Raincloud-Protein', n_clicks=0),
+                    # html.Button('Download Raincloud TransPi', id='download-Raincloud-TransPi', n_clicks=0),
+                    # html.Button('Download Raincloud Trinity', id='download-Raincloud-Trinity', n_clicks=0),
+                ],
+            ),
+        ),  
     ],
     className="mt-3",
 )
@@ -154,6 +173,8 @@ tab_alignment= html.Div(
                         ),
                     ),
                 ),
+                #TODO is this worth keeping? 
+                #If we only look at 1 busco gene at a time, do we even need this?
                 dbc.Col(
                     dbc.Card(
                         dbc.CardBody(
@@ -191,8 +212,6 @@ tab_alignment= html.Div(
                     ),
                 ),
                 #TODO Add tree view
-
-                #TODO add download options
             ]
         ),
         dbc.Row(

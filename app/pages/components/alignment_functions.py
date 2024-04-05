@@ -16,7 +16,8 @@ PTVPAISNYAGEHGFNLEFNDSGTAKSVTSTYSVKLGKLFCQLAKTTPIGVLVKEEPPQG"""
 
 #----------------------------------------------------------
 def read_in_alignment(species_selected, busco_name_selector):
-    #TODO make lookup table for species->3 letter code
+    #TODO change this to read in data from a repo somewhere not local
+    #TODO for now just read from cantata_data
     species_l = species_lookup(species_selected)
     #print(species_l)
     #print("species_selected ", species_selected)
@@ -24,7 +25,7 @@ def read_in_alignment(species_selected, busco_name_selector):
 
     if species_selected != None and species_selected != "None":
         if busco_name_selector != None and busco_name_selector != "None":
-            alignment = AlignIO.read(f"./data/testing_alignments/{busco_name_selector}.shortheaders.aln-gb", "fasta")
+            alignment = AlignIO.read(f"../../cantata_data/gb/{busco_name_selector}.shortheaders.aln-gb", "fasta")
             filtered_alignment = [seq for seq in alignment if any(species in seq.id for species in species_l)]
             alignment = MultipleSeqAlignment(filtered_alignment)
             fasta_string=""
