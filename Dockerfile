@@ -11,7 +11,7 @@ RUN conda install -c conda-forge --file requirements.txt --yes
 COPY app/ ./app
 COPY data/ ./data
 #TODO replace with wget to aln data
-#COPY ../cantata_data/gb/ ./gb
+COPY gb/ ./gb
 
 
 EXPOSE 8050

@@ -95,7 +95,7 @@ tab_stacked_area= html.Div(
                     [
                         dbc.Switch(
                             id="Trinity_TransPi_log_comparison_switch",
-                            label=dbc.Label("Log Comparison of Trinity vs. TransPi Busco Genes", style={"font-size": "20px"}),
+                            label=dbc.Label("Log Comparison of Trinity vs. TransPi", style={"font-size": "20px"}),
                             value=True,
                             style={
                                 "display": "block",
@@ -198,19 +198,19 @@ tab_alignment= html.Div(
                     ),
                 ),
                 
-                dbc.Col( 
-                    dbc.Card(
-                        dbc.CardBody(
-                            [
-                                dcc.Dropdown(
-                                    id="busco_function_selector",
-                                    options=get_busco_functions(),
-                                    placeholder="Select Busco Gene by Function",
-                                ),
-                            ],
-                        ),
-                    ),
-                ),
+                # dbc.Col( 
+                #     dbc.Card(
+                #         dbc.CardBody(
+                #             [
+                #                 dcc.Dropdown(
+                #                     id="busco_function_selector",
+                #                     options=get_busco_functions(),
+                #                     placeholder="Select Busco Gene by Function",
+                #                 ),
+                #             ],
+                #         ),
+                #     ),
+                # ),
                 #TODO is this worth keeping? 
                 #If we only look at 1 busco gene at a time, do we even need this?
                 dbc.Col(
@@ -221,7 +221,6 @@ tab_alignment= html.Div(
                                     id="type_selector",
                                     options=[
                                         {"label": "single", "value": "single"},
-                                        {"label": "fragmented", "value": "fragmented"},
                                         {"label": "duplicated", "value": "duplicated"},
                                     ],
                                     placeholder="Select what Type of Busco Gene to show",

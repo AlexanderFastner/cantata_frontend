@@ -10,7 +10,7 @@ services:
     volumes:
       - ./app:/app
       - ./data:/data
-      - ../cantata_data/gb:/gb
+      - ./gb:/gb
     environment:
       - DASH_DEBUG_MODE=False
     command: ["python3", "app/app.py"]
