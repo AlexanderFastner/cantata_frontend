@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  dash-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8050:8050"
+    volumes:
+      - ./app:/app
+      - ./data:/data
+      - ../cantata_data/gb:/gb
+    environment:
+      - DASH_DEBUG_MODE=False
+    command: ["python3", "app/app.py"]

@@ -13,9 +13,15 @@ Sergio: text for main page
 Sergio: Cantata logo
 comparison for stacked area plots --done
 raincloud plots adjust df so user can mouse over scatterplot point and get species --done
-Styling overhaul
-dockerize
+Styling overhaul --todo
+dockerize --todo
+    install miniconda docker env
+    move this into container
+    move data to container 
+    run
 
+
+## publish
 host on heroku
 
 #### V1

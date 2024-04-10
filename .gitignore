@@ -1,5 +1,5 @@
-#ignore data
-
+#ignore aln data
+gb/
 
 #ignore local caches
 **/__pycache__/
