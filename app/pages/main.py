@@ -26,13 +26,20 @@ layout = html.Div([
                 [
                     #TODO add url navigation to go straight to the appropriate tab
                     dcc.Markdown('''
-                    ## Tools we offer: \n             
+                    ## Analyze Buscos: \n             
                     ### [Heatmap of buscos](/Busco)\n
                     ### [Stacked Area plots](/Busco)\n
                     ### [Raincloud plots](/Busco)\n
                     ### [Alignment Comparison](/Busco)\n
                     ...future tools\n
                     '''),
+                    #This is to showcase what the user can do
+                    #TODO arrange and resize these
+                    html.Img(src=dash.get_asset_url("heatmap_example.png"), height="600px"),
+                    html.Img(src=dash.get_asset_url("stacked_area_example.png"), height="600px"),
+                    html.Img(src=dash.get_asset_url("raincloud_example.png"), height="600px"),
+                    html.Img(src=dash.get_asset_url("log_diff_example.png"), height="600px"),
+                    html.Img(src=dash.get_asset_url("alignment_example.png"), height="600px"),
 
                     html.Hr(),
                     dcc.Markdown('''
