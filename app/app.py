@@ -5,6 +5,7 @@ import dash
 import sys
 import dash_bootstrap_components as dbc
 from flask import Flask
+from pages.components.footer import create_footer
 #----------------------------------------------------------
 FONT_AWESOME = (
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -39,6 +40,7 @@ app.layout = dbc.Container(
 
         ),
         dash.page_container,
+        create_footer(),
     ],
     fluid=True,
 )

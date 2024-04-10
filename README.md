@@ -16,7 +16,8 @@ raincloud plots adjust df so user can mouse over scatterplot point and get speci
 Styling overhaul --todo  
 dockerize --done  
 fix alignment single/fragmented selector --todo
-add links to github, data --todo
+add links to github --done
+links to data --todo
 
 ## publish  
 host on heroku  
