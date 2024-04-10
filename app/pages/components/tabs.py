@@ -103,7 +103,7 @@ tab_stacked_area= html.Div(
                                 "transform": "scale(1.4)",
                             },
                         )
-                    ],width=3,
+                    ],width=4,
                 ),
                 dbc.Col(
                     [
