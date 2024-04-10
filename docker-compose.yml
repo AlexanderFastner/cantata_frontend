@@ -11,7 +11,6 @@ services:
       - ./app:/app
       - ./data:/data
       - ./gb:/gb
-      - ./assets:/assets
     environment:
       - DASH_DEBUG_MODE=False
     command: ["python3", "app/app.py"]

@@ -10,9 +10,8 @@ RUN conda install -c conda-forge --file requirements.txt --yes
 #TODO replace this with get from git repo
 COPY app/ ./app
 COPY data/ ./data
-COPY assets/ ./assets
 #TODO replace with wget to aln data
 COPY gb/ ./gb
 
 EXPOSE 8050
-CMD ["python3", "app/app.py"]
+#CMD ["python3", "app/app.py"]
