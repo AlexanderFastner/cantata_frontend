@@ -11,12 +11,7 @@ Alignment comparison
 #### V0  
 Sergio: text for main page  
 Sergio: Cantata logo  
-comparison for stacked area plots --done  
-raincloud plots adjust df so user can mouse over scatterplot point and get species --done  
 Styling overhaul --todo  
-dockerize --done  
-fix alignment single/fragmented selector --todo
-add links to github --done
 links to data --todo
 
 ## publish  

@@ -647,11 +647,6 @@ def update_Trinity_Raincloud(species_selected, children):
 #         print("wrote Trinity Raincloud")
 #         # Send the file to the client
 #         return send_file('Trinity_stacked_area.png')
-#----------------------------------------------------------
-#TODO Raincloud Combined
-
-
-
 
 #---------------------------------------------------------- 
 #Alignment
@@ -661,24 +656,19 @@ def update_Trinity_Raincloud(species_selected, children):
 @callback(
     Output(component_id="alignment_viewer", component_property="data"),
     State(component_id="species_selected", component_property="value"),
-    State(component_id="busco_name_selector", component_property="value"),
+    Input(component_id="busco_name_selector", component_property="value"),
     Input(component_id="type_selector", component_property="value"),
+    Input(component_id="update_species_button", component_property="n_clicks"),
     prevent_initial_call=True
 )
-def update_align(species_selected, busco_name_selector, type_selector):
+def update_align(species_selected, busco_name_selector, type_selector, n_clicks):
     if species_selected != None and species_selected != "None" and species_selected !=[] and busco_name_selector != None and busco_name_selector != "None" and busco_name_selector !=[]:
-        data = read_in_alignment(species_selected, busco_name_selector)
-        #print("returning data")
-        #print(data)
+        data = read_in_alignment(species_selected, busco_name_selector, type_selector)
         return data
     else:
         print("Both species and busco must be selected")
         return ""
 #----------------------------------------------------------
-# make this a checkbox for single
-# update chart button
-# filter dataframe and only allow non-duplicates
-# or for duplicated only allow if duplicate row names
-
+#TODO  update chart button
 
 #----------------------------------------------------------    
