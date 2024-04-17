@@ -21,7 +21,8 @@ app = dash.Dash(
     #background_callback_manager=background_callback_manager,
     use_pages=True,
 )
-
+app.css.config.serve_locally = True
+app.scripts.config.serve_locally = True
 app.config.suppress_callback_exceptions = True
 #----------------------------------------------------------
 app.layout = dbc.Container(

@@ -11,36 +11,75 @@ layout = html.Div([
     #TODO add logo
     #TODO add styling and background colors
         dbc.Card(
-            dbc.CardBody(
-                [
-                    dcc.Markdown('''
-                    # About: \n
-                    add some text explain the purpose of website\n
-                    link to future paper
-                    '''),
-                ],
-            )
+            [
+                dbc.CardHeader(html.H2("Community bAsed Non-bilaTeriAn Transcriptome Archive")),
+                dbc.CardBody(
+                    [
+                        
+                        #dbc.CardLink("Cantata", href="https://en.wikipedia.org/wiki/Cantata"),
+                        dcc.Markdown(
+                            '''
+                            A cantata is a vocal composition with an instrumental accompaniment, typically in several movements, often involving a choir [Cantata](https://en.wikipedia.org/wiki/Cantata).
+                            --- 
+
+                            **CANTATA** is also a **C**ommunity b**A**sed **N**on-bila**T**eri**A**n **T**ranscriptome **A**rchive. The aim of this project is to provide an archive of non-bilaterian  
+                            transcriptomic resources assembled and annotated in a standardized manner. You can help further mantaining this archive by simply pushing  
+                            text files with SRA read `ftp` addresses of the reads to be assembled (see below). The assembly and annotation will be done using computational  
+                            resources of the Chair of Paläontology and Geobiology of the Dept. of Geo- and Environmental Sciences of the LMU München and made  
+                            available to the community as a `DOI` minted CANTATA release.
+                                     
+                            '''
+                        )  
+                    ],
+                ),
+            ]
+        ),
+        dbc.Card(
+            [
+                dbc.CardBody(
+                    [
+                        dbc.CardHeader(html.H4("Suggesting new additions")),
+                        dcc.Markdown(
+                            '''
+                            If you know of a non-bilaterian taxon for which transcriptomic resources are available and is not included in our latest release, you can help us uploading (pushing if you cloned the repository) a plain text file named after the taxon of interest, (e.g., Ephydatia_fluviatilis.txt) with the ftp addresses of the files to be assembled in the `requests` folder available in the repository. For instance, if you want to add E. fluviatilis, the text file `Ephydatia_fluviatilis.txt` would look like:
+
+                            
+                            >  ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR297/004/SRR2971104/SRR2971104_1.fastq.gz  
+                            >  ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR297/004/SRR2971104/SRR2971104_2.fastq.gz  
+                            
+                                
+                            The file consists of only two lines with the European Nucleotide Archive ftp adresses of the reads to be assembled. If more that one library (assuming pair-end reads this is two lines in the text file) is available for the taxon, you can add several lines. We will download all the files and concatenate them before assembly. Please be sure that:
+                            the reads are of the same length in all the files to concatenate.
+                            you only include pair-end read files in the file.
+                            We cannot warranty the taxon is going to be included in the database immediately upon entering the todo folder area. Running the pipeline costs CPU time and other resources. Therefore, the inclusion of new transcriptomes will be done whenever free resources are available. We hope as soon as the number of transcriptomes in the todo folder drops, we will be able to process new suggestions faster. 
+
+                            '''
+                        )
+
+                    ]
+                )
+            ]
         ),
         dbc.Card(
             dbc.CardBody(
                 [
                     #TODO add url navigation to go straight to the appropriate tab
-                    dcc.Markdown('''
-                    ## Analyze Buscos: \n             
-                    ### [Heatmap of buscos](/Busco)\n
-                    ### [Stacked Area plots](/Busco)\n
-                    ### [Raincloud plots](/Busco)\n
-                    ### [Alignment Comparison](/Busco)\n
-                    ...future tools\n
-                    '''),
-                    #This is to showcase what the user can do
-                    #TODO arrange and resize these
-                    html.Img(src=dash.get_asset_url("heatmap_example.png"), height="200px"),
-                    html.Img(src=dash.get_asset_url("stacked_area_example.png"), height="200px"),
-                    html.Img(src=dash.get_asset_url("raincloud_example.png"), height="200px"),
-                    html.Img(src=dash.get_asset_url("log_diff_example.png"), height="200px"),
-                    html.Img(src=dash.get_asset_url("alignment_example.png"), height="200px"),
-
+                    dcc.Markdown(
+                        '''
+                        ## Ways to Analyze Buscos:    
+                        ### [Heatmap of buscos](/Busco)  
+                        ![heatmap example](/assets/heatmap_example.png#example) 
+                        
+                        ### [Stacked Area plots](/Busco)  
+                        ![stacked area example](/assets/stacked_area_example.png#example) 
+                        ### [Raincloud plots](/Busco)  
+                        ![raincloud example](/assets/raincloud_example.png#example) 
+                        ### [Alignment Comparison](/Busco)  
+                        ![alignment example](/assets/alignment_example.png#example) 
+                    
+                        '''
+                    ),
+                    html.Img(src="/assets/heatmap_example.png", id="#example"),
                     html.Hr(),
                     dcc.Markdown('''
                     # Our Data: \n             
