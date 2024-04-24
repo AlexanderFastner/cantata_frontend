@@ -6,16 +6,28 @@ from dash import dcc, html, callback
 #----------------------------------------------------------
 dash.register_page(__name__, path="/")
 #----------------------------------------------------------
+#row1
+    #col1
+        #row2 intro
+        #row3 new additions
+        #row4 our data
+    #col2
+        #row5 examples
+
 layout = html.Div([
-    #TODO restrict this to the left side of the screen
     #TODO add logo
     #TODO add styling and background colors
-        dbc.Card(
+    dbc.Row(
+        [
+        dbc.Col(
             [
-                dbc.CardHeader(html.H2("Community bAsed Non-bilaTeriAn Transcriptome Archive")),
-                dbc.CardBody(
+            dbc.Row(
+                [
+                dbc.Card(
                     [
-                        
+                    dbc.CardHeader(html.H2("Community bAsed Non-bilaTeriAn Transcriptome Archive")),
+                    dbc.CardBody(
+                        [
                         #dbc.CardLink("Cantata", href="https://en.wikipedia.org/wiki/Cantata"),
                         dcc.Markdown(
                             '''
@@ -27,17 +39,22 @@ layout = html.Div([
                             text files with SRA read `ftp` addresses of the reads to be assembled (see below). The assembly and annotation will be done using computational  
                             resources of the Chair of Paläontology and Geobiology of the Dept. of Geo- and Environmental Sciences of the LMU München and made  
                             available to the community as a `DOI` minted CANTATA release.
-                                     
+                                    
                             '''
                         )  
-                    ],
+                        ],
+                    ),
+                    ]
                 ),
-            ]
-        ),
-        dbc.Card(
-            [
-                dbc.CardBody(
+                ],
+                className="row2"
+            ),
+            dbc.Row(
+                [
+                dbc.Card(
                     [
+                    dbc.CardBody(
+                        [
                         dbc.CardHeader(html.H4("Suggesting new additions")),
                         dcc.Markdown(
                             '''
@@ -54,16 +71,42 @@ layout = html.Div([
                             We cannot warranty the taxon is going to be included in the database immediately upon entering the todo folder area. Running the pipeline costs CPU time and other resources. Therefore, the inclusion of new transcriptomes will be done whenever free resources are available. We hope as soon as the number of transcriptomes in the todo folder drops, we will be able to process new suggestions faster. 
 
                             '''
-                        )
-
+                        ),
+                        ]
+                    )
                     ]
-                )
-            ]
-        ),
-        dbc.Card(
-            dbc.CardBody(
+                ),
+                ],
+                className="row3"
+            ),
+            dbc.Row(
                 [
-                    #TODO add url navigation to go straight to the appropriate tab
+                dbc.Card(
+                    dbc.CardBody(
+                        [
+                        dcc.Markdown('''
+                            # Our Data: \n             
+                            where our data is from\n
+                            Brief overview of available species\n
+                            Add Overview Tree Here!
+                            link to figshare\n
+                            '''),
+                        ]
+                    )
+                )
+                ],
+                className="row4"
+            ),
+
+            ],
+            width={"size": "7"},
+            className="col1"
+        ),
+        dbc.Col(
+            [
+            dbc.Card(
+                dbc.CardBody(
+                    [
                     dcc.Markdown(
                         '''
                         ## Ways to Analyze Buscos:    
@@ -79,18 +122,14 @@ layout = html.Div([
                     
                         '''
                     ),
-                    html.Img(src="/assets/heatmap_example.png", id="#example"),
-                    html.Hr(),
-                    dcc.Markdown('''
-                    # Our Data: \n             
-                    where our data is from\n
-                    Brief overview of available species\n
-                    Add Overview Tree Here!
-                    link to figshare\n
-                    '''),
-                ],
+                    ],
+                )
             )
+            ],
+            width={"size": "5", "offset": "0"},
+            className="col2"
         ),
-    ],
-    style={"width": "60%", 'display': 'inline-block'},
-)
+        ],
+        className="row1"
+    ),
+])
