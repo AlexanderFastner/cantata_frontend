@@ -53,9 +53,9 @@ def run_dash_app():
     # Run the Dash app
     debug = os.getenv("DEBUG", "True") == "True"
     #debug enabled
-    app.run_server(port=8050, debug=True)
+    #app.run_server(port=8050, debug=True)
     #production
-    #app.run_server(host='0.0.0.0', port=8050, debug=False)
+    app.run_server(host='0.0.0.0', port=8050, debug=False)
 #----------------------------------------------------------
 if __name__ == "__main__":
     run_dash_app()
