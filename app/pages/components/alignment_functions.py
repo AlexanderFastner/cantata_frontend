@@ -7,13 +7,22 @@ from Bio.Align import MultipleSeqAlignment
 import tempfile
 import shutil
 #----------------------------------------------------------
-alignment_data = """>Example
-MEEADLTLPLSQDTFHDLWNNVFLSTENESLAPPEGLLSQNMDFWEDPETMQETKNVPTA
-PTVPAISNYAGEHGFNLEFNDSGTAKSVTSTYSVKLGKLFCQLAKTTPIGVLVKEEPPQG
->Example2
-MEEADLTLPLSQDTFHDLWNNVFLSTENESLAPPEGLLSQNMDFWEDPETMQETKNVPTA
-PTVPAISNYAGEHGFNLEFNDSGTAKSVTSTYSVKLGKLFCQLAKTTPIGVLVKEEPPQG"""
-
+alignment_data = """>sp|Q9W678|P53_BARBU Cellular tumor antigen p53 OS=Barbus barbus GN=tp53 PE=2 SV=1
+MAESQEFAELWERNLISTQEAGTCWELINDEYLPSSFDPNIFDNVLTEQPQPSTSPPTAS
+VPVATDYPGEHGFKLGFPQSGTAKSVTCTYSSDLNKLFCQLAKTCPVQMVVNVAPPQGSV
+IRATAIYKKSEHVAEVVRRCPHHERTPDGDGLAPAAHLIRVEGNSRALYREDDVNSRHSV
+VVPYEVPQLGSEFTTVLYNFMCNSSCMGGMNRRPILTIISLETHDGQLLGRRSFEVRVCA
+CPGRDRKTEESNFRKDQETKTLDKIPSANKRSLTKDSTSSVPRPEGSKKAKLSGSSDEEI
+YTLQVRGKERYEMLKKINDSLELSDVVPPSEMDRYRQKLLTKGKKKDGQTPEPKRGKKLM
+VKDEKSDSD
+>sp|Q29537|P53_CANFA Cellular tumor antigen p53 OS=Canis familiaris GN=TP53 PE=2 SV=2
+MEESQSELNIDPPLSQETFSELWNLLPENNVLSSELCPAVDELLLPESVVNWLDEDSDDA
+PRMPATSAPTAPGPAPSWPLSSSVPSPKTYPGTYGFRLGFLHSGTAKSVTWTYSPLLNKL
+FCQLAKTCPVQLWVSSPPPPNTCVRAMAIYKKSEFVTEVVRRCPHHERCSDSSDGLAPPQ
+HLIRVEGNLRAKYLDDRNTFRHSVVVPYEPPEVGSDYTTIHYNYMCNSSCMGGMNRRPIL
+TIITLEDSSGNVLGRNSFEVRVCACPGRDRRTEEENFHKKGEPCPEPPPGSTKRALPPST
+SSSPPQKKKPLDGEYFTLQIRGRERYEMFRNLNEALELKDAQSGKEPGGSRAHSSHLKAK
+KGQSTSRHKKLMFKREGLDSD"""
 #----------------------------------------------------------
 def read_in_alignment(species_selected, busco_name_selector, type_selector):
     #TODO change this to read in data from a repo somewhere not local
@@ -55,7 +64,7 @@ def read_in_alignment(species_selected, busco_name_selector, type_selector):
                 codes = []
                 for record in filtered_alignment:
                     codes.append(record.id[-3:])
-                    print(record.id[-3:])
+                    #print(record.id[-3:])
                 dups = find_duplicates(codes)
                 #print("dups", dups)
                 for record in filtered_alignment:
@@ -64,7 +73,7 @@ def read_in_alignment(species_selected, busco_name_selector, type_selector):
                     else:
                         record = None
     
-            print("new alignment", reduced_alignment)
+            #print("new alignment", reduced_alignment)
     
             alignment = MultipleSeqAlignment(reduced_alignment)
             fasta_string=""

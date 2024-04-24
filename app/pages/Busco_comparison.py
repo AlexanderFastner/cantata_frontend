@@ -9,7 +9,7 @@ import plotly.io as pio
 import plotly.express as ex
 from pages.components.user_selection import get_species_list, group_options
 from pages.components.tabs import plot_selector_tabs
-from pages.components.alignment_functions import read_in_alignment
+from pages.components.alignment_functions import read_in_alignment, alignment_data
 from dash import dcc, html, callback
 from dash.dependencies import Input, Output, State
 from flask import send_file
@@ -82,13 +82,17 @@ layout = html.Div(
 )
 def update_checklist_options(group_value):
     #print("update checklist values: ", group_value)
+    updated_options = []
     if group_value == "All":
         #TODO add all options
         updated_options = ["Abeoforma_whisleri"]
-    #TODO convert from , seperated string into array of strings
-    updated_options = group_value.split(',')
-    #print("updated_options: ", updated_options)
-    return updated_options
+    #convert from , seperated string into array of strings
+    if group_value is not []:
+        updated_options = group_value.split(',')
+        #print("updated_options: ", updated_options)
+        return updated_options
+    else:
+        return []
 #----------------------------------------------------------
 #Heatmaps
 #----------------------------------------------------------
@@ -274,7 +278,6 @@ def update_TransPi(species_selected, children):
 #Stacked Area plots       
 #----------------------------------------------------------
 #Dynamicly generate Stacked Area plots  
-#TODO ask about possible overlay
 @callback(
     Output(component_id="Stacked_area", component_property="children"),
     State(component_id="species_selected", component_property="value"),
@@ -300,7 +303,9 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
             elif selected == "TransPi":
                 fig_array.append("TransPi_stacked_area")
     else:
+        print("missing selection Stacked area")
         return None
+    
     if "Trinity_stacked_area" in fig_array and "TransPi_stacked_area" in fig_array and Trinity_TransPi_log_comparison_switch:
         fig_array = ["Trinity_TransPi_log_comparison"] + fig_array
     child = []
@@ -651,23 +656,32 @@ def update_Trinity_Raincloud(species_selected, children):
 #---------------------------------------------------------- 
 #Alignment
 #----------------------------------------------------------
-#TODO Add selector
-#----------------------------------------------------------
 @callback(
     Output(component_id="alignment_viewer", component_property="data"),
     State(component_id="species_selected", component_property="value"),
     Input(component_id="busco_name_selector", component_property="value"),
     Input(component_id="type_selector", component_property="value"),
+    Input(component_id="tabs", component_property="active_tab"),
     Input(component_id="update_species_button", component_property="n_clicks"),
     prevent_initial_call=True
 )
-def update_align(species_selected, busco_name_selector, type_selector, n_clicks):
-    if species_selected != None and species_selected != "None" and species_selected !=[] and busco_name_selector != None and busco_name_selector != "None" and busco_name_selector !=[]:
+def update_align(species_selected, busco_name_selector, type_selector, active_tab, n_clicks):
+    if "tab_alignment" not in active_tab:
+        return alignment_data
+    print(species_selected, busco_name_selector, type_selector, active_tab, n_clicks)
+    if species_selected != None and species_selected != "None" and species_selected !=[] and busco_name_selector != None and busco_name_selector != "None" and busco_name_selector !=[] and type_selector is not None:
         data = read_in_alignment(species_selected, busco_name_selector, type_selector)
-        return data
+        print("update alignment data")
+        if data is not []:
+            #TODO better solution for this
+            #TODO add Alert popup that this is empty
+            print("reset to default, None found")
+            return alignment_data
+        else:
+            return None
     else:
         print("Both species and busco must be selected")
-        return ""
+        return alignment_data
 #----------------------------------------------------------
 #TODO  update chart button
 

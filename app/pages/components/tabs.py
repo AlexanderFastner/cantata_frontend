@@ -96,7 +96,7 @@ tab_stacked_area= html.Div(
                         dbc.Switch(
                             id="Trinity_TransPi_log_comparison_switch",
                             label=dbc.Label("Log Comparison of Trinity vs. TransPi", style={"font-size": "20px"}),
-                            value=True,
+                            value=False,
                             style={
                                 "display": "block",
                                 "margin": "20px",
@@ -119,10 +119,10 @@ tab_stacked_area= html.Div(
                             {"label": "All", "value": "All"},
                         ],
                         multi=True,
-                        placeholder="Select type of Busco",
+                        placeholder="Select type of Busco to show in Comparison",
                         value="All",
                         )
-                    ],width=2
+                    ],width=3
                 ),
             ]
         ),
