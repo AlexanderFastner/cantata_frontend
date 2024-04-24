@@ -7,12 +7,18 @@ import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import plotly.io as pio
 import plotly.express as ex
-from pages.components.user_selection import get_species_list, group_options
-from pages.components.tabs import plot_selector_tabs
-from pages.components.alignment_functions import read_in_alignment, alignment_data
+
 from dash import dcc, html, callback
 from dash.dependencies import Input, Output, State
 from flask import send_file
+
+import sys
+sys.path.append("/wd/app/pages")
+print(sys.path)
+
+import pages.components.user_selection as user_selection
+import pages.components.tabs as tabs
+import pages.components.alignment_functions as alignment_functions
 #----------------------------------------------------------
 color_map = {"Complete_BUSCOs": "#785EF0",
                     "Complete_&_single-copy": "#648FFF",
@@ -36,7 +42,7 @@ layout = html.Div(
                                         #TODO Make this a multiselector, with All as default
                                         dcc.Dropdown(
                                             id="group_dropdown",
-                                            options=[{'label': category['label'], 'value': category['value']} for category in group_options],
+                                            options=[{'label': category['label'], 'value': category['value']} for category in user_selection.group_options],
                                             placeholder="Select a Group",
                                         ),
                                         html.Hr(),
@@ -46,7 +52,7 @@ layout = html.Div(
                                         #TODO Start with All, then restrict
                                         dcc.Checklist(
                                             id='species_selected',
-                                            options=get_species_list(),
+                                            options=user_selection.get_species_list(),
                                             value=[]
                                         ),                           
                                     ],
@@ -61,7 +67,7 @@ layout = html.Div(
                     
                     #tabs for the various possible plots
                     [
-                        plot_selector_tabs
+                        tabs.plot_selector_tabs
                     ],
                     style={"width": "80%"},
                 ),
@@ -667,21 +673,21 @@ def update_Trinity_Raincloud(species_selected, children):
 )
 def update_align(species_selected, busco_name_selector, type_selector, active_tab, n_clicks):
     if "tab_alignment" not in active_tab:
-        return alignment_data
+        return alignment_functions.alignment_data
     print(species_selected, busco_name_selector, type_selector, active_tab, n_clicks)
     if species_selected != None and species_selected != "None" and species_selected !=[] and busco_name_selector != None and busco_name_selector != "None" and busco_name_selector !=[] and type_selector is not None:
-        data = read_in_alignment(species_selected, busco_name_selector, type_selector)
+        data = alignment_functions.read_in_alignment(species_selected, busco_name_selector, type_selector)
         print("update alignment data")
         if data is not []:
             #TODO better solution for this
             #TODO add Alert popup that this is empty
             print("reset to default, None found")
-            return alignment_data
+            return alignment_functions.alignment_data
         else:
             return None
     else:
         print("Both species and busco must be selected")
-        return alignment_data
+        return alignment_functions.alignment_data
 #----------------------------------------------------------
 #TODO  update chart button
 

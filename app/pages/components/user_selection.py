@@ -1,7 +1,7 @@
 #What the user selects/can select
 #----------------------------------------------------------
 def get_species_list():
-    with open("./data/busco5_full_table_Proteome_df_numbers.csv") as f:
+    with open("/wd/data/busco5_full_table_Proteome_df_numbers.csv") as f:
         species = [row.split(",")[0] for row in f]
         species=sorted(species[1:])
     return species
@@ -9,7 +9,7 @@ def get_species_list():
 def get_busco_genes():
     #return a list of all the busco genes    
     #read in col names of busco5
-    with open("./data/busco5_full_table_Proteome_df_numbers.csv") as f:
+    with open("/wd/data/busco5_full_table_Proteome_df_numbers.csv") as f:
         busco_genes = f.readline().split(",")
         busco_genes = busco_genes[1:]
     return busco_genes

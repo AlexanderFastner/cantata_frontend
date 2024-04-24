@@ -1,15 +1,18 @@
-#This is the app that starts everything else
+#This is the main Fask app that starts everything else
 #----------------------------------------------------------
 import os
-import dash
 import sys
 import dash_bootstrap_components as dbc
+
+import dash
 from flask import Flask
-from pages.components.footer import create_footer
+
+import pages.components.footer as footer
 #----------------------------------------------------------
 FONT_AWESOME = (
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 )
+#----------------------------------------------------------
 server = Flask(__name__)
 app = dash.Dash(
     #app.config.suppress_callback_exceptions = True
@@ -41,22 +44,27 @@ app.layout = dbc.Container(
 
         ),
         dash.page_container,
-        create_footer(),
+        footer.create_footer(),
     ],
     fluid=True,
 )
 
 #----------------------------------------------------------
-def run_dash_app():
-    print("NEW RUN")
-    print("---------------------------------------------------")
-    # Run the Dash app
-    debug = os.getenv("DEBUG", "True") == "True"
-    #debug enabled
-    #app.run_server(port=8050, debug=True)
-    #production
-    app.run_server(host='0.0.0.0', port=8050, debug=False)
+# def run_dash_app():
+#     print("NEW RUN")
+#     print("---------------------------------------------------")
+#     # Run the Dash app
+#     debug = os.getenv("DEBUG", "True") == "True"
+#     #debug enabled
+#     #app.run_server(port=8050, debug=True)
+#     #production
+#     app.run_server(host='0.0.0.0', port=8050, debug=True)
 #----------------------------------------------------------
+@server.route('/')
+def index():
+    return 'Hello, World!'
+
 if __name__ == "__main__":
-    run_dash_app()
+    app.run_server()
+    app.run_server(debug=True, host='0.0.0.0', port=8050)
 #----------------------------------------------------------

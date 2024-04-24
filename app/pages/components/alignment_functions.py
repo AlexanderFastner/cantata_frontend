@@ -1,11 +1,12 @@
 #tools and methods for alignment
 #----------------------------------------------------------
 import os
-from pages.components.user_selection import species_lookup
+import tempfile
+
 from Bio import AlignIO
 from Bio.Align import MultipleSeqAlignment
-import tempfile
-import shutil
+
+from .user_selection import species_lookup
 #----------------------------------------------------------
 alignment_data = """>sp|Q9W678|P53_BARBU Cellular tumor antigen p53 OS=Barbus barbus GN=tp53 PE=2 SV=1
 MAESQEFAELWERNLISTQEAGTCWELINDEYLPSSFDPNIFDNVLTEQPQPSTSPPTAS
@@ -25,8 +26,6 @@ SSSPPQKKKPLDGEYFTLQIRGRERYEMFRNLNEALELKDAQSGKEPGGSRAHSSHLKAK
 KGQSTSRHKKLMFKREGLDSD"""
 #----------------------------------------------------------
 def read_in_alignment(species_selected, busco_name_selector, type_selector):
-    #TODO change this to read in data from a repo somewhere not local
-    
     #filter based on type selected
     #if single -> make sure no duplicates
     #if duplicate selected only include dupllicate entries

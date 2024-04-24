@@ -2,8 +2,8 @@
 #----------------------------------------------------------
 import dash_bootstrap_components as dbc
 from dash import dcc, html
-from pages.components.user_selection import get_busco_genes, get_busco_functions
-from pages.components.alignment_functions import alignment_data
+from .user_selection import get_busco_genes, get_busco_functions
+from .alignment_functions import alignment_data
 import dash_bio as dashbio
 #----------------------------------------------------------
 #TODO for each tab add download buttons

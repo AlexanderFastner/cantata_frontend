@@ -30,6 +30,7 @@ fontconfig=2.14.2=h14ed4e7_0
 fonts-conda-forge=1=0
 freetype=2.12.1=h267a509_2
 geoparse=2.0.3=pyhd8ed1ab_0
+gunicorn=22.0.0=py312h7900ff3_0
 idna=3.6=pyhd8ed1ab_0
 importlib-metadata=7.0.1=pyha770c72_0
 importlib_resources=6.4.0=pyhd8ed1ab_0
