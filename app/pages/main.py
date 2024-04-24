@@ -6,6 +6,7 @@ from dash import dcc, html, callback
 #----------------------------------------------------------
 dash.register_page(__name__, path="/")
 #----------------------------------------------------------
+#Overview layout
 #row1
     #col1
         #row2 intro
@@ -13,6 +14,7 @@ dash.register_page(__name__, path="/")
         #row4 our data
     #col2
         #row5 examples
+#----------------------------------------------------------
 
 layout = html.Div([
     #TODO add logo
@@ -34,10 +36,10 @@ layout = html.Div([
                             A cantata is a vocal composition with an instrumental accompaniment, typically in several movements, often involving a choir [Cantata](https://en.wikipedia.org/wiki/Cantata).
                             --- 
 
-                            **CANTATA** is also a **C**ommunity b**A**sed **N**on-bila**T**eri**A**n **T**ranscriptome **A**rchive. The aim of this project is to provide an archive of non-bilaterian  
-                            transcriptomic resources assembled and annotated in a standardized manner. You can help further mantaining this archive by simply pushing  
-                            text files with SRA read `ftp` addresses of the reads to be assembled (see below). The assembly and annotation will be done using computational  
-                            resources of the Chair of Paläontology and Geobiology of the Dept. of Geo- and Environmental Sciences of the LMU München and made  
+                            **CANTATA** is also a **C**ommunity b**A**sed **N**on-bila**T**eri**A**n **T**ranscriptome **A**rchive. The aim of this project is to provide an archive of non-bilaterian
+                            transcriptomic resources assembled and annotated in a standardized manner. You can help further mantaining this archive by simply pushing
+                            text files with SRA read `ftp` addresses of the reads to be assembled (see below). The assembly and annotation will be done using computational
+                            resources of the Chair of Paläontology and Geobiology of the Dept. of Geo- and Environmental Sciences of the LMU München and made
                             available to the community as a `DOI` minted CANTATA release.
                                     
                             '''
@@ -60,11 +62,11 @@ layout = html.Div([
                             '''
                             If you know of a non-bilaterian taxon for which transcriptomic resources are available and is not included in our latest release, you can help us uploading (pushing if you cloned the repository) a plain text file named after the taxon of interest, (e.g., Ephydatia_fluviatilis.txt) with the ftp addresses of the files to be assembled in the `requests` folder available in the repository. For instance, if you want to add E. fluviatilis, the text file `Ephydatia_fluviatilis.txt` would look like:
 
-                            
-                            >  ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR297/004/SRR2971104/SRR2971104_1.fastq.gz  
-                            >  ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR297/004/SRR2971104/SRR2971104_2.fastq.gz  
-                            
-                                
+                            >
+                            >  ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR297/004/SRR2971104/SRR2971104_1.fastq.gz
+                            >  ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR297/004/SRR2971104/SRR2971104_2.fastq.gz                            
+                            >
+
                             The file consists of only two lines with the European Nucleotide Archive ftp adresses of the reads to be assembled. If more that one library (assuming pair-end reads this is two lines in the text file) is available for the taxon, you can add several lines. We will download all the files and concatenate them before assembly. Please be sure that:
                             the reads are of the same length in all the files to concatenate.
                             you only include pair-end read files in the file.
@@ -84,10 +86,9 @@ layout = html.Div([
                 dbc.Card(
                     dbc.CardBody(
                         [
+                        dbc.CardHeader(html.H4("Our Data")),
                         dcc.Markdown('''
-                            # Our Data: \n             
-                            where our data is from\n
-                            Brief overview of available species\n
+                            Overview of available species\n
                             Add Overview Tree Here!
                             link to figshare\n
                             '''),
@@ -127,8 +128,8 @@ layout = html.Div([
             )
             ],
             width={"size": "5", "offset": "0"},
-            className="col2"
-        ),
+            className="col2"        
+            ),
         ],
         className="row1"
     ),
