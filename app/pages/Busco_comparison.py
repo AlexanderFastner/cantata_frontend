@@ -674,19 +674,21 @@ def update_Trinity_Raincloud(species_selected, children):
 def update_align(species_selected, busco_name_selector, type_selector, active_tab, n_clicks):
     if "tab_alignment" not in active_tab:
         return alignment_functions.alignment_data
-    print(species_selected, busco_name_selector, type_selector, active_tab, n_clicks)
+    print(species_selected, busco_name_selector, type_selector, active_tab, n_clicks, flush=True)
     if species_selected != None and species_selected != "None" and species_selected !=[] and busco_name_selector != None and busco_name_selector != "None" and busco_name_selector !=[] and type_selector is not None:
         data = alignment_functions.read_in_alignment(species_selected, busco_name_selector, type_selector)
-        print("update alignment data")
+        print("update alignment data", flush=True)
+        print(data, flush=True)
         if data is not []:
+            return data
             #TODO better solution for this
             #TODO add Alert popup that this is empty
-            print("reset to default, None found")
-            return alignment_functions.alignment_data
+            # print("reset to default, None found")
+            # return alignment_functions.alignment_data
         else:
             return None
     else:
-        print("Both species and busco must be selected")
+        print("Species,Busco ant Type must be selected")
         return alignment_functions.alignment_data
 #----------------------------------------------------------
 #TODO  update chart button

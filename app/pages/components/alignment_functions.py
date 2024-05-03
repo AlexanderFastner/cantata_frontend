@@ -36,7 +36,7 @@ def read_in_alignment(species_selected, busco_name_selector, type_selector):
     reduced_alignment = []
     if species_selected != None and species_selected != "None":
         if busco_name_selector != None and busco_name_selector != "None":
-            alignment = AlignIO.read(f"./gb/{busco_name_selector}.shortheaders.aln-gb", "fasta")
+            alignment = AlignIO.read(f"/wd/gb/{busco_name_selector}.shortheaders.aln-gb", "fasta")
             filtered_alignment = [seq for seq in alignment if any(species in seq.id for species in species_l)]
             # print("filtered_alignment", filtered_alignment)
             if type_selector == "single":

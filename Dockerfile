@@ -15,6 +15,17 @@ COPY gb/ ./gb
 WORKDIR /wd/app/
 EXPOSE 8050
 
-CMD [ "gunicorn", "--workers=1", "--threads=2", "-b 0.0.0.0:8050", "app:server"]
-#docker build -t cantata-heroku .
-#docker run -p 8050:8050 -e PORT=8050 cantata-heroku
+CMD gunicorn --workers=1 --threads=2 -b 0.0.0.0:$PORT app:server
+#----------------------------------------------------------------
+#USAGE
+#----------------------------------------------------------------
+#for heroku
+#heroku container:login
+#heroku container:push web
+#heroku container:release web
+#heroku ps:scale web=1
+#----------------------------------------------------------------
+#for local docker test
+#docker build -t cantata .
+#docker run -p 8050:8050 -e PORT=8050 cantata
+#----------------------------------------------------------------
