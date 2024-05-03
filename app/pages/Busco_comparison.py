@@ -175,13 +175,13 @@ def update_Difference(species_selected, children):
     for item in children:
         #print(item)
         if "Protein_heatmap" in item.get("props").get("id"):
-            Prot_heatmap_df = pd.read_csv('./data/busco5_full_table_Proteome_df_numbers.csv', index_col=0)
+            Prot_heatmap_df = pd.read_csv('/wd/data/busco5_full_table_Proteome_df_numbers.csv', index_col=0)
             Prot_subset = Prot_heatmap_df.loc[Prot_heatmap_df.index.isin(species_selected)]
         if "Trinity_heatmap" in item.get("props").get("id"):
-            Trinity_heatmap_df = pd.read_csv('./data/busco4_full_table_Trinity_df_numbers.csv', index_col=0)
+            Trinity_heatmap_df = pd.read_csv('/wd/data/busco4_full_table_Trinity_df_numbers.csv', index_col=0)
             Trinity_subset = Trinity_heatmap_df.loc[Trinity_heatmap_df.index.isin(species_selected)]
         if "TransPi_heatmap" in item.get("props").get("id"):
-            TransPi_heatmap_df = pd.read_csv('./data/busco4_full_table_TransPi_df_numbers.csv', index_col=0)
+            TransPi_heatmap_df = pd.read_csv('/wd/data/busco4_full_table_TransPi_df_numbers.csv', index_col=0)
             TransPi_subset = TransPi_heatmap_df.loc[TransPi_heatmap_df.index.isin(species_selected)]        
         
     #difference between all 3
@@ -239,7 +239,7 @@ def update_Difference(species_selected, children):
 def update_Protein(species_selected, children):
     for item in children:
         if "Protein_heatmap" in item.get("props").get("id"):
-            heatmap_df = pd.read_csv('./data/busco5_full_table_Proteome_df_numbers.csv', index_col=0)
+            heatmap_df = pd.read_csv('/wd/data/busco5_full_table_Proteome_df_numbers.csv', index_col=0)
             subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
             Protein_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF"], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
                 tickvals=[0, 1, 2, 3], ticktext=["single", "fragmented", "multi", "missing"], title="Busco type"),x=subset.columns, y=subset.index))
@@ -256,7 +256,7 @@ def update_Protein(species_selected, children):
 def update_Trinity(species_selected, children):
     for item in children:
         if "Trinity_heatmap" in item.get("props").get("id"):
-            heatmap_df = pd.read_csv('./data/busco4_full_table_Trinity_df_numbers.csv', index_col=0)
+            heatmap_df = pd.read_csv('/wd/data/busco4_full_table_Trinity_df_numbers.csv', index_col=0)
             subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
             Trinity_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF"], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
                 tickvals=[0, 1, 2, 3], ticktext=["single", "fragmented", "multi", "missing"], title="Busco type"),x=subset.columns, y=subset.index))
@@ -273,7 +273,7 @@ def update_Trinity(species_selected, children):
 def update_TransPi(species_selected, children):
     for item in children:
         if "TransPi_heatmap" in item.get("props").get("id"):
-            heatmap_df = pd.read_csv('./data/busco4_full_table_TransPi_df_numbers.csv', index_col=0)
+            heatmap_df = pd.read_csv('/wd/data/busco4_full_table_TransPi_df_numbers.csv', index_col=0)
             subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
             TransPi_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF"], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
                 tickvals=[0, 1, 2, 3], ticktext=["single", "fragmented", "multi", "missing"], title="Busco type"),x=subset.columns, y=subset.index))
@@ -332,7 +332,7 @@ def update_TransPi_area(species_selected, children):
     for item in children:
         if "Protein_stacked_area" in item.get("props").get("id"):
             if species_selected != None and species_selected != "None" and species_selected !=[]:
-                Protein_area_df = pd.read_csv('./data/busco5_short_summary_Proteome.tsv', sep="\t", index_col=0)
+                Protein_area_df = pd.read_csv('/wd/data/busco5_short_summary_Proteome.tsv', sep="\t", index_col=0)
                 Protein_area_df = Protein_area_df.drop(columns=["Complete_BUSCOs", "Total"])
                 subset_Protein = Protein_area_df.loc[Protein_area_df.index.isin(species_selected)]
                 fig = go.Figure(data=ex.area(subset_Protein, color_discrete_sequence=["#648FFF", "#DC267F", "#FE6100", "#FFB000"],
@@ -354,7 +354,7 @@ def update_Trinity_area(species_selected, children):
         if "Trinity_stacked_area" in item.get("props").get("id"):
             if species_selected != None and species_selected != "None" and species_selected !=[]:
                 #print("Trinity", species_selected)
-                Trinity_area_df = pd.read_csv('./data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
+                Trinity_area_df = pd.read_csv('/wd/data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
                 Trinity_area_df = Trinity_area_df.drop(columns=["Complete_BUSCOs", "Total"])
                 subset_Trinity = Trinity_area_df.loc[Trinity_area_df.index.isin(species_selected)]
                 #print(subset_Trinity)
@@ -390,7 +390,7 @@ def update_TransPi_area(species_selected, children):
     for item in children:
         if "TransPi_stacked_area" in item.get("props").get("id"):
             if species_selected != None and species_selected != "None" and species_selected !=[]:
-                TransPi_area_df = pd.read_csv('./data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
+                TransPi_area_df = pd.read_csv('/wd/data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
                 TransPi_area_df = TransPi_area_df.drop(columns=["Complete_BUSCOs", "Total"])
                 subset_TransPi = TransPi_area_df.loc[TransPi_area_df.index.isin(species_selected)]
                 fig = go.Figure(data=ex.area(subset_TransPi, color_discrete_sequence=["#648FFF", "#DC267F", "#FE6100", "#FFB000"],
@@ -426,8 +426,8 @@ def update_Trinity_TransPi_area(species_selected, children, busco_type_selector_
     for item in children:
         if "Trinity_TransPi_log_comparison" in item.get("props").get("id"):
             if species_selected != None and species_selected != "None" and species_selected !=[]:
-                TransPi_area_df = pd.read_csv('./data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
-                Trinity_area_df = pd.read_csv('./data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
+                TransPi_area_df = pd.read_csv('/wd/data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
+                Trinity_area_df = pd.read_csv('/wd/data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
                 TransPi_area_df = TransPi_area_df.drop(columns=["Complete_BUSCOs", "Total"])
                 Trinity_area_df = Trinity_area_df.drop(columns=["Complete_BUSCOs", "Total"])
                 #format of subsets
@@ -515,7 +515,7 @@ def update_Protein_Raincloud(species_selected, children):
     for item in children:
         if "Protein_raincloud" in item.get("props").get("id"):
             if species_selected != None and species_selected != "None" and species_selected !=[]:
-                Protein_df = pd.read_csv('./data/busco5_short_summary_Proteome.tsv', sep="\t", index_col=0)
+                Protein_df = pd.read_csv('/wd/data/busco5_short_summary_Proteome.tsv', sep="\t", index_col=0)
                 subset_Protein = Protein_df.loc[Protein_df.index.isin(species_selected)]
 
                 #data wrangling
@@ -558,7 +558,7 @@ def update_TransPi_Raincloud(species_selected, children):
     for item in children:
         if "TransPi_raincloud" in item.get("props").get("id"):
             if species_selected != None and species_selected != "None" and species_selected !=[]:
-                TransPi_df = pd.read_csv('./data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
+                TransPi_df = pd.read_csv('/wd/data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
                 subset_TransPi = TransPi_df.loc[TransPi_df.index.isin(species_selected)]
 
                 #data wrangling
@@ -614,7 +614,7 @@ def update_Trinity_Raincloud(species_selected, children):
     for item in children:
         if "Trinity_raincloud" in item.get("props").get("id"):
             if species_selected != None and species_selected != "None" and species_selected !=[]:
-                Trinity_df = pd.read_csv('./data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
+                Trinity_df = pd.read_csv('/wd/data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
                 subset_Trinity = Trinity_df.loc[Trinity_df.index.isin(species_selected)]
 
                 #data wrangling
