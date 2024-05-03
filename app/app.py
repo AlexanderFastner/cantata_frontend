@@ -33,12 +33,16 @@ app.css.config.serve_locally = True
 app.scripts.config.serve_locally = True
 app.config.suppress_callback_exceptions = True
 #----------------------------------------------------------
+#The layout contains the general structure of the app
+#NavbarSimple is navigation bar at the top
+#the dash.pageregistry contains the various pages I built
+    #That structure is in tabs.py
+#The footer is seperate from the otehr pages as it is added to everything
 app.layout = dbc.Container(
     [
         dbc.NavbarSimple(
             [
                 dbc.NavItem(dbc.NavLink(page["name"], href=page["path"]))
-                #TODO change this from Nav Item to dropdown once we can link to individual tools
                 for page in dash.page_registry.values()
             ],
             brand="Cantata",

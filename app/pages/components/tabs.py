@@ -181,7 +181,6 @@ tab_raincloud= html.Div(
 tab_alignment= html.Div(
     [
         html.H1("Alignment of Buscos"),
-        #TODO add styling and css to center correctly
         dbc.Row(
             [
                 dbc.Col(
@@ -197,22 +196,6 @@ tab_alignment= html.Div(
                         ),
                     ),
                 ),
-                
-                # dbc.Col( 
-                #     dbc.Card(
-                #         dbc.CardBody(
-                #             [
-                #                 dcc.Dropdown(
-                #                     id="busco_function_selector",
-                #                     options=get_busco_functions(),
-                #                     placeholder="Select Busco Gene by Function",
-                #                 ),
-                #             ],
-                #         ),
-                #     ),
-                # ),
-                #TODO is this worth keeping? 
-                #If we only look at 1 busco gene at a time, do we even need this?
                 dbc.Col(
                     dbc.Card(
                         dbc.CardBody(
@@ -234,18 +217,34 @@ tab_alignment= html.Div(
         ),
         dbc.Row(
             [
+            dbc.Col(
+                html.Div(
+                    [
+                    dbc.Alert(
+                        "No Matches found!",
+                        id="user_alert_none_found",
+                        is_open=False,
+                        dismissable=True,
+                    ),
+                    ]
+                ),
+            ),
+            ],
+            style={"width":"100%"},
+        ),
+        dbc.Row(
+            [
                 dbc.Col(
                     html.Div(
                         [
-                            dashbio.AlignmentChart(
-                                id="alignment_viewer",
-                                data=alignment_data,
-                                height=700,
-                                width=1600,
-                                tilewidth=30, 
-                            ),
-                            
-                        ]
+                        dashbio.AlignmentChart(
+                            id="alignment_viewer",
+                            data=alignment_data,
+                            height=700,
+                            width=1600,
+                            tilewidth=30, 
+                        ),
+                        ],
                     ),
                 ),
                 #TODO Add tree view

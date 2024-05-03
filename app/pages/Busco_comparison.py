@@ -663,7 +663,10 @@ def update_Trinity_Raincloud(species_selected, children):
 #Alignment
 #----------------------------------------------------------
 @callback(
+    [
     Output(component_id="alignment_viewer", component_property="data"),
+    Output(component_id="user_alert_none_found", component_property="is_open")
+    ],
     State(component_id="species_selected", component_property="value"),
     Input(component_id="busco_name_selector", component_property="value"),
     Input(component_id="type_selector", component_property="value"),
@@ -679,18 +682,16 @@ def update_align(species_selected, busco_name_selector, type_selector, active_ta
         data = alignment_functions.read_in_alignment(species_selected, busco_name_selector, type_selector)
         print("update alignment data", flush=True)
         print(data, flush=True)
-        if data is not []:
-            return data
-            #TODO better solution for this
-            #TODO add Alert popup that this is empty
-            # print("reset to default, None found")
-            # return alignment_functions.alignment_data
+        if len(data) > 0:
+            #A Match is found -> Alert is left off
+            return data, False
         else:
-            return None
+            print("reset to default, None found",flush=True)
+            #Alert user that None were found
+            print("User alert that no matches are found (Alignment)", flush=True)
+            return alignment_functions.alignment_data, True
     else:
         print("Species,Busco ant Type must be selected")
-        return alignment_functions.alignment_data
+        return alignment_functions.alignment_data, False
 #----------------------------------------------------------
-#TODO  update chart button
-
 #----------------------------------------------------------    
