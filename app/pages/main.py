@@ -108,19 +108,27 @@ layout = html.Div([
             dbc.Card(
                 dbc.CardBody(
                     [
+                    #TODO auto navigate user to that tool with links
+                        ### [Heatmap of buscos](/Busco)
+                        ### [Stacked Area plots](/Busco)  
+                        ### [Raincloud plots](/Busco) 
+                        ### [Alignment Comparison](/Busco)  
+                       
                     dcc.Markdown(
                         '''
                         ## Ways to Analyze Buscos:    
-                        ### [Heatmap of buscos](/Busco)  
+                        ### Heatmap of buscos  
                         ![heatmap example](/assets/heatmap_example.png#example) 
-                        
-                        ### [Stacked Area plots](/Busco)  
-                        ![stacked area example](/assets/stacked_area_example.png#example) 
-                        ### [Raincloud plots](/Busco)  
+
+                        ### Stacked Area plots  
+                        ![stacked area example](/assets/stacked_area_example.png#example)
+                         
+                        ### Raincloud plots  
                         ![raincloud example](/assets/raincloud_example.png#example) 
-                        ### [Alignment Comparison](/Busco)  
+
+                        ### Aliignment Comparison  
                         ![alignment example](/assets/alignment_example.png#example) 
-                    
+                        
                         '''
                     ),
                     ],

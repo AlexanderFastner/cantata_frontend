@@ -10,7 +10,7 @@ from flask import Flask
 
 import pages.components.footer as footer
 #----------------------------------------------------------
-print("Starting up!", flush=True)
+print("Starting up!")
 print("---------------------------------------------", flush=True)
 sys.stdout.flush()
 #----------------------------------------------------------
@@ -49,7 +49,7 @@ app.layout = dbc.Container(
             brand_href="#",
             brand_style={"font-size":"40px"},
             className="navbar navbar-dark bg-dark",
-            style={"margin-top":"5px", "border-radius":"5px"},
+            style={"border-radius":"5px"},
 
         ),
         dash.page_container,
@@ -57,6 +57,9 @@ app.layout = dbc.Container(
     ],
     fluid=True,
 )
+print("layout made")
+print("---------------------------------------------", flush=True)
+
 
 #----------------------------------------------------------
 @server.route('/')
@@ -69,9 +72,13 @@ if __name__ == "__main__":
 #----------------------------------------------------------
 #TODO
 #replace dropdowns with radio buttons
+    #heatmap--done
+    #area--todo
+    #raincloud--todo
 #add scrollbar to species selection --done
-#fix plots going over footer
-#add tooltips
-#alignment needs to be put to top
+#fix plots going over footer --todo
+#auto resize all tabs(plots)--todo
+#add tooltips --todo
+#alignment needs to be put to top --todo
 
 #----------------------------------------------------------

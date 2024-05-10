@@ -15,7 +15,7 @@ COPY gb/ ./gb
 WORKDIR /wd/app/
 EXPOSE 8050
 
-CMD gunicorn --workers=1 --threads=2 -b 0.0.0.0:$PORT app:server
+CMD gunicorn --workers=1 --threads=4 -b 0.0.0.0:$PORT app:server
 #----------------------------------------------------------------
 #USAGE
 #----------------------------------------------------------------

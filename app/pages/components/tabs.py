@@ -2,7 +2,7 @@
 #----------------------------------------------------------
 import dash_bootstrap_components as dbc
 from dash import dcc, html
-from .user_selection import get_busco_genes, get_busco_functions
+from .user_selection import get_busco_genes
 from .alignment_functions import alignment_data
 import dash_bio as dashbio
 #----------------------------------------------------------
@@ -35,7 +35,7 @@ def create_checklist(id, to_create):
     #generate options
     new_options = []
     for i in to_create:
-        print("create ", i)
+        #print("create ", i)
         new_options.append({'label': f'{i}', 'value': f'{i}'})
      
     return dbc.Col(
@@ -46,7 +46,7 @@ def create_checklist(id, to_create):
                 value=[],
             ),
         ],
-        width=2,
+        width=3,
     )
 
 #----------------------------------------------------------
@@ -106,30 +106,31 @@ tab_stacked_area= html.Div(
         dbc.Row(html.H1("Stacked Area Plots")),
         dbc.Row(
             [
-                create_transcriptome_selector("Stacked_area_selector"),
+                #create_transcriptome_selector("Stacked_area_selector"),
+                create_checklist("Stacked_area_selector", ['Protein', 'TransPi', 'Trinity', 'Log_Comparison_of_Trinity_vs_TransPi']),
                 #empty place holder
                 dbc.Col(
-                    width=1
+                    width=2
                 ),
                 #log comparison of Trinity/TransPi
-                dbc.Col(
-                    [
-                        dbc.Switch(
-                            id="Trinity_TransPi_log_comparison_switch",
-                            label=dbc.Label("Log Comparison of Trinity vs. TransPi", style={"font-size": "20px"}),
-                            value=False,
-                            style={
-                                "display": "block",
-                                "margin": "20px",
-                                "transform": "scale(1.4)",
-                            },
-                        )
-                    ],width=4,
-                ),
+                # dbc.Col(
+                #     [
+                #         dbc.Switch(
+                #             id="Trinity_TransPi_log_comparison_switch",
+                #             label=dbc.Label("Log_Comparison_of_Trinity_vs_TransPi", style={"font-size": "20px"}),
+                #             value=False,
+                #             style={
+                #                 "display": "block",
+                #                 "margin": "20px",
+                #                 "transform": "scale(1.4)",
+                #             },
+                #         )
+                #     ],width=4,
+                # ),
                 dbc.Col(
                     [
                         #TODO only display this when the switch for comparing has been selected
-                        #multi selector to choose what to track in Trinity vs. TransPi
+                        #multi selector to choose what to track in Trinity vs TransPi
                         dcc.Dropdown(
                         id="busco_type_selector_area",
                         options=[

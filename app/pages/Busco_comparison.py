@@ -14,6 +14,7 @@ from flask import send_file
 
 import sys
 sys.path.append("/wd/app/pages")
+print("sys paths")
 print(sys.path)
 
 import pages.components.user_selection as user_selection
@@ -309,10 +310,9 @@ def update_TransPi(species_selected, children):
     Input(component_id="Stacked_area_selector", component_property="value"),
     Input(component_id="tabs", component_property="active_tab"),
     Input(component_id="update_species_button", component_property="n_clicks"),
-    Input(component_id="Trinity_TransPi_log_comparison_switch", component_property="value"),
     prevent_initial_call=True
 )     
-def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update_species_button, Trinity_TransPi_log_comparison_switch):
+def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update_species_button):
     if "tab_stacked_area" not in active_tab:
         return html.P("Not active (This shouldn't happen)") 
     fig_array=[]
@@ -327,20 +327,37 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
                 fig_array.append("Trinity_stacked_area")
             elif selected == "TransPi":
                 fig_array.append("TransPi_stacked_area")
+            #if selected put difference to the front of the list
+            elif selected == "Log_Comparison_of_Trinity_vs_TransPi":
+                fig_array = ["Log_Comparison_of_Trinity_vs_TransPi"] + fig_array
+                print("added")
+                print(fig_array)
     else:
         print("missing selection Stacked area")
         return None
-    
-    if "Trinity_stacked_area" in fig_array and "TransPi_stacked_area" in fig_array and Trinity_TransPi_log_comparison_switch:
-        fig_array = ["Trinity_TransPi_log_comparison"] + fig_array
+
     child = []
     if fig_array == []:
         fig_array.append("None")
+    print("area, ", fig_array)
     for fig in fig_array:
         #update children of output
-        child.append(dcc.Graph(id=fig))
+        child.append(dcc.Graph(id=fig, figure=None))
+    print(child, flush=True)
+    print()
     return child
-#----------------------------------------------------------            
+#----------------------------------------------------------  
+#Testing 
+@callback(
+    Output(component_id="Protein_heatmap", component_property="figure"),
+    State(component_id="species_selected", component_property="value"),
+    Input(component_id="Stacked_area", component_property="children"),
+)          
+def test(species, children):
+    print(children)
+    print(flush=True)
+    return None
+#----------------------------------------------------------
 #Protein area
 @callback(
     Output(component_id="Protein_stacked_area", component_property="figure"),
@@ -360,6 +377,8 @@ def update_Protein_area(species_selected, children):
             else:
                 fig = None
                 return fig
+    else:
+        return None
 #----------------------------------------------------------       
 #Trinity area
 @callback(
@@ -383,6 +402,8 @@ def update_Trinity_area(species_selected, children):
             else:
                 fig = None
                 return fig
+    else:
+        return None
 
 #TODO fix button
 # @callback(
@@ -418,6 +439,8 @@ def update_TransPi_area(species_selected, children):
             else:
                 fig = None
                 return fig
+    else:
+        return None
 
 #TODO fix button
 # @callback(
@@ -435,7 +458,7 @@ def update_TransPi_area(species_selected, children):
 #----------------------------------------------------------
 #log comparison of Trinity TransPi
 @callback(
-    Output(component_id="Trinity_TransPi_log_comparison", component_property="figure"),
+    Output(component_id="Log_Comparison_of_Trinity_vs_TransPi", component_property="figure"),
     State(component_id="species_selected", component_property="value"),
     Input(component_id="Stacked_area", component_property="children"),
     Input(component_id="busco_type_selector_area", component_property="value"),
@@ -443,7 +466,7 @@ def update_TransPi_area(species_selected, children):
 def update_Trinity_TransPi_area(species_selected, children, busco_type_selector_area):
     #print("species_selected ",species_selected)
     for item in children:
-        if "Trinity_TransPi_log_comparison" in item.get("props").get("id"):
+        if "Log_Comparison_of_Trinity_vs_TransPi" in item.get("props").get("id"):
             if species_selected != None and species_selected != "None" and species_selected !=[]:
                 TransPi_area_df = pd.read_csv('/wd/data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
                 Trinity_area_df = pd.read_csv('/wd/data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
@@ -467,24 +490,27 @@ def update_Trinity_TransPi_area(species_selected, children, busco_type_selector_
                 # print(busco_type_selector_area)
                 if "All" not in busco_type_selector_area:
                     barplot_df = barplot_df[busco_type_selector_area]
-                if busco_type_selector_area == []:
+                if len(busco_type_selector_area) == 0:
                     fig = None
                     return fig
                 fig = go.Figure()
                 for col in barplot_df.columns:
                     fig.add_trace(go.Bar(x=barplot_df.index, y=barplot_df[col], name=col))
-
+                
                 fig.update_layout(
-                    title='Log2 difference Trinity vs. TransPi (Trinity on Top)',
+                    title='Log2 difference Trinity vs TransPi (Trinity on Top)',
                     xaxis_title='Species',
                     yaxis_title='Log2',
                     barmode='group'
                 )
-                
                 return fig
+            
             else:
-                fig = None
-                return fig
+                print("never get here")
+                return None
+    else:
+        print("no comp in children")
+        return None
 #----------------------------------------------------------
 #Raincloud selection
 #----------------------------------------------------------
@@ -710,7 +736,7 @@ def update_align(species_selected, busco_name_selector, type_selector, active_ta
             print("User alert that no matches are found (Alignment)", flush=True)
             return alignment_functions.alignment_data, True
     else:
-        print("Species,Busco ant Type must be selected")
+        print("Species,Busco and Type must be selected")
         return alignment_functions.alignment_data, False
 #----------------------------------------------------------
 #----------------------------------------------------------    
