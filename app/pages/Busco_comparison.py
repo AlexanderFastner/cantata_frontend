@@ -347,7 +347,7 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
     State(component_id="species_selected", component_property="value"),
     Input(component_id="Stacked_area", component_property="children"),
 )
-def update_TransPi_area(species_selected, children):
+def update_Protein_area(species_selected, children):
     for item in children:
         if "Protein_stacked_area" in item.get("props").get("id"):
             if species_selected != None and species_selected != "None" and species_selected !=[]:
