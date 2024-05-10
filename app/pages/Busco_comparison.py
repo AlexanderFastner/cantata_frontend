@@ -58,7 +58,7 @@ layout = html.Div(
                                     ],
                                 ),
                             ],
-                            style={"width": "100%", 'display': 'inline-block'},
+                            style={'width': '100%', 'height': '80vh', 'overflow': 'scroll', 'display': 'inline-block'},
                         ),
                     width="auto",
                 ),
@@ -69,7 +69,7 @@ layout = html.Div(
                     [
                         tabs.plot_selector_tabs
                     ],
-                    style={"width": "80%"},
+                    style={"width": "80%", 'height' : '80vh'},
                 ),
             ],
         ),
@@ -107,12 +107,11 @@ def update_checklist_options(group_value):
     Output(component_id="busco_heatmap", component_property="children"),
     State(component_id="species_selected", component_property="value"),
     Input(component_id="heatmap_selector", component_property="value"),
-    Input(component_id="difference_switch", component_property="value"),
     Input(component_id="tabs", component_property="active_tab"),
     Input(component_id="update_species_button", component_property="n_clicks"),
     prevent_initial_call=True
 )
-def get_heatmap_df(species_selected, heatmap_selector, difference_switch, active_tab, update_species_button):
+def get_heatmap_df(species_selected, heatmap_selector, active_tab, update_species_button):
     if "tab_heatmap" not in active_tab:
         return html.P("Not active")
     fig_array=[]
@@ -126,11 +125,20 @@ def get_heatmap_df(species_selected, heatmap_selector, difference_switch, active
                 fig_array.append("Trinity_heatmap")
             elif selected == "TransPi":
                 fig_array.append("TransPi_heatmap")
+            elif selected == "Show difference heatmap":
+                fig_array.append("Difference_heatmap")
     else:
         return None
     
-    if len(fig_array) >= 2 and difference_switch:
-        fig_array = ["Difference_heatmap"] + fig_array
+    #alwyas add diff to front of list
+    if "Difference_heatmap" in fig_array and len(fig_array < 3):
+        fig_array.remove("Difference_heatmap")
+    if "Difference_heatmap" in fig_array:
+        fig_array.remove("Difference_heatmap")
+        fig_array.insert(0, "Difference_heatmap")
+    
+    print(fig_array, flush=True)
+    print()
     #return Div with figures and names
     #add callbacks that those newly created graph ids get updated
     #add dcc.Graph elements to array and return child
@@ -157,7 +165,6 @@ def get_heatmap_df(species_selected, heatmap_selector, difference_switch, active
 #         # Send the file to the client
 #         return send_file('heatmap.png')
 #----------------------------------------------------------
-#heatmap difference selector update
 #for each item in children
     #compute the difference between the other heatmaps
     #update that dynamic div
@@ -172,6 +179,7 @@ def update_Difference(species_selected, children):
     Prot_subset = None
     Trinity_subset = None
     TransPi_subset = None
+    diff = False
     for item in children:
         #print(item)
         if "Protein_heatmap" in item.get("props").get("id"):
@@ -182,8 +190,12 @@ def update_Difference(species_selected, children):
             Trinity_subset = Trinity_heatmap_df.loc[Trinity_heatmap_df.index.isin(species_selected)]
         if "TransPi_heatmap" in item.get("props").get("id"):
             TransPi_heatmap_df = pd.read_csv('/wd/data/busco4_full_table_TransPi_df_numbers.csv', index_col=0)
-            TransPi_subset = TransPi_heatmap_df.loc[TransPi_heatmap_df.index.isin(species_selected)]        
+            TransPi_subset = TransPi_heatmap_df.loc[TransPi_heatmap_df.index.isin(species_selected)]
+        if "Difference_heatmap" in item.get("props").get("id"):
+            diff = True
         
+    if not diff:
+        return None    
     #difference between all 3
     diff_df = None
     if Prot_subset is not None and Trinity_subset is not None and TransPi_subset is not None:

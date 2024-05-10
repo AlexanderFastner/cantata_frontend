@@ -67,3 +67,11 @@ if __name__ == "__main__":
     app.run_server()
     app.run_server(debug=True, host='0.0.0.0', port=port)
 #----------------------------------------------------------
+#TODO
+#replace dropdowns with radio buttons
+#add scrollbar to species selection --done
+#fix plots going over footer
+#add tooltips
+#alignment needs to be put to top
+
+#----------------------------------------------------------

@@ -28,6 +28,26 @@ def create_transcriptome_selector(id):
         ],
         width=2,
     )
+#----------------------------------------------------------
+# function to create radio buttons (as replacement for selectors)
+#input list of values to be created
+def create_checklist(id, to_create):
+    #generate options
+    new_options = []
+    for i in to_create:
+        print("create ", i)
+        new_options.append({'label': f'{i}', 'value': f'{i}'})
+     
+    return dbc.Col(
+        [
+            dcc.Checklist(
+                id=id,
+                options=new_options,
+                value=[],
+            ),
+        ],
+        width=2,
+    )
 
 #----------------------------------------------------------
 tab_heatmap = html.Div(
@@ -38,26 +58,27 @@ tab_heatmap = html.Div(
         dbc.Row(
             [
                 #selector to switch between the Protein and the transpi/trinity
-                create_transcriptome_selector("heatmap_selector"),
+                create_checklist("heatmap_selector", ['Protein', 'TransPi', 'Trinity', 'Show difference heatmap']),
                 #empty place holder
                 dbc.Col(
                     width=1
                 ),
+                # TODO replace
                 #select whether to show the difference
-                dbc.Col(
-                    [
-                        dbc.Switch(
-                            id="difference_switch",
-                            label=dbc.Label("Show difference Heatmap", style={"font-size": "20px"}),
-                            value=True,
-                            style={
-                                "display": "block",
-                                "margin": "20px",
-                                "transform": "scale(1.4)",
-                            },
-                        )
-                    ],width=2,
-                ),
+                # dbc.Col(
+                #     [
+                #         dbc.Switch(
+                #             id="difference_switch",
+                #             label=dbc.Label("Show difference Heatmap", style={"font-size": "20px"}),
+                #             value=True,
+                #             style={
+                #                 "display": "block",
+                #                 "margin": "20px",
+                #                 "transform": "scale(1.4)",
+                #             },
+                #         )
+                #     ],width=2,
+                # ),
             ]
         ),
         dbc.Row(
