@@ -74,6 +74,9 @@ if __name__ == "__main__":
 #replace dropdowns with radio buttons
     #heatmap--done
     #area--todo
+        #still broken
+        #may just be lag/delay from docker being slow
+        #look to improve load timems. (dont access .gb until necessary)
     #raincloud--todo
 #add scrollbar to species selection --done
 #fix plots going over footer --todo

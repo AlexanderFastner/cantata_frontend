@@ -107,7 +107,7 @@ tab_stacked_area= html.Div(
         dbc.Row(
             [
                 #create_transcriptome_selector("Stacked_area_selector"),
-                create_checklist("Stacked_area_selector", ['Protein', 'TransPi', 'Trinity', 'Log_Comparison_of_Trinity_vs_TransPi']),
+                create_checklist("Stacked_area_selector", ['Protein', 'TransPi', 'Trinity', 'Log Comparison of Trinity vs TransPi']),
                 #empty place holder
                 dbc.Col(
                     width=2

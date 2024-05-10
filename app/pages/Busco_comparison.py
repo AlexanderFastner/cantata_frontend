@@ -316,6 +316,8 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
     if "tab_stacked_area" not in active_tab:
         return html.P("Not active (This shouldn't happen)") 
     fig_array=[]
+    print(species_selected, Stacked_area_selector, active_tab, update_species_button)
+    print(flush=True)
     #filter by user selection
     if species_selected != None and species_selected != "None" and species_selected !=[] and Stacked_area_selector != "None" and Stacked_area_selector is not None:
         #check which dataset the user wants to see
@@ -328,7 +330,7 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
             elif selected == "TransPi":
                 fig_array.append("TransPi_stacked_area")
             #if selected put difference to the front of the list
-            elif selected == "Log_Comparison_of_Trinity_vs_TransPi":
+            elif selected == "Log Comparison of Trinity vs TransPi":
                 fig_array = ["Log_Comparison_of_Trinity_vs_TransPi"] + fig_array
                 print("added")
                 print(fig_array)
@@ -347,16 +349,17 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
     print()
     return child
 #----------------------------------------------------------  
-#Testing 
-@callback(
-    Output(component_id="Protein_heatmap", component_property="figure"),
-    State(component_id="species_selected", component_property="value"),
-    Input(component_id="Stacked_area", component_property="children"),
-)          
-def test(species, children):
-    print(children)
-    print(flush=True)
-    return None
+#TODO why is fig_array empty when selecting stacked area for first time?
+# #Testing 
+# @callback(
+#     Output(component_id="Protein_heatmap", component_property="figure"),
+#     State(component_id="species_selected", component_property="value"),
+#     Input(component_id="Stacked_area", component_property="children"),
+# )          
+# def test(species, children):
+#     print(children)
+#     print(flush=True)
+#     return None
 #----------------------------------------------------------
 #Protein area
 @callback(
