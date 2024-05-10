@@ -131,7 +131,7 @@ def get_heatmap_df(species_selected, heatmap_selector, active_tab, update_specie
         return None
     
     #alwyas add diff to front of list
-    if "Difference_heatmap" in fig_array and len(fig_array < 3):
+    if "Difference_heatmap" in fig_array and len(fig_array) < 3:
         fig_array.remove("Difference_heatmap")
     if "Difference_heatmap" in fig_array:
         fig_array.remove("Difference_heatmap")
@@ -239,6 +239,7 @@ def update_Difference(species_selected, children):
         Difference_fig.update_layout(title="Difference heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
         return Difference_fig    
     
+    print("should never get here (update difference error)")
     return None
 
 #----------------------------------------------------------
@@ -258,6 +259,8 @@ def update_Protein(species_selected, children):
             Protein_fig.update_xaxes(showticklabels=False)
             Protein_fig.update_layout(title="Protein Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
             return Protein_fig
+    else:
+        return None
 #----------------------------------------------------------
 #update Trinity fig if selected
 @callback(
@@ -275,6 +278,8 @@ def update_Trinity(species_selected, children):
             Trinity_fig.update_xaxes(showticklabels=False)
             Trinity_fig.update_layout(title="Trinity Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
             return Trinity_fig
+    else:
+        return None
 #----------------------------------------------------------
 #update TransPi fig if selected
 @callback(
@@ -292,6 +297,8 @@ def update_TransPi(species_selected, children):
             TransPi_fig.update_xaxes(showticklabels=False)
             TransPi_fig.update_layout(title="TransPi Busco Heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
             return TransPi_fig
+    else:
+        return None
 #----------------------------------------------------------    
 #Stacked Area plots       
 #----------------------------------------------------------
