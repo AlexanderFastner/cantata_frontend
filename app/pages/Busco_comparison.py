@@ -30,6 +30,12 @@ color_map = {"Complete_BUSCOs": "#785EF0",
 #----------------------------------------------------------
 dash.register_page(__name__, path="/Busco")
 #----------------------------------------------------------
+# On startup
+user_selection.read_species_list(),
+#print(user_selection.species,flush=True),
+
+#TODO update default values
+#----------------------------------------------------------
 layout = html.Div(
     [
         dbc.Row( #top level row
@@ -53,7 +59,7 @@ layout = html.Div(
                                         #TODO Start with All, then restrict
                                         dcc.Checklist(
                                             id='species_selected',
-                                            options=user_selection.get_species_list(),
+                                            options=user_selection.species,
                                             value=[]
                                         ),                           
                                     ],
@@ -88,11 +94,11 @@ layout = html.Div(
     prevent_initial_call=True,
 )
 def update_checklist_options(group_value):
-    #print("update checklist values: ", group_value)
+    print("update checklist values: ", group_value)
     updated_options = []
     if group_value == "All":
-        #TODO add all options
-        updated_options = ["Abeoforma_whisleri"]
+        updated_options = user_selection.species
+        
     #convert from , seperated string into array of strings
     if group_value is not []:
         updated_options = group_value.split(',')

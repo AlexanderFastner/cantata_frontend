@@ -126,7 +126,7 @@ layout = html.Div([
                         ### Raincloud plots  
                         ![raincloud example](/assets/raincloud_example.png#example) 
 
-                        ### Aliignment Comparison  
+                        ### Alignment Comparison  
                         ![alignment example](/assets/alignment_example.png#example) 
                         
                         '''

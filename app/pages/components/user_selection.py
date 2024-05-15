@@ -1,12 +1,18 @@
 #What the user selects/can select
+#read in options
 #----------------------------------------------------------
-def get_species_list():
+#initial setup method to store list of species options to be selected from
+def read_species_list():
     with open("/wd/data/busco5_full_table_Proteome_df_numbers.csv") as f:
-        species = [row.split(",")[0] for row in f]
+        global species
+        species=[row.split(",")[0] for row in f]
         species=sorted(species[1:])
+        print('Initial read of species', flush=True)
+        print()
     return species
 #----------------------------------------------------------
 def get_busco_genes():
+    print('get all busco genes')
     #return a list of all the busco genes    
     #read in col names of busco5
     with open("/wd/data/busco5_full_table_Proteome_df_numbers.csv") as f:
@@ -14,12 +20,12 @@ def get_busco_genes():
         busco_genes = busco_genes[1:]
     return busco_genes
 #----------------------------------------------------------
-def get_busco_functions():
-    #print("activated get_busco_functions")
-    #TODO return a list of the various busco functions
-
-    busco_function = ["do something"]
-    return busco_function
+#TODO decide whether we will implememnt this or not
+# def get_busco_functions():
+#     #print("activated get_busco_functions")
+#     #TODO return a list of the various busco functions
+#     busco_function = ["do something"]
+#     return busco_function
 #----------------------------------------------------------
 #contain the various selecatble groups
 group_options=[
@@ -53,8 +59,7 @@ group_options=[
     {"label": "Indet-Ichthyosporea","value": "Amoebidium_parasiticum,Abeoforma_whisleri,Ichthyosporea_XGB-2017a"},
 ]
 #----------------------------------------------------------
-#TODO add dictionary lookup for species codes
-#sergio mde a .csv in Cantata
+#dictionary lookup for species codes
 species_codes = {"Platynereis_dumerilii": "PDU",
 "Daphnia_pulex": "DPU",
 "Acanthoeca_spectabilis": "ASP",

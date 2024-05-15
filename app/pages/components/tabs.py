@@ -31,22 +31,25 @@ def create_transcriptome_selector(id):
 #----------------------------------------------------------
 # function to create radio buttons (as replacement for selectors)
 #input list of values to be created
-def create_checklist(id, to_create):
+def create_checklist(id, cl_width, to_create, default_value):
     #generate options
     new_options = []
     for i in to_create:
         #print("create ", i)
         new_options.append({'label': f'{i}', 'value': f'{i}'})
+    #set default to empty if None
+    if default_value is None:
+        default_value = []
      
     return dbc.Col(
         [
             dcc.Checklist(
                 id=id,
                 options=new_options,
-                value=[],
+                value=[default_value],
             ),
         ],
-        width=3,
+        width=cl_width,
     )
 
 #----------------------------------------------------------
@@ -58,7 +61,7 @@ tab_heatmap = html.Div(
         dbc.Row(
             [
                 #selector to switch between the Protein and the transpi/trinity
-                create_checklist("heatmap_selector", ['Protein', 'TransPi', 'Trinity', 'Show difference heatmap']),
+                create_checklist("heatmap_selector", 3, ['Protein', 'TransPi', 'Trinity', 'Show difference heatmap'], 'Protein'),
                 #empty place holder
                 dbc.Col(
                     width=1
@@ -107,7 +110,7 @@ tab_stacked_area= html.Div(
         dbc.Row(
             [
                 #create_transcriptome_selector("Stacked_area_selector"),
-                create_checklist("Stacked_area_selector", ['Protein', 'TransPi', 'Trinity', 'Log Comparison of Trinity vs TransPi']),
+                create_checklist("Stacked_area_selector", 3, ['Protein', 'TransPi', 'Trinity', 'Log Comparison of Trinity vs TransPi'], 'Protein'),
                 #empty place holder
                 dbc.Col(
                     width=2
@@ -131,20 +134,9 @@ tab_stacked_area= html.Div(
                     [
                         #TODO only display this when the switch for comparing has been selected
                         #multi selector to choose what to track in Trinity vs TransPi
-                        dcc.Dropdown(
-                        id="busco_type_selector_area",
-                        options=[
-                            {"label": "Complete_&_single-copy", "value": "Complete_&_single-copy"},
-                            {"label": "Complete_&_duplicated", "value": "Complete_&_duplicated"},
-                            {"label": "Fragmented", "value": "Fragmented"},
-                            {"label": "Missing", "value": "Missing"},
-                            {"label": "All", "value": "All"},
-                        ],
-                        multi=True,
-                        placeholder="Select type of Busco to show in Comparison",
-                        value="All",
-                        )
-                    ],width=3
+                        html.H2("Select type of Busco to show in Comparison"),
+                        create_checklist("busco_type_selector_area", 5, ['Complete_&_single-copy', 'Complete_&_duplicated', 'Fragmented', 'Missing', 'All'], 'All'),
+                    ],width=5
                 ),
             ]
         ),
