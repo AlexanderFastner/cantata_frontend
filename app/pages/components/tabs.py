@@ -29,7 +29,7 @@ def create_transcriptome_selector(id):
         width=2,
     )
 #----------------------------------------------------------
-# function to create radio buttons (as replacement for selectors)
+#function to create radio buttons (as replacement for selectors)
 #input list of values to be created
 def create_checklist(id, cl_width, to_create, default_value):
     #generate options
@@ -53,10 +53,27 @@ def create_checklist(id, cl_width, to_create, default_value):
     )
 
 #----------------------------------------------------------
+#update species buttons per tab
+def create_update_button(tab_id):
+    return html.Div([
+        html.Button('Update Species', id=f'update_species_button_{tab_id}', n_clicks=0)
+    ])
+#----------------------------------------------------------
 tab_heatmap = html.Div(
     [
         dbc.Row(
-            html.H1("Species v. Buscos Heatmap"),
+            [
+            dbc.Col(
+                [
+                html.H1("Species v. Buscos Heatmap"),
+                ]
+            ),
+            dbc.Col(
+                [
+                create_update_button('heatmap'),
+                ]
+            )
+            ]
         ),
         dbc.Row(
             [
@@ -66,22 +83,6 @@ tab_heatmap = html.Div(
                 dbc.Col(
                     width=1
                 ),
-                # TODO replace
-                #select whether to show the difference
-                # dbc.Col(
-                #     [
-                #         dbc.Switch(
-                #             id="difference_switch",
-                #             label=dbc.Label("Show difference Heatmap", style={"font-size": "20px"}),
-                #             value=True,
-                #             style={
-                #                 "display": "block",
-                #                 "margin": "20px",
-                #                 "transform": "scale(1.4)",
-                #             },
-                #         )
-                #     ],width=2,
-                # ),
             ]
         ),
         dbc.Row(
@@ -106,7 +107,20 @@ tab_heatmap = html.Div(
 #----------------------------------------------------------
 tab_stacked_area= html.Div(
     [
-        dbc.Row(html.H1("Stacked Area Plots")),
+        dbc.Row(
+            [
+            dbc.Col(
+                [
+                html.H1("Stacked Area Plots"),
+                ]
+            ),
+            dbc.Col(
+                [
+                create_update_button('stacked_area'),
+                ]
+            )
+            ]
+        ),
         dbc.Row(
             [
                 #create_transcriptome_selector("Stacked_area_selector"),
@@ -163,7 +177,20 @@ tab_stacked_area= html.Div(
 #----------------------------------------------------------
 tab_raincloud= html.Div(
     [
-        dbc.Row(html.H1("TransPi v. Trinity Raincloud Plots")),
+        dbc.Row(
+            [
+            dbc.Col(
+                [
+                html.H1("TransPi v. Trinity Raincloud Plots"),
+                ]
+            ),
+            dbc.Col(
+                [
+                create_update_button('raincloud'),
+                ]
+            )
+            ]
+        ),
         html.Hr(),
         dbc.Row(
             [
@@ -194,7 +221,20 @@ tab_raincloud= html.Div(
 #----------------------------------------------------------
 tab_alignment= html.Div(
     [
-        html.H1("Alignment of Buscos"),
+        dbc.Row(
+            [
+            dbc.Col(
+                [
+                html.H1("Alignment of Buscos"),
+                ]
+            ),
+            dbc.Col(
+                [
+                create_update_button('alignment'),
+                ]
+            )
+            ]
+        ),
         dbc.Row(
             [
                 dbc.Col(

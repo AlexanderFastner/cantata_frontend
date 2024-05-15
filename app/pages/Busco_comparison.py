@@ -34,7 +34,6 @@ dash.register_page(__name__, path="/Busco")
 user_selection.read_species_list(),
 #print(user_selection.species,flush=True),
 
-#TODO update default values
 #----------------------------------------------------------
 layout = html.Div(
     [
@@ -52,8 +51,7 @@ layout = html.Div(
                                             options=[{'label': category['label'], 'value': category['value']} for category in user_selection.group_options],
                                             placeholder="Select a Group",
                                         ),
-                                        html.Hr(),
-                                        html.Button("Update Species", id='update_species_button', n_clicks=0),
+                                        #html.Button("Update Species", id='update_species_button', n_clicks=0),
                                         html.Hr(),
                                         #TODO Show only those inlcuded in the group/groups selected above
                                         #TODO Start with All, then restrict
@@ -98,6 +96,7 @@ def update_checklist_options(group_value):
     updated_options = []
     if group_value == "All":
         updated_options = user_selection.species
+        print(updated_options, flush=True)
         
     #convert from , seperated string into array of strings
     if group_value is not []:
@@ -115,7 +114,7 @@ def update_checklist_options(group_value):
     State(component_id="species_selected", component_property="value"),
     Input(component_id="heatmap_selector", component_property="value"),
     Input(component_id="tabs", component_property="active_tab"),
-    Input(component_id="update_species_button", component_property="n_clicks"),
+    Input(component_id="update_species_button_heatmap", component_property="n_clicks"),
     prevent_initial_call=True
 )
 def get_heatmap_df(species_selected, heatmap_selector, active_tab, update_species_button):
@@ -315,7 +314,7 @@ def update_TransPi(species_selected, children):
     State(component_id="species_selected", component_property="value"),
     Input(component_id="Stacked_area_selector", component_property="value"),
     Input(component_id="tabs", component_property="active_tab"),
-    Input(component_id="update_species_button", component_property="n_clicks"),
+    Input(component_id="update_species_button_stacked_area", component_property="n_clicks"),
     prevent_initial_call=True
 )     
 def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update_species_button):
@@ -529,7 +528,7 @@ def update_Trinity_TransPi_area(species_selected, children, busco_type_selector_
     State(component_id="species_selected", component_property="value"),
     Input(component_id="Raincloud_selector", component_property="value"),
     Input(component_id="tabs", component_property="active_tab"),
-    Input(component_id="update_species_button", component_property="n_clicks"),
+    Input(component_id="update_species_button_raincloud", component_property="n_clicks"),
     prevent_initial_call=True
 )
 def get_Rainclouds(species_selected, Raincloud_selector, active_tab, update_species_button):
@@ -725,7 +724,7 @@ def update_Trinity_Raincloud(species_selected, children):
     Input(component_id="busco_name_selector", component_property="value"),
     Input(component_id="type_selector", component_property="value"),
     Input(component_id="tabs", component_property="active_tab"),
-    Input(component_id="update_species_button", component_property="n_clicks"),
+    Input(component_id="update_species_button_alignment", component_property="n_clicks"),
     prevent_initial_call=True
 )
 def update_align(species_selected, busco_name_selector, type_selector, active_tab, n_clicks):
