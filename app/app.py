@@ -77,7 +77,7 @@ if __name__ == "__main__":
         #still broken
         #may just be lag/delay from docker being slow
         #look to improve load timems. (dont access .gb until necessary)
-    #raincloud--todo
+    #raincloud--done
 #add scrollbar to species selection --done
 #fix plots going over footer --todo
 #auto resize all tabs(plots)--todo

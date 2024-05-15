@@ -46,9 +46,12 @@ layout = html.Div(
                                 dbc.CardBody(
                                     [
                                         #TODO Make this a multiselector, with All as default
+                                        #TODO save options in right format so this doesnt need to be created on startup
                                         dcc.Dropdown(
                                             id="group_dropdown",
-                                            options=[{'label': category['label'], 'value': category['value']} for category in user_selection.group_options],
+                                            options=user_selection.group_options,
+                                            value=["All"],
+                                            #options=[{'label': category['label'], 'value': category['value']} for category in user_selection.group_options],
                                             placeholder="Select a Group",
                                         ),
                                         #html.Button("Update Species", id='update_species_button', n_clicks=0),
@@ -58,7 +61,7 @@ layout = html.Div(
                                         dcc.Checklist(
                                             id='species_selected',
                                             options=user_selection.species,
-                                            value=[]
+                                            value=['All']
                                         ),                           
                                     ],
                                 ),
@@ -92,11 +95,12 @@ layout = html.Div(
     prevent_initial_call=True,
 )
 def update_checklist_options(group_value):
-    print("update checklist values: ", group_value)
+    #print("update checklist values: ", group_value)
     updated_options = []
     if group_value == "All":
         updated_options = user_selection.species
-        print(updated_options, flush=True)
+        #print(updated_options, flush=True)
+        return updated_options
         
     #convert from , seperated string into array of strings
     if group_value is not []:
