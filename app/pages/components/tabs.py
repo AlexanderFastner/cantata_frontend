@@ -56,7 +56,7 @@ def create_checklist(id, cl_width, to_create, default_value):
 #update species buttons per tab
 def create_update_button(tab_id):
     return html.Div([
-        html.Button('Update Species', id=f'update_species_button_{tab_id}', n_clicks=0)
+        html.Button('Update Plots', id=f'update_species_button_{tab_id}', n_clicks=0)
     ])
 #----------------------------------------------------------
 tab_heatmap = html.Div(
@@ -194,7 +194,7 @@ tab_raincloud= html.Div(
         html.Hr(),
         dbc.Row(
             [
-                create_transcriptome_selector("Raincloud_selector"),
+                create_checklist("Raincloud_selector", 3, ['Protein', 'TransPi', 'Trinity'], 'Protein'),
             ]
         ),
         dbc.Row(
@@ -254,14 +254,8 @@ tab_alignment= html.Div(
                     dbc.Card(
                         dbc.CardBody(
                             [
-                                dcc.Dropdown(
-                                    id="type_selector",
-                                    options=[
-                                        {"label": "single", "value": "single"},
-                                        {"label": "duplicated", "value": "duplicated"},
-                                    ],
-                                    placeholder="Select what Type of Busco Gene to show",
-                                ),
+                                #TODO replace with checklist
+                                create_checklist("type_selector", 3, ['single', 'duplicated'], 'single'),
                             ],
                         )
                     ),

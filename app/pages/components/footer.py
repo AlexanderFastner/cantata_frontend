@@ -42,7 +42,7 @@ def create_footer():
         ],
         style={
             "background-color": "#f5f5f5",
-            "padding": "20px",
+            "padding": "10px",
             "text-align": "center",
             "font-size": "14px",
             "color": "#666666"

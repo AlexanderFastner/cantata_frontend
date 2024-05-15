@@ -36,60 +36,55 @@ def read_in_alignment(species_selected, busco_name_selector, type_selector):
     #print("species_selected ", species_selected)
     #print("busco_name_selector ", busco_name_selector)
     reduced_alignment = []
-    if species_selected != None and species_selected != "None":
-        if busco_name_selector != None and busco_name_selector != "None":
-            alignment = AlignIO.read(f"/wd/gb/{busco_name_selector}.shortheaders.aln-gb", "fasta")
-            filtered_alignment = [seq for seq in alignment if any(species in seq.id for species in species_l)]
-            # print("filtered_alignment", filtered_alignment)
-            if type_selector == "single":
-                # print("single selected")
-                codes = []
-                for record in filtered_alignment:
-                    #print(record)
-                    codes.append(record.id[-3:])
-                    print(record.id[-3:])
-                dups = find_duplicates(codes)
-                # print("dups", dups)
-                for record in filtered_alignment:
-                    if record.id[-3:] in dups:
-                        # print("duplicate")
-                        # print(record)
-                        # print()
-                        record = None
-                    else:
-                        reduced_alignment.append(record)
-            #remove dupl
-            if type_selector == "duplicated":
-                # print("duplicated")
-                # print(filtered_alignment)
-                codes = []
-                for record in filtered_alignment:
-                    codes.append(record.id[-3:])
-                    #print(record.id[-3:])
-                dups = find_duplicates(codes)
-                #print("dups", dups)
-                for record in filtered_alignment:
-                    if record.id[-3:] in dups:
-                        reduced_alignment.append(record)
-                    else:
-                        record = None
-    
-            #print("new alignment", reduced_alignment)
-    
-            alignment = MultipleSeqAlignment(reduced_alignment)
-            fasta_string=""
-            with tempfile.TemporaryDirectory() as temp_dir:
-                temp_file_path = os.path.join(temp_dir, "temp_file.txt")
-                with open(temp_file_path, "w") as temp_file:
-                    AlignIO.write(alignment, temp_file, "fasta")
-                with open(temp_file_path, "r") as temp_file:
-                    fasta_string = temp_file.read()
+    alignment = AlignIO.read(f"/wd/gb/{busco_name_selector}.shortheaders.aln-gb", "fasta")
+    filtered_alignment = [seq for seq in alignment if any(species in seq.id for species in species_l)]
+    print("filtered_alignment", filtered_alignment)
+    if type_selector == "single":
+        # print("single selected")
+        codes = []
+        for record in filtered_alignment:
+            #print(record)
+            codes.append(record.id[-3:])
+            print(record.id[-3:])
+        dups = find_duplicates(codes)
+        # print("dups", dups)
+        for record in filtered_alignment:
+            if record.id[-3:] in dups:
+                # print("duplicate")
+                # print(record)
+                # print()
+                record = None
+            else:
+                reduced_alignment.append(record)
+    #remove dupl
+    if type_selector == "duplicated":
+        # print("duplicated")
+        # print(filtered_alignment)
+        codes = []
+        for record in filtered_alignment:
+            codes.append(record.id[-3:])
+            #print(record.id[-3:])
+        dups = find_duplicates(codes)
+        #print("dups", dups)
+        for record in filtered_alignment:
+            if record.id[-3:] in dups:
+                reduced_alignment.append(record)
+            else:
+                record = None
 
-            #print("string: ", fasta_string)
+    print("new alignment", reduced_alignment)
 
-            return fasta_string
-    else:  
-        return None
+    alignment = MultipleSeqAlignment(reduced_alignment)
+    fasta_string=""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_file_path = os.path.join(temp_dir, "temp_file.txt")
+        with open(temp_file_path, "w") as temp_file:
+            AlignIO.write(alignment, temp_file, "fasta")
+        with open(temp_file_path, "r") as temp_file:
+            fasta_string = temp_file.read()
+
+    #print("string: ", fasta_string)
+    return fasta_string
 #----------------------------------------------------------
 def find_duplicates(lst):
     unique_items = set()

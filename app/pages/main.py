@@ -118,16 +118,16 @@ layout = html.Div([
                         '''
                         ## Ways to Analyze Buscos:    
                         ### Heatmap of buscos  
-                        ![heatmap example](/assets/heatmap_example.png#example) 
+                        ![heatmap example](/assets/heatmap_example.png#example)  
 
                         ### Stacked Area plots  
-                        ![stacked area example](/assets/stacked_area_example.png#example)
+                        ![stacked area example](/assets/stacked_area_example.png#example)  
                          
                         ### Raincloud plots  
-                        ![raincloud example](/assets/raincloud_example.png#example) 
+                        ![raincloud example](/assets/raincloud_example.png#example)  
 
                         ### Alignment Comparison  
-                        ![alignment example](/assets/alignment_example.png#example) 
+                        ![alignment example](/assets/alignment_example.png#example)  
                         
                         '''
                     ),

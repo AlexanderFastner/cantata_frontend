@@ -8,7 +8,7 @@ def read_species_list():
         species=[row.split(",")[0] for row in f]
         species=sorted(species[1:])
         print('Initial read of species', flush=True)
-        print()
+        #print()
     return species
 #----------------------------------------------------------
 def get_busco_genes():

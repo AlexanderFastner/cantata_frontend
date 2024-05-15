@@ -61,7 +61,7 @@ layout = html.Div(
                                         dcc.Checklist(
                                             id='species_selected',
                                             options=user_selection.species,
-                                            value=['All']
+                                            value=['None']
                                         ),                           
                                     ],
                                 ),
@@ -89,6 +89,8 @@ layout = html.Div(
 #Callbacks
 #----------------------------------------------------------
 #species checklist
+#TODO fix selecting All
+#add handling to all plots for passing All value
 @callback(
     Output('species_selected', 'value'),
     Input('group_dropdown', 'value'),
@@ -99,11 +101,18 @@ def update_checklist_options(group_value):
     updated_options = []
     if group_value == "All":
         updated_options = user_selection.species
-        #print(updated_options, flush=True)
+        print("all detected", updated_options, flush=True)
         return updated_options
-        
+    if 'All' in group_value:
+        print("second detect")
+
+
+    #update so when None is selected, and something else is as well -> remove None
+    if "None" in group_value and len(group_value) > 1:
+        group_value = group_value.remove("None")
+    print("group value", group_value, flush=True)
     #convert from , seperated string into array of strings
-    if group_value is not []:
+    if group_value is not [] and group_value is not None:
         updated_options = group_value.split(',')
         #print("updated_options: ", updated_options)
         return updated_options
@@ -126,9 +135,9 @@ def get_heatmap_df(species_selected, heatmap_selector, active_tab, update_specie
         return html.P("Not active")
     fig_array=[]
     #filter by user selection
-    if species_selected != None and species_selected != "None" and species_selected !=[] and heatmap_selector is not None and heatmap_selector != "None":
+    if species_selected != None and species_selected !=[] and heatmap_selector is not None and heatmap_selector != "None":
         #check which dataset the user wants to see
-        for selected in heatmap_selector:   
+        for selected in heatmap_selector: 
             if selected == "Protein":
                 fig_array.append("Protein_heatmap")
             elif selected == "Trinity":
@@ -205,7 +214,7 @@ def update_Difference(species_selected, children):
             diff = True
         
     if not diff:
-        return None    
+        return None
     #difference between all 3
     diff_df = None
     if Prot_subset is not None and Trinity_subset is not None and TransPi_subset is not None:
@@ -328,7 +337,13 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
     print(species_selected, Stacked_area_selector, active_tab, update_species_button)
     print(flush=True)
     #filter by user selection
-    if species_selected != None and species_selected != "None" and species_selected !=[] and Stacked_area_selector != "None" and Stacked_area_selector is not None:
+    if "None" in species_selected and len(species_selected) < 2:
+        print("Please select a species, current species selected is None")
+        return None
+    else:
+        species_selected = species_selected.remove("None")
+
+    if species_selected != None and species_selected !=[] and Stacked_area_selector != "None" and Stacked_area_selector is not None:
         #check which dataset the user wants to see
         for selected in Stacked_area_selector:   
             #print("selected", selected)
@@ -379,7 +394,7 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
 def update_Protein_area(species_selected, children):
     for item in children:
         if "Protein_stacked_area" in item.get("props").get("id"):
-            if species_selected != None and species_selected != "None" and species_selected !=[]:
+            if species_selected != None and species_selected !=[]:
                 Protein_area_df = pd.read_csv('/wd/data/busco5_short_summary_Proteome.tsv', sep="\t", index_col=0)
                 Protein_area_df = Protein_area_df.drop(columns=["Complete_BUSCOs", "Total"])
                 subset_Protein = Protein_area_df.loc[Protein_area_df.index.isin(species_selected)]
@@ -402,7 +417,7 @@ def update_Trinity_area(species_selected, children):
     #filter by user selection
     for item in children:
         if "Trinity_stacked_area" in item.get("props").get("id"):
-            if species_selected != None and species_selected != "None" and species_selected !=[]:
+            if species_selected != None and species_selected !=[]:
                 #print("Trinity", species_selected)
                 Trinity_area_df = pd.read_csv('/wd/data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
                 Trinity_area_df = Trinity_area_df.drop(columns=["Complete_BUSCOs", "Total"])
@@ -441,7 +456,7 @@ def update_TransPi_area(species_selected, children):
     #print("species_selected ",species_selected)
     for item in children:
         if "TransPi_stacked_area" in item.get("props").get("id"):
-            if species_selected != None and species_selected != "None" and species_selected !=[]:
+            if species_selected != None and species_selected !=[]:
                 TransPi_area_df = pd.read_csv('/wd/data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
                 TransPi_area_df = TransPi_area_df.drop(columns=["Complete_BUSCOs", "Total"])
                 subset_TransPi = TransPi_area_df.loc[TransPi_area_df.index.isin(species_selected)]
@@ -479,7 +494,7 @@ def update_Trinity_TransPi_area(species_selected, children, busco_type_selector_
     #print("species_selected ",species_selected)
     for item in children:
         if "Log_Comparison_of_Trinity_vs_TransPi" in item.get("props").get("id"):
-            if species_selected != None and species_selected != "None" and species_selected !=[]:
+            if species_selected != None and species_selected !=[]:
                 TransPi_area_df = pd.read_csv('/wd/data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
                 Trinity_area_df = pd.read_csv('/wd/data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
                 TransPi_area_df = TransPi_area_df.drop(columns=["Complete_BUSCOs", "Total"])
@@ -541,7 +556,7 @@ def get_Rainclouds(species_selected, Raincloud_selector, active_tab, update_spec
     fig_array=[]
     #filter by user selection
     #print("raincloud: ", species_selected)
-    if species_selected is not None and species_selected != "None" and species_selected !=[] and Raincloud_selector != "None" and Raincloud_selector is not None:
+    if species_selected is not None and species_selected !=[] and Raincloud_selector != "None" and Raincloud_selector is not None:
         #check which dataset the user wants to see
         for selected in Raincloud_selector:   
             if selected == "Protein":
@@ -571,7 +586,7 @@ def update_Protein_Raincloud(species_selected, children):
     #filter by user selection
     for item in children:
         if "Protein_raincloud" in item.get("props").get("id"):
-            if species_selected != None and species_selected != "None" and species_selected !=[]:
+            if species_selected != None and species_selected !=[]:
                 Protein_df = pd.read_csv('/wd/data/busco5_short_summary_Proteome.tsv', sep="\t", index_col=0)
                 subset_Protein = Protein_df.loc[Protein_df.index.isin(species_selected)]
 
@@ -614,7 +629,7 @@ def update_TransPi_Raincloud(species_selected, children):
     #filter by user selection
     for item in children:
         if "TransPi_raincloud" in item.get("props").get("id"):
-            if species_selected != None and species_selected != "None" and species_selected !=[]:
+            if species_selected != None and species_selected !=[]:
                 TransPi_df = pd.read_csv('/wd/data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
                 subset_TransPi = TransPi_df.loc[TransPi_df.index.isin(species_selected)]
 
@@ -670,7 +685,7 @@ def update_Trinity_Raincloud(species_selected, children):
     #filter by user selection
     for item in children:
         if "Trinity_raincloud" in item.get("props").get("id"):
-            if species_selected != None and species_selected != "None" and species_selected !=[]:
+            if species_selected != None and species_selected !=[]:
                 Trinity_df = pd.read_csv('/wd/data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
                 subset_Trinity = Trinity_df.loc[Trinity_df.index.isin(species_selected)]
 
@@ -735,7 +750,7 @@ def update_align(species_selected, busco_name_selector, type_selector, active_ta
     if "tab_alignment" not in active_tab:
         return alignment_functions.alignment_data
     print(species_selected, busco_name_selector, type_selector, active_tab, n_clicks, flush=True)
-    if species_selected != None and species_selected != "None" and species_selected !=[] and busco_name_selector != None and busco_name_selector != "None" and busco_name_selector !=[] and type_selector is not None:
+    if species_selected != None and species_selected !=[] and busco_name_selector != None and busco_name_selector != "None" and busco_name_selector !=[] and type_selector is not None:
         data = alignment_functions.read_in_alignment(species_selected, busco_name_selector, type_selector)
         print("update alignment data", flush=True)
         print(data, flush=True)
