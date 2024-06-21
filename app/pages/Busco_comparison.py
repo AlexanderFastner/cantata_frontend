@@ -337,7 +337,7 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
     print(species_selected, Stacked_area_selector, active_tab, update_species_button)
     print(flush=True)
     #filter by user selection
-    if "None" in species_selected and len(species_selected) < 2:
+    if "None" in species_selected and len(species_selected) < 1:
         print("Please select a species, current species selected is None")
         return None
     else:

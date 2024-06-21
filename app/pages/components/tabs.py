@@ -8,27 +8,6 @@ import dash_bio as dashbio
 #----------------------------------------------------------
 #TODO for each tab add download buttons
 #----------------------------------------------------------
-def create_transcriptome_selector(id):
-    return dbc.Col(
-        [
-            dbc.Card(
-                dbc.CardBody(
-                    dcc.Dropdown(
-                        id=id,
-                        options=[
-                            {"label": "Protein", "value": "Protein"},
-                            {"label": "TransPi", "value": "TransPi"},
-                            {"label": "Trinity", "value": "Trinity"},
-                        ],
-                        multi=True,
-                        placeholder="Select transciptome",
-                    )
-                ),
-            )
-        ],
-        width=2,
-    )
-#----------------------------------------------------------
 #function to create radio buttons (as replacement for selectors)
 #input list of values to be created
 def create_checklist(id, cl_width, to_create, default_value):
@@ -36,7 +15,8 @@ def create_checklist(id, cl_width, to_create, default_value):
     new_options = []
     for i in to_create:
         #print("create ", i)
-        new_options.append({'label': f'{i}', 'value': f'{i}'})
+        new_options.append({'label': html.Div([f'{i}'], style={'color': 'black', 'font-size': 16, "padding-left": 10}), 'value': f'{i}'})
+                           
     #set default to empty if None
     if default_value is None:
         default_value = []
@@ -47,6 +27,7 @@ def create_checklist(id, cl_width, to_create, default_value):
                 id=id,
                 options=new_options,
                 value=[default_value],
+                inline=True,
             ),
         ],
         width=cl_width,
@@ -66,19 +47,20 @@ tab_heatmap = html.Div(
             dbc.Col(
                 [
                 html.H1("Species v. Buscos Heatmap"),
-                ]
+                ], width=10,
             ),
             dbc.Col(
                 [
                 create_update_button('heatmap'),
-                ]
+                ], width=2,
             )
             ]
         ),
+        html.Hr(),
         dbc.Row(
             [
                 #selector to switch between the Protein and the transpi/trinity
-                create_checklist("heatmap_selector", 3, ['Protein', 'TransPi', 'Trinity', 'Show difference heatmap'], 'Protein'),
+                create_checklist("heatmap_selector", 5, ['Protein', 'TransPi', 'Trinity', 'Show difference heatmap'], 'Protein'),
                 #empty place holder
                 dbc.Col(
                     width=1
@@ -101,8 +83,7 @@ tab_heatmap = html.Div(
                 ],
             ),
         ),
-    ],
-    className="mt-3",
+    ]
 )
 #----------------------------------------------------------
 tab_stacked_area= html.Div(
@@ -112,22 +93,23 @@ tab_stacked_area= html.Div(
             dbc.Col(
                 [
                 html.H1("Stacked Area Plots"),
-                ]
+                ], width=10
             ),
             dbc.Col(
                 [
                 create_update_button('stacked_area'),
-                ]
-            )
+                ], width=2
+            ),
             ]
         ),
+        html.Hr(),
         dbc.Row(
             [
                 #create_transcriptome_selector("Stacked_area_selector"),
-                create_checklist("Stacked_area_selector", 3, ['Protein', 'TransPi', 'Trinity', 'Log Comparison of Trinity vs TransPi'], 'Protein'),
+                create_checklist("Stacked_area_selector", 4, ['Protein', 'TransPi', 'Trinity', 'Log Comparison of Trinity vs TransPi'], 'Protein'),
                 #empty place holder
                 dbc.Col(
-                    width=2
+                    width=1
                 ),
                 #log comparison of Trinity/TransPi
                 # dbc.Col(
@@ -182,19 +164,19 @@ tab_raincloud= html.Div(
             dbc.Col(
                 [
                 html.H1("TransPi v. Trinity Raincloud Plots"),
-                ]
+                ], width=10,
             ),
             dbc.Col(
                 [
                 create_update_button('raincloud'),
-                ]
+                ], width=2,
             )
             ]
         ),
         html.Hr(),
         dbc.Row(
             [
-                create_checklist("Raincloud_selector", 3, ['Protein', 'TransPi', 'Trinity'], 'Protein'),
+                create_checklist("Raincloud_selector", 4, ['Protein', 'TransPi', 'Trinity'], 'Protein'),
             ]
         ),
         dbc.Row(
@@ -226,15 +208,16 @@ tab_alignment= html.Div(
             dbc.Col(
                 [
                 html.H1("Alignment of Buscos"),
-                ]
+                ], width=10,
             ),
             dbc.Col(
                 [
                 create_update_button('alignment'),
-                ]
+                ], width=2,
             )
             ]
         ),
+        html.Hr(),
         dbc.Row(
             [
                 dbc.Col(
