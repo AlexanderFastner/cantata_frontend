@@ -48,26 +48,34 @@ app.config.suppress_callback_exceptions = True
 #the dash.pageregistry contains the various pages I built
     #That structure is in tabs.py
 #The footer is seperate from the otehr pages as it is added to everything
-app.layout = dbc.Container(
+app.layout = dash.html.Div(
     [
-        dbc.NavbarSimple(
+        dash.html.Div(
             [
-                dbc.NavItem(dbc.NavLink(page["name"], href=page["path"]))
-                for page in dash.page_registry.values()
-            ],
-            brand="Cantata",
-            brand_href="#",
-            brand_style={"font-size":"40px"},
-            className="navbar navbar-dark bg-dark",
-            style={"border-radius":"5px"},
-
-        ),
-        dash.page_container,
-        #cllbck footer
-        footer.create_footer(),
-    ],
-    fluid=True,
+                dbc.NavbarSimple(
+                    [
+                        dbc.NavItem(dbc.NavLink(page["name"], href=page["path"]))
+                        for page in dash.page_registry.values()
+                    ],
+                    brand="Cantata",
+                    brand_href="#",
+                    fluid=True,
+                    brand_style={"font-size":"40px"},
+                    className="navbar navbar-dark bg-dark",
+                    #style={"border-radius":"5px"},
+                ),
+                dash.html.Div(
+                    dash.page_container,
+                    id="page-content",
+                    style={'flex': '1', 'overflow': 'auto'}
+                ),
+            ], id="content-wrapper", style={'display': 'flex', 'flexDirection': 'column', 'minHeight': '100vh'}),
+            footer.create_footer(),
+    ], 
+    style={'position': 'relative', 'minHeight': '100vh'},
+    id='Outer-Container'
 )
+
 print("layout made")
 print("---------------------------------------------", flush=True)
 
@@ -82,12 +90,15 @@ if __name__ == "__main__":
     app.run_server(debug=True, host='0.0.0.0', port=port)
 #----------------------------------------------------------
 #TODO
-#fix plots going over footer by adding callback --todo
-#fix scrollbar sizing --todo
-#add tooltips --todo
+#fix footer to bottom --done
+#fix scrollbar sizing --done
+#seperate scrollbar with individuals from group --done
 #fix None group selection, rename Clear Selection --todo
 #stcked area comparison options move to under other selection --todo
     #only appear when that checklist option is selected --todo
+#remove the rounding on header corners --done
+#add tooltips --todo
+
 
 #User upload data
     #add button for this

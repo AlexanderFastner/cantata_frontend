@@ -40,9 +40,10 @@ layout = html.Div(
         dbc.Row( #top level row
             [
                 dbc.Col( #left column for selection
+                    [
                         dbc.Card(
                             [
-                                dbc.CardHeader(html.H5("Select species for comparison")),
+                                dbc.CardHeader(html.H5("Select Group for comparison")),
                                 dbc.CardBody(
                                     [
                                         #TODO when new data is added you need to update group_options and species!
@@ -52,18 +53,25 @@ layout = html.Div(
                                             value=["None"],
                                             placeholder="Select a Group",
                                         ),
-                                        html.Hr(),
+                                    ],
+                                ),
+                            ], style={'width': '100%', 'height': '13vh'}
+                        ),
+                        dbc.Card(
+                            [
+                                dbc.CardHeader(html.H5("Select Individual Species")),
+                                dbc.CardBody(
+                                    [
                                         dcc.Checklist(
                                             id='species_selected',
                                             options=user_selection.species,
                                             value=['None']
-                                        ),                           
+                                        ), 
                                     ],
                                 ),
-                            ],
-                            style={'width': '100%', 'height': '80vh', 'overflow': 'scroll', 'display': 'inline-block'},
+                            ], style={'width': '100%', 'height': '70vh', 'overflow': 'scroll', 'display': 'inline-block'},
                         ),
-                    width="auto",
+                    ], width="auto",
                 ),
 
                 dbc.Col( # middle/right column for plotting

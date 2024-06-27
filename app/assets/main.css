@@ -1,0 +1,23 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#Outer-Container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#content-wrapper {
+    flex: 1 0 auto;
+}
+
+#page-content {
+    padding-bottom: 20px;
+}
+
+#footer {
+    flex-shrink: 0;
+}

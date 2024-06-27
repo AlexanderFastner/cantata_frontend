@@ -8,7 +8,7 @@ def create_footer():
     Generates a basic footer for the Dash app with a link to the GitHub profile.
     """
     footer = html.Footer(
-        id="app-footer",
+        id="footer",
         children=[
             html.Div(
                 className="footer-content",
@@ -42,10 +42,15 @@ def create_footer():
         ],
         style={
             "background-color": "#f5f5f5",
-            "padding": "10px",
+            "padding": "20px",
             "text-align": "center",
+            'position': 'absolute',
             "font-size": "14px",
-            "color": "#666666"
+            "color": "#666666",
+            'bottom': '0',
+            'width': '100%',
+            'marginTop': 'auto',
         }
     )
+
     return footer
