@@ -15,7 +15,8 @@ def create_checklist(id, cl_width, to_create, default_value):
     new_options = []
     for i in to_create:
         #print("create ", i)
-        new_options.append({'label': html.Div([f'{i}'], style={'color': 'black', 'font-size': 16, "padding-left": 10}), 'value': f'{i}'})
+        #new_options.append({'label': html.Div([f'{i}'], style={'color': 'black', 'font-size': 16, "padding-left": 10}), 'value': f'{i}'})
+        new_options.append({'label': f'{i}', 'value': f'{i}'})
                            
     #set default to empty if None
     if default_value is None:
@@ -28,6 +29,8 @@ def create_checklist(id, cl_width, to_create, default_value):
                 options=new_options,
                 value=[default_value],
                 inline=True,
+                inputStyle={"margin-left": "20px"},
+                style={'width':'100%'},
             ),
         ],
         width=cl_width,
@@ -60,7 +63,7 @@ tab_heatmap = html.Div(
         dbc.Row(
             [
                 #selector to switch between the Protein and the transpi/trinity
-                create_checklist("heatmap_selector", 5, ['Protein', 'TransPi', 'Trinity', 'Show difference heatmap'], 'Protein'),
+                create_checklist("heatmap_selector", 10, ['Protein', 'TransPi', 'Trinity', 'Show difference heatmap'], 'Protein'),
                 #empty place holder
                 dbc.Col(
                     width=1
@@ -106,7 +109,7 @@ tab_stacked_area= html.Div(
         dbc.Row(
             [
                 #create_transcriptome_selector("Stacked_area_selector"),
-                create_checklist("Stacked_area_selector", 4, ['Protein', 'TransPi', 'Trinity', 'Log Comparison of Trinity vs TransPi'], 'Protein'),
+                create_checklist("Stacked_area_selector", 6, ['Protein', 'TransPi', 'Trinity', 'Log Comparison of Trinity vs TransPi'], 'Protein'),
                 #empty place holder
                 dbc.Col(
                     width=1
@@ -131,7 +134,7 @@ tab_stacked_area= html.Div(
                         #TODO only display this when the switch for comparing has been selected
                         #multi selector to choose what to track in Trinity vs TransPi
                         html.H2("Select type of Busco to show in Comparison"),
-                        create_checklist("busco_type_selector_area", 5, ['Complete_&_single-copy', 'Complete_&_duplicated', 'Fragmented', 'Missing', 'All'], 'All'),
+                        create_checklist("busco_type_selector_area", 6, ['Complete_&_single-copy', 'Complete_&_duplicated', 'Fragmented', 'Missing', 'All'], 'All'),
                     ],width=5
                 ),
             ]
@@ -176,7 +179,7 @@ tab_raincloud= html.Div(
         html.Hr(),
         dbc.Row(
             [
-                create_checklist("Raincloud_selector", 4, ['Protein', 'TransPi', 'Trinity'], 'Protein'),
+                create_checklist("Raincloud_selector", 10, ['Protein', 'TransPi', 'Trinity'], 'Protein'),
             ]
         ),
         dbc.Row(
@@ -237,8 +240,8 @@ tab_alignment= html.Div(
                     dbc.Card(
                         dbc.CardBody(
                             [
-                                #TODO replace with checklist
-                                create_checklist("type_selector", 3, ['single', 'duplicated'], 'single'),
+                                dcc.RadioItems(id = 'type_selector', options=['single', 'duplicated'], inputStyle={"margin-left": "20px"}, value='single', inline=True),
+                                #create_checklist("type_selector", 5, ['single', 'duplicated'], 'single'),
                             ],
                         )
                     ),

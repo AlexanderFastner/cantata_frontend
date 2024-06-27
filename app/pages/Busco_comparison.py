@@ -45,19 +45,14 @@ layout = html.Div(
                                 dbc.CardHeader(html.H5("Select species for comparison")),
                                 dbc.CardBody(
                                     [
-                                        #TODO Make this a multiselector, with All as default
-                                        #TODO save options in right format so this doesnt need to be created on startup
+                                        #TODO when new data is added you need to update group_options and species!
                                         dcc.Dropdown(
                                             id="group_dropdown",
                                             options=user_selection.group_options,
-                                            value=["All"],
-                                            #options=[{'label': category['label'], 'value': category['value']} for category in user_selection.group_options],
+                                            value=["None"],
                                             placeholder="Select a Group",
                                         ),
-                                        #html.Button("Update Species", id='update_species_button', n_clicks=0),
                                         html.Hr(),
-                                        #TODO Show only those inlcuded in the group/groups selected above
-                                        #TODO Start with All, then restrict
                                         dcc.Checklist(
                                             id='species_selected',
                                             options=user_selection.species,
@@ -97,7 +92,7 @@ layout = html.Div(
     prevent_initial_call=True,
 )
 def update_checklist_options(group_value):
-    #print("update checklist values: ", group_value)
+    print("update checklist values: ", group_value)
     updated_options = []
     if group_value == "All":
         updated_options = user_selection.species
@@ -106,11 +101,11 @@ def update_checklist_options(group_value):
     if 'All' in group_value:
         print("second detect")
 
-
     #update so when None is selected, and something else is as well -> remove None
     if "None" in group_value and len(group_value) > 1:
-        group_value = group_value.remove("None")
-    print("group value", group_value, flush=True)
+        #This shouldnt happen anymore
+        group_value.remove("None")
+        print("None + value selected, removing None.", group_value, flush=True)
     #convert from , seperated string into array of strings
     if group_value is not [] and group_value is not None:
         updated_options = group_value.split(',')
@@ -337,11 +332,14 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
     print(species_selected, Stacked_area_selector, active_tab, update_species_button)
     print(flush=True)
     #filter by user selection
-    if "None" in species_selected and len(species_selected) < 1:
-        print("Please select a species, current species selected is None")
-        return None
-    else:
-        species_selected = species_selected.remove("None")
+    if 'None' in species_selected: 
+        if len(species_selected) < 2:
+            print("Please select a species, current species selected is None", flush=True)
+            return None
+        else:
+            #print("old list: ", species_selected, flush=True)
+            species_selected.remove('None')
+            #print("new list: ", species_selected, flush=True)
 
     if species_selected != None and species_selected !=[] and Stacked_area_selector != "None" and Stacked_area_selector is not None:
         #check which dataset the user wants to see
@@ -368,22 +366,9 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
     print("area, ", fig_array)
     for fig in fig_array:
         #update children of output
-        child.append(dcc.Graph(id=fig, figure=None))
+        child.append(dcc.Graph(id=fig))
     print(child, flush=True)
-    print()
     return child
-#----------------------------------------------------------  
-#TODO why is fig_array empty when selecting stacked area for first time?
-# #Testing 
-# @callback(
-#     Output(component_id="Protein_heatmap", component_property="figure"),
-#     State(component_id="species_selected", component_property="value"),
-#     Input(component_id="Stacked_area", component_property="children"),
-# )          
-# def test(species, children):
-#     print(children)
-#     print(flush=True)
-#     return None
 #----------------------------------------------------------
 #Protein area
 @callback(
@@ -393,6 +378,7 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
 )
 def update_Protein_area(species_selected, children):
     for item in children:
+        print(item, flush=True)
         if "Protein_stacked_area" in item.get("props").get("id"):
             if species_selected != None and species_selected !=[]:
                 Protein_area_df = pd.read_csv('/wd/data/busco5_short_summary_Proteome.tsv', sep="\t", index_col=0)
@@ -400,6 +386,7 @@ def update_Protein_area(species_selected, children):
                 subset_Protein = Protein_area_df.loc[Protein_area_df.index.isin(species_selected)]
                 fig = go.Figure(data=ex.area(subset_Protein, color_discrete_sequence=["#648FFF", "#DC267F", "#FE6100", "#FFB000"],
                                 title="Protein"))
+                print("finished fig", flush=True)
                 return fig
             else:
                 fig = None

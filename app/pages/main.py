@@ -117,6 +117,7 @@ layout = html.Div([
                     dcc.Markdown(
                         '''
                         ## Ways to Analyze Buscos:    
+                        ---
                         ### Heatmap of buscos  
                         ![heatmap example](/assets/heatmap_example.png#example)  
 

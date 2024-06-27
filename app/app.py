@@ -9,6 +9,17 @@ from flask import Flask
 
 import pages.components.footer as footer
 #----------------------------------------------------------
+#Startup instructions
+
+#conda activate cantata_frontend    
+#heroku login
+#heroku container:login
+
+#in local terminal in desired dir with dockerfile
+
+#heroku container:push web
+#heroku container:release web
+#----------------------------------------------------------
 print("Starting up!")
 print("---------------------------------------------", flush=True)
 sys.stdout.flush()
@@ -52,6 +63,7 @@ app.layout = dbc.Container(
 
         ),
         dash.page_container,
+        #cllbck footer
         footer.create_footer(),
     ],
     fluid=True,
@@ -70,17 +82,16 @@ if __name__ == "__main__":
     app.run_server(debug=True, host='0.0.0.0', port=port)
 #----------------------------------------------------------
 #TODO
-#replace dropdowns with radio buttons
-    #heatmap--done
-    #area--todo
-        #still broken
-        #may just be lag/delay from docker being slow
-        #look to improve load timems. (dont access .gb until necessary)
-    #raincloud--done
-#add scrollbar to species selection --done
-#fix plots going over footer --todo
-#auto resize all tabs(plots)--todo
+#fix plots going over footer by adding callback --todo
+#fix scrollbar sizing --todo
 #add tooltips --todo
-#alignment needs to be put to top --todo
+#fix None group selection, rename Clear Selection --todo
+#stcked area comparison options move to under other selection --todo
+    #only appear when that checklist option is selected --todo
+
+#User upload data
+    #add button for this
+    #how to select data?
+
 
 #----------------------------------------------------------
