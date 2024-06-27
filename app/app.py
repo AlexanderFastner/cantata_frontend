@@ -90,19 +90,12 @@ if __name__ == "__main__":
     app.run_server(debug=True, host='0.0.0.0', port=port)
 #----------------------------------------------------------
 #TODO
-#fix footer to bottom --done
-#fix scrollbar sizing --done
-#seperate scrollbar with individuals from group --done
-#fix None group selection, rename Clear Selection --todo
-#stcked area comparison options move to under other selection --todo
-    #only appear when that checklist option is selected --todo
-#remove the rounding on header corners --done
-#add tooltips --todo
-
+#fix scrollbar sizing --still todo!
 
 #User upload data
     #add button for this
     #how to select data?
 
+#add tooltips --todo
 
 #----------------------------------------------------------

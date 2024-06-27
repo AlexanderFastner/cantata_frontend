@@ -109,36 +109,12 @@ tab_stacked_area= html.Div(
         dbc.Row(
             [
                 #create_transcriptome_selector("Stacked_area_selector"),
-                create_checklist("Stacked_area_selector", 6, ['Protein', 'TransPi', 'Trinity', 'Log Comparison of Trinity vs TransPi'], 'Protein'),
-                #empty place holder
-                dbc.Col(
-                    width=1
-                ),
-                #log comparison of Trinity/TransPi
-                # dbc.Col(
-                #     [
-                #         dbc.Switch(
-                #             id="Trinity_TransPi_log_comparison_switch",
-                #             label=dbc.Label("Log_Comparison_of_Trinity_vs_TransPi", style={"font-size": "20px"}),
-                #             value=False,
-                #             style={
-                #                 "display": "block",
-                #                 "margin": "20px",
-                #                 "transform": "scale(1.4)",
-                #             },
-                #         )
-                #     ],width=4,
-                # ),
-                dbc.Col(
-                    [
-                        #TODO only display this when the switch for comparing has been selected
-                        #multi selector to choose what to track in Trinity vs TransPi
-                        html.H2("Select type of Busco to show in Comparison"),
-                        create_checklist("busco_type_selector_area", 6, ['Complete_&_single-copy', 'Complete_&_duplicated', 'Fragmented', 'Missing', 'All'], 'All'),
-                    ],width=5
-                ),
+                create_checklist("Stacked_area_selector", 10, ['Protein', 'TransPi', 'Trinity', 'Log Comparison of Trinity vs TransPi'], 'Protein'),
+                html.Hr(),
             ]
         ),
+        #call when comparison is selected
+        html.Div(id="busco_type_selector_area_component", children=[]),
         dbc.Row(
             dbc.Col(
                 [

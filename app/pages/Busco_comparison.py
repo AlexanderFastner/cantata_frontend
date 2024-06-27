@@ -14,26 +14,17 @@ from flask import send_file
 
 import sys
 sys.path.append("/wd/app/pages")
-print("sys paths")
 print(sys.path)
 
 import pages.components.user_selection as user_selection
 import pages.components.tabs as tabs
 import pages.components.alignment_functions as alignment_functions
 #----------------------------------------------------------
-color_map = {"Complete_BUSCOs": "#785EF0",
-                    "Complete_&_single-copy": "#648FFF",
-                    "Complete_&_duplicated" : "#DC267F",
-                    "Fragmented":"#FE6100",
-                    "Missing":"#FFB000"
-                    }
-#----------------------------------------------------------
 dash.register_page(__name__, path="/Busco")
 #----------------------------------------------------------
 # On startup
 user_selection.read_species_list(),
 #print(user_selection.species,flush=True),
-
 #----------------------------------------------------------
 layout = html.Div(
     [
@@ -50,7 +41,7 @@ layout = html.Div(
                                         dcc.Dropdown(
                                             id="group_dropdown",
                                             options=user_selection.group_options,
-                                            value=["None"],
+                                            value=[],
                                             placeholder="Select a Group",
                                         ),
                                     ],
@@ -75,12 +66,11 @@ layout = html.Div(
                 ),
 
                 dbc.Col( # middle/right column for plotting
-                    
                     #tabs for the various possible plots
                     [
                         tabs.plot_selector_tabs
                     ],
-                    style={"width": "80%", 'height' : '80vh'},
+                    style={"width": "80%", 'height' : 'auto'},
                 ),
             ],
         ),
@@ -92,8 +82,6 @@ layout = html.Div(
 #Callbacks
 #----------------------------------------------------------
 #species checklist
-#TODO fix selecting All
-#add handling to all plots for passing All value
 @callback(
     Output('species_selected', 'value'),
     Input('group_dropdown', 'value'),
@@ -109,11 +97,12 @@ def update_checklist_options(group_value):
     if 'All' in group_value:
         print("second detect")
 
-    #update so when None is selected, and something else is as well -> remove None
-    if "None" in group_value and len(group_value) > 1:
-        #This shouldnt happen anymore
-        group_value.remove("None")
-        print("None + value selected, removing None.", group_value, flush=True)
+    #update so when Clear Selection is selected everything is removed
+    if "None" in group_value:
+        updated_options=[]
+        group_value=""
+        return updated_options
+    
     #convert from , seperated string into array of strings
     if group_value is not [] and group_value is not None:
         updated_options = group_value.split(',')
@@ -121,6 +110,36 @@ def update_checklist_options(group_value):
         return updated_options
     else:
         return []
+#----------------------------------------------------------
+#make layout for busco_type_selector (off by default)
+#multi selector to choose what to track in Trinity vs TransPi
+@callback(
+    Output('busco_type_selector_area_component', 'children'),
+    Input('Stacked_area_selector', 'value'),
+    prevent_initial_call=True,
+)
+def show_type_selector(type):
+    print("called", flush=True)
+    if 'Log Comparison of Trinity vs TransPi' in type:
+        print('reached creation', flush=True)
+        return html.Div(
+            [
+                dbc.Row(
+                [
+                    dbc.Col(
+                        [
+                            html.H2("Select type of Busco to show in Comparison"),
+                            tabs.create_checklist("busco_type_selector_area", 10, ['Complete_&_single-copy', 'Complete_&_duplicated', 'Fragmented', 'Missing', 'All'], 'All'),
+                        ],width=10
+                    ),
+                ],
+                ),
+                html.Hr(),
+            ],
+            id="busco_type_selector_area_component",
+        )
+    else:
+        return html.Div(id="busco_type_selector_area_component", children=[])
 #----------------------------------------------------------
 #Heatmaps
 #----------------------------------------------------------
@@ -324,6 +343,14 @@ def update_TransPi(species_selected, children):
 #----------------------------------------------------------    
 #Stacked Area plots       
 #----------------------------------------------------------
+#Variables
+color_map = {"Complete_BUSCOs": "#785EF0",
+                    "Complete_&_single-copy": "#648FFF",
+                    "Complete_&_duplicated" : "#DC267F",
+                    "Fragmented":"#FE6100",
+                    "Missing":"#FFB000"
+                    }
+#----------------------------------------------------------
 #Dynamicly generate Stacked Area plots  
 @callback(
     Output(component_id="Stacked_area", component_property="children"),
@@ -486,7 +513,9 @@ def update_TransPi_area(species_selected, children):
     Input(component_id="busco_type_selector_area", component_property="value"),
 )
 def update_Trinity_TransPi_area(species_selected, children, busco_type_selector_area):
-    #print("species_selected ",species_selected)
+    print('update log comparison', flush=True)
+    print("species_selected ",species_selected, flush=True)
+    print("children ",children, flush=True)
     for item in children:
         if "Log_Comparison_of_Trinity_vs_TransPi" in item.get("props").get("id"):
             if species_selected != None and species_selected !=[]:

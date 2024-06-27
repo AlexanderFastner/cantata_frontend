@@ -29,7 +29,7 @@ def get_busco_genes():
 #----------------------------------------------------------
 #contain the various selecatble groups
 group_options=[
-    {"label": "None","value": "None"},
+    {"label": "Clear Selection","value": "None"},
     {"label": "All","value": "All"},
     {"label": "Annelida-Polychaeta","value": "Platynereis_dumerilii"},
     {"label": "Arthropoda-Branchiopoda","value": "Daphnia_pulex"},
