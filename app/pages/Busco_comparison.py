@@ -48,6 +48,28 @@ layout = html.Div(
                                 ),
                             ], style={'width': '100%', 'height': '13vh'}
                         ),
+                        #this is for users uploading their own data
+                        dbc.Card(
+                            [
+                                dbc.CardHeader(html.H5("Input your Busco results")),
+                                dbc.CardBody(
+                                    [
+                                        #TODO add callbacks for these
+                                        dcc.Input(
+                                            id="species_name_input",
+                                            type='text',
+                                            placeholder="Your species name here!",
+                                        ),
+                                        dcc.Textarea(
+                                            id='user_busco_textarea',
+                                            value='Input the contents of the BUSCO short summary results here\n',
+                                            style={'width': '100%', 'height': 100},
+                                        ),
+                                        html.Button('Submit data', id='submit_species', n_clicks=0),
+                                    ],
+                                ),
+                            ], style={'width': '100%', 'height': '26vh'}
+                        ),
                         dbc.Card(
                             [
                                 dbc.CardHeader(html.H5("Select Individual Species")),
@@ -60,6 +82,7 @@ layout = html.Div(
                                         ), 
                                     ],
                                 ),
+                                #TODO fix styling
                             ], style={'width': '100%', 'height': '70vh', 'overflow': 'scroll', 'display': 'inline-block'},
                         ),
                     ], width="auto",
