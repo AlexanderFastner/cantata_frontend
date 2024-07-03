@@ -90,8 +90,6 @@ if __name__ == "__main__":
     app.run_server(debug=True, host='0.0.0.0', port=port)
 #----------------------------------------------------------
 #TODO
-#fix scrollbar sizing --still todo!
-
 #User upload data
 #add textarea box --todo
 #test --todo

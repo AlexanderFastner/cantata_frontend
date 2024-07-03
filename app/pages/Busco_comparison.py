@@ -65,7 +65,7 @@ layout = html.Div(
                                             value='Input the contents of the BUSCO short summary results here\n',
                                             style={'width': '100%', 'height': 100},
                                         ),
-                                        html.Button('Submit data', id='submit_species', n_clicks=0),
+                                        html.Button('Submit data', id='submit_species_button', n_clicks=0),
                                     ],
                                 ),
                             ], style={'width': '100%', 'height': '26vh'}
@@ -82,10 +82,9 @@ layout = html.Div(
                                         ), 
                                     ],
                                 ),
-                                #TODO fix styling
                             ], style={'width': '100%', 'height': '70vh', 'overflow': 'scroll', 'display': 'inline-block'},
                         ),
-                    ], width="auto",
+                    ], style={"max-width": "20%", 'padding-bottom': '60px'},                    
                 ),
 
                 dbc.Col( # middle/right column for plotting
@@ -163,6 +162,26 @@ def show_type_selector(type):
         )
     else:
         return html.Div(id="busco_type_selector_area_component", children=[])
+#----------------------------------------------------------
+#User input
+#TODO fix error that stops page from loading!
+#Add new checklist box for that species that toggles its inclusion in plots
+
+# @callback(
+#     Output(component_id="species_selected", component_property="value"),
+#     State(component_id="species_name_input", component_property="value"),
+#     State(component_id="user_busco_textarea", component_property="value"),
+#     Input(component_id="submit_species_button", component_property="n_clicks"),
+# )
+# def read_user_data(species_name_input, user_busco_textarea, submit_species_button):
+#     #TODO sanitize data!!!
+#     print("species_name_input: ", species_name_input, flush=True)
+#     print("user_busco_textarea: ", user_busco_textarea, flush=True)
+#     new_species={"label": f"{species_name_input}","value": f"{user_busco_textarea}"}
+#     user_selection.group_options.insert(0, new_species)
+    
+#     return update_checklist_options(new_species)
+
 #----------------------------------------------------------
 #Heatmaps
 #----------------------------------------------------------
