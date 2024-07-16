@@ -91,16 +91,12 @@ if __name__ == "__main__":
 #----------------------------------------------------------
 #TODO
 #User upload data
-#add textarea box --todo
-#test --todo
 #sanitize input --todo
 #test with busco short summary input from serio --todo
 
 #add tooltips --todo
-#add wy to link to just selected species downloads from zenodo --todo
+#add way to link to just selected species downloads from zenodo --todo
 
 #Future expansion Ideas
 #Add way to run mafft to align user input to just the selected
-
-
 #----------------------------------------------------------

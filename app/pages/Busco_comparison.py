@@ -105,8 +105,8 @@ layout = html.Div(
 #----------------------------------------------------------
 #species checklist
 @callback(
-    Output('species_selected', 'value'),
-    Input('group_dropdown', 'value'),
+    Output("species_selected", "value", allow_duplicate=True),
+    Input("group_dropdown", "value"),
     prevent_initial_call=True,
 )
 def update_checklist_options(group_value):
@@ -167,20 +167,33 @@ def show_type_selector(type):
 #TODO fix error that stops page from loading!
 #Add new checklist box for that species that toggles its inclusion in plots
 
-# @callback(
-#     Output(component_id="species_selected", component_property="value"),
-#     State(component_id="species_name_input", component_property="value"),
-#     State(component_id="user_busco_textarea", component_property="value"),
-#     Input(component_id="submit_species_button", component_property="n_clicks"),
-# )
-# def read_user_data(species_name_input, user_busco_textarea, submit_species_button):
-#     #TODO sanitize data!!!
-#     print("species_name_input: ", species_name_input, flush=True)
-#     print("user_busco_textarea: ", user_busco_textarea, flush=True)
-#     new_species={"label": f"{species_name_input}","value": f"{user_busco_textarea}"}
-#     user_selection.group_options.insert(0, new_species)
+@callback(
+    Output(component_id="species_selected", component_property="value", allow_duplicate=True),
+    Output(component_id="species_selected", component_property="options", allow_duplicate=True),
+    Input(component_id="submit_species_button", component_property="n_clicks"),
+    State(component_id="species_name_input", component_property="value"),
+    State(component_id="user_busco_textarea", component_property="value"),
+    State(component_id="species_selected", component_property="options"),
+    prevent_initial_call=True,
+)
+def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_selected):
+    if n_clicks is None:
+        print("n_clicks for user input is None!", flush=True)
     
-#     return update_checklist_options(new_species)
+    print("species_name_input: ", species_name_input, flush=True)
+    print("user_busco_textarea: ", user_busco_textarea, flush=True)
+    print()
+    #Process and filter HERE!
+    #TODO sanitize data!
+    #parse 5 types and their values
+    #TODO ask sergio about anything else?
+
+
+    new_species={"label": f"{species_name_input}","value": f"{user_busco_textarea}"}
+    updated_options = [new_species.get("label")] + species_selected
+    print("new_species", new_species, flush=True)
+    print("updated_options", updated_options, flush=True)
+    return [new_species.get('label')], updated_options
 
 #----------------------------------------------------------
 #Heatmaps

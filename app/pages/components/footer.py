@@ -27,7 +27,7 @@ def create_footer():
                         children=[
                             "Visit my GitHub: ",
                             html.A(
-                                "github.com/AlexanderFasner",
+                                "github.com/AlexanderFastner",
                                 href="https://github.com/AlexanderFastner",
                                 target="_blank",
                                 style={
