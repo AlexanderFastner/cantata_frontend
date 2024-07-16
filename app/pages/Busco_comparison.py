@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 import plotly.io as pio
 import plotly.express as ex
 import re
+import html as HTML
 
 from dash import dcc, html, callback
 from dash.dependencies import Input, Output, State
@@ -180,32 +181,37 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
     print("species_name_input: ", species_name_input, flush=True)
     print("user_busco_textarea: ", user_busco_textarea, flush=True)
     print()
-    #Process and filter HERE!
     #----------------------------------------------------------
     #sanitize the species_names
-    cleaned_name_input = html.escape(species_name_input)
+    cleaned_name_input = HTML.escape(species_name_input)
     species_name_input = ""
     species_name_input = re.sub(r'<script\b[^>]*>(.*?)</script>', '', cleaned_name_input, flags=re.IGNORECASE)
     species_name_input = str(species_name_input.strip().replace(" " ,"_").replace("\n" ,"").replace("\t" ,""))
 
     #sanitize the user data
-    sanitized_user_data = html.escape(user_busco_textarea)
+    sanitized_user_data = HTML.escape(user_busco_textarea)
     user_busco_textarea = ""
     user_busco_textarea = re.sub(r'<script\b[^>]*>(.*?)</script>', '', sanitized_user_data, flags=re.IGNORECASE)
     #----------------------------------------------------------
+    #Process and filter HERE!
     #parse 5 types of BUSCOs and their values
     #TODO ask sergio about anything else?
     print()
-    print(user_busco_textarea)
+    print(user_busco_textarea, flush=True)
+    user_text = user_busco_textarea.split("\n")
+    for i, line in enumerate(user_text):
+        print(i, " ", line)
+        #TODO ask Sergio for test file!!
+        
     print()
-    print(type(user_busco_textarea))
+    print(type(user_busco_textarea), flush=True)
     print()
 
     #----------------------------------------------------------
     new_species={"label": f"{species_name_input}","value": f"{user_busco_textarea}"}
     updated_options = [new_species.get("label")] + species_selected
     print("new_species", new_species, flush=True)
-    print("updated_options", updated_options, flush=True)
+    #print("updated_options", updated_options, flush=True)
     return [new_species.get('label')], updated_options
 
 #----------------------------------------------------------
