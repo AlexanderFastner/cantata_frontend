@@ -8,7 +8,6 @@ from Bio.Align import MultipleSeqAlignment
 
 from .user_selection import species_lookup
 #----------------------------------------------------------
-
 alignment_data = [">sp|Q9W678|P53_BARBU Cellular tumor antigen p53 OS=Barbus barbus GN=tp53 PE=2 SV=1MAESQEFAELWERNLISTQEAGTCWELINDEYLPSSFDPNIFDNVLTEQPQPSTSPPTASVPVATDYPGEHGFKLGFPQSGTAKSVTCTYSSDLNKLFCQLAKTCPVQMVVNVAPPQGSVIRATAIYKKSEHVAEVVRRCPHHERTPDGDGLAPAAHLIRVEGNSRALYREDDVNSRHSVVVPYEVPQLGSEFTTVLYNFMCNSSCMGGMNRRPILTIISLETHDGQLLGRRSFEVRVCACPGRDRKTEESNFRKDQETKTLDKIPSANKRSLTKDSTSSVPRPEGSKKAKLSGSSDEEIYTLQVRGKERYEMLKKINDSLELSDVVPPSEMDRYRQKLLTKGKKKDGQTPEPKRGKKLMVKDEKSDSD" ,
 ">sp|Q29537|P53_CANFA Cellular tumor antigen p53 OS=Canis familiaris GN=TP53 PE=2 SV=2MEESQSELNIDPPLSQETFSELWNLLPENNVLSSELCPAVDELLLPESVVNWLDEDSDDAPRMPATSAPTAPGPAPSWPLSSSVPSPKTYPGTYGFRLGFLHSGTAKSVTWTYSPLLNKLFCQLAKTCPVQLWVSSPPPPNTCVRAMAIYKKSEFVTEVVRRCPHHERCSDSSDGLAPPQHLIRVEGNLRAKYLDDRNTFRHSVVVPYEPPEVGSDYTTIHYNYMCNSSCMGGMNRRPILTIITLEDSSGNVLGRNSFEVRVCACPGRDRRTEEENFHKKGEPCPEPPPGSTKRALPPSTSSSPPQKKKPLDGEYFTLQIRGRERYEMFRNLNEALELKDAQSGKEPGGSRAHSSHLKAKKGQSTSRHKKLMFKREGLDSD"]
 #----------------------------------------------------------
@@ -17,9 +16,11 @@ def read_in_alignment(species_selected, busco_name_selector, type_selector):
     #if single -> make sure no duplicates
     #if duplicate selected only include dupllicate entries
     species_l = species_lookup(species_selected)
+
     #print(species_l)
     #print("species_selected ", species_selected)
     #print("busco_name_selector ", busco_name_selector)
+
     reduced_alignment = []
     alignment = AlignIO.read(f"/wd/gb/{busco_name_selector}.shortheaders.aln-gb", "fasta")
     filtered_alignment = [seq for seq in alignment if any(species in seq.id for species in species_l)]
@@ -41,7 +42,7 @@ def read_in_alignment(species_selected, busco_name_selector, type_selector):
                 record = None
             else:
                 reduced_alignment.append(record)
-    #remove dupl
+    #remove duplicates
     if type_selector == "duplicated":
         # print("duplicated")
         # print(filtered_alignment)

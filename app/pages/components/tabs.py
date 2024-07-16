@@ -15,7 +15,6 @@ def create_checklist(id, cl_width, to_create, default_value):
     new_options = []
     for i in to_create:
         #print("create ", i)
-        #new_options.append({'label': html.Div([f'{i}'], style={'color': 'black', 'font-size': 16, "padding-left": 10}), 'value': f'{i}'})
         new_options.append({'label': f'{i}', 'value': f'{i}'})
                            
     #set default to empty if None
@@ -35,7 +34,6 @@ def create_checklist(id, cl_width, to_create, default_value):
         ],
         width=cl_width,
     )
-
 #----------------------------------------------------------
 #update species buttons per tab
 def create_update_button(tab_id):
@@ -257,7 +255,6 @@ tab_alignment= html.Div(
                         ],
                     ),
                 ),
-                #TODO Add tree view
             ]
         ),
         dbc.Row(
@@ -271,7 +268,6 @@ tab_alignment= html.Div(
             ],
         ),
     ],
-    #style={'display': 'inline-block'},
     className="mt-3",
 )
 #----------------------------------------------------------
@@ -291,4 +287,3 @@ plot_selector_tabs = html.Div(
     ]
 )
 #----------------------------------------------------------
-

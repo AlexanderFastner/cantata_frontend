@@ -44,10 +44,11 @@ app.scripts.config.serve_locally = True
 app.config.suppress_callback_exceptions = True
 #----------------------------------------------------------
 #The layout contains the general structure of the app
-#NavbarSimple is navigation bar at the top
+#NavbarSimple is navigation bar at the top of every page
 #the dash.pageregistry contains the various pages I built
     #That structure is in tabs.py
-#The footer is seperate from the otehr pages as it is added to everything
+#The main plotting nd the callbacks are done in Busco_comprison
+#The footer is seperate from the other pages as it is added to everything
 app.layout = dash.html.Div(
     [
         dash.html.Div(
@@ -62,7 +63,6 @@ app.layout = dash.html.Div(
                     fluid=True,
                     brand_style={"font-size":"40px"},
                     className="navbar navbar-dark bg-dark",
-                    #style={"border-radius":"5px"},
                 ),
                 dash.html.Div(
                     dash.page_container,
@@ -75,11 +75,8 @@ app.layout = dash.html.Div(
     style={'position': 'relative', 'minHeight': '100vh'},
     id='Outer-Container'
 )
-
 print("layout made")
 print("---------------------------------------------", flush=True)
-
-
 #----------------------------------------------------------
 @server.route('/')
 def index():
@@ -90,7 +87,7 @@ if __name__ == "__main__":
     app.run_server(debug=True, host='0.0.0.0', port=port)
 #----------------------------------------------------------
 #TODO
-#User upload data
+#User upload data --done
 #sanitize input --todo
 #test with busco short summary input from serio --todo
 

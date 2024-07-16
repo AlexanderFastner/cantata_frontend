@@ -7,6 +7,7 @@ import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import plotly.io as pio
 import plotly.express as ex
+import re
 
 from dash import dcc, html, callback
 from dash.dependencies import Input, Output, State
@@ -37,7 +38,7 @@ layout = html.Div(
                                 dbc.CardHeader(html.H5("Select Group for comparison")),
                                 dbc.CardBody(
                                     [
-                                        #TODO when new data is added you need to update group_options and species!
+                                        #when new data is added update group_options and species
                                         dcc.Dropdown(
                                             id="group_dropdown",
                                             options=user_selection.group_options,
@@ -54,7 +55,6 @@ layout = html.Div(
                                 dbc.CardHeader(html.H5("Input your Busco results")),
                                 dbc.CardBody(
                                     [
-                                        #TODO add callbacks for these
                                         dcc.Input(
                                             id="species_name_input",
                                             type='text',
@@ -70,7 +70,8 @@ layout = html.Div(
                                 ),
                             ], style={'width': '100%', 'height': '26vh'}
                         ),
-                        dbc.Card(
+                        # This is for selecting inndividual species
+                        dbc.Card( 
                             [
                                 dbc.CardHeader(html.H5("Select Individual Species")),
                                 dbc.CardBody(
@@ -141,9 +142,7 @@ def update_checklist_options(group_value):
     prevent_initial_call=True,
 )
 def show_type_selector(type):
-    print("called", flush=True)
     if 'Log Comparison of Trinity vs TransPi' in type:
-        print('reached creation', flush=True)
         return html.Div(
             [
                 dbc.Row(
@@ -163,10 +162,8 @@ def show_type_selector(type):
     else:
         return html.Div(id="busco_type_selector_area_component", children=[])
 #----------------------------------------------------------
-#User input
-#TODO fix error that stops page from loading!
+#User input Data
 #Add new checklist box for that species that toggles its inclusion in plots
-
 @callback(
     Output(component_id="species_selected", component_property="value", allow_duplicate=True),
     Output(component_id="species_selected", component_property="options", allow_duplicate=True),
@@ -184,11 +181,27 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
     print("user_busco_textarea: ", user_busco_textarea, flush=True)
     print()
     #Process and filter HERE!
-    #TODO sanitize data!
-    #parse 5 types and their values
+    #----------------------------------------------------------
+    #sanitize the species_names
+    cleaned_name_input = html.escape(species_name_input)
+    species_name_input = ""
+    species_name_input = re.sub(r'<script\b[^>]*>(.*?)</script>', '', cleaned_name_input, flags=re.IGNORECASE)
+    species_name_input = str(species_name_input.strip().replace(" " ,"_").replace("\n" ,"").replace("\t" ,""))
+
+    #sanitize the user data
+    sanitized_user_data = html.escape(user_busco_textarea)
+    user_busco_textarea = ""
+    user_busco_textarea = re.sub(r'<script\b[^>]*>(.*?)</script>', '', sanitized_user_data, flags=re.IGNORECASE)
+    #----------------------------------------------------------
+    #parse 5 types of BUSCOs and their values
     #TODO ask sergio about anything else?
+    print()
+    print(user_busco_textarea)
+    print()
+    print(type(user_busco_textarea))
+    print()
 
-
+    #----------------------------------------------------------
     new_species={"label": f"{species_name_input}","value": f"{user_busco_textarea}"}
     updated_options = [new_species.get("label")] + species_selected
     print("new_species", new_species, flush=True)

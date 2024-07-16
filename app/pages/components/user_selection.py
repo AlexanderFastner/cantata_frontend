@@ -20,13 +20,6 @@ def get_busco_genes():
         busco_genes = busco_genes[1:]
     return busco_genes
 #----------------------------------------------------------
-#TODO decide whether we will implememnt this or not
-# def get_busco_functions():
-#     #print("activated get_busco_functions")
-#     #TODO return a list of the various busco functions
-#     busco_function = ["do something"]
-#     return busco_function
-#----------------------------------------------------------
 #contain the various selecatble groups
 group_options=[
     {"label": "Clear Selection","value": "None"},
@@ -298,12 +291,14 @@ species_codes = {"Platynereis_dumerilii": "PDU",
 #----------------------------------------------------------
 def species_lookup(species_list):
     species_c = []
+    #----------------------------------------------------------
+    #The commented code below is a 1 time use to make a nice dict to copy/paste above after addinng new data
     #get dict of species : species name
     # with open("./data/CANTATA_species_WoRMS_matched.csv","r") as t:
     #     for line in t:
     #         line=line.split(",")
     #         print(f'"{line[0]}": "{line[1]}",')
-
+    #----------------------------------------------------------
     for item in species_list:
         species_c.append(str(species_codes.get(item)))
 
