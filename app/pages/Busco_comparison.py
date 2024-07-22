@@ -173,9 +173,10 @@ def show_type_selector(type):
     State(component_id="species_name_input", component_property="value"),
     State(component_id="user_busco_textarea", component_property="value"),
     State(component_id="species_selected", component_property="options"),
+    State(component_id="species_selected", component_property="value"),
     prevent_initial_call=True,
 )
-def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_selected):
+def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_selected, species_selected_value):
     if n_clicks is None:
         print("n_clicks for user input is None!", flush=True)
     
@@ -248,18 +249,26 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
     print()
 
     #TODO update all plots to referencce this df on creation
-    #TODO need an empty df as default before this is called as well
     #TODO remove unecessary print statements
     #----------------------------------------------------------
-    #AND full table, dd script to process this - finish with the sme thing as above
+    #AND full table, add script to process this - finish with the sme thing as above
     #global user_full_table_df
     #----------------------------------------------------------
-    #add new innput species to list
-    new_species={"label": f"{species_name_input}","value": f"{short_busco_data}"}
+    #add new input species to list
+    new_species={"label": f"{species_name_input}"}
+    print("new_species", new_species, flush=True)
+    #print("species_selected before: ", species_selected, flush=True)
     updated_options = [new_species.get("label")] + species_selected
-    #print("new_species", new_species, flush=True)
     #print("updated_options", updated_options, flush=True)
-    return [new_species.get('label')], updated_options
+    #return needs to return values of the selected options, all options
+    print("species_selected values: ", species_selected_value, flush=True)
+    if species_selected_value is not None:
+        new_species_selected_values = [new_species.get("label")] + species_selected_value
+        print("new_species_selected_values: ", new_species_selected_values, flush=True)
+    else:
+        new_species_selected_values = [new_species.get("label")]
+
+    return new_species_selected_values, updated_options
 
 #----------------------------------------------------------
 #Heatmaps
