@@ -183,6 +183,11 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
     print("species_name_input: ", species_name_input, flush=True)
     print("user_busco_textarea: ", user_busco_textarea, flush=True)
     print()
+
+
+    #TODO! how to get which assembler?
+
+
     #----------------------------------------------------------
     #sanitize the species_names
     cleaned_name_input = HTML.escape(species_name_input)
@@ -251,8 +256,16 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
     #TODO update all plots to referencce this df on creation
     #TODO remove unecessary print statements
     #----------------------------------------------------------
-    #AND full table, add script to process this - finish with the sme thing as above
-    #global user_full_table_df
+    #TODO full table, add script to process this - finish with the same thing as above
+
+    #Dataframe to keep track of all user full table data
+    global user_full_table_df
+    #function to process input data
+    #for each input full table for species process and include to df
+    #This is only relevnt for hetmaps- button only there?
+    #TODO ask Sergio?
+    #input text box? seems bad
+
     #----------------------------------------------------------
     #add new input species to list
     new_species={"label": f"{species_name_input}"}
@@ -754,6 +767,9 @@ def update_Protein_Raincloud(species_selected, children):
         if "Protein_raincloud" in item.get("props").get("id"):
             if species_selected != None and species_selected !=[]:
                 Protein_df = pd.read_csv('/wd/data/busco5_short_summary_Proteome.tsv', sep="\t", index_col=0)
+                if user_short_sum_df is not None:
+                    Protein_df =pd.concat([Protein_df, user_short_sum_df], axis=0, ignore_index=False)
+                    print("new Protein raincloud: ", Protein_df, flush=True)
                 subset_Protein = Protein_df.loc[Protein_df.index.isin(species_selected)]
 
                 #data wrangling
@@ -797,6 +813,9 @@ def update_TransPi_Raincloud(species_selected, children):
         if "TransPi_raincloud" in item.get("props").get("id"):
             if species_selected != None and species_selected !=[]:
                 TransPi_df = pd.read_csv('/wd/data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
+                if user_short_sum_df is not None:
+                    TransPi_df =pd.concat([TransPi_df, user_short_sum_df], axis=0, ignore_index=False)
+                    print("new TransPi_df raincloud: ", TransPi_df, flush=True)
                 subset_TransPi = TransPi_df.loc[TransPi_df.index.isin(species_selected)]
 
                 #data wrangling
@@ -853,6 +872,9 @@ def update_Trinity_Raincloud(species_selected, children):
         if "Trinity_raincloud" in item.get("props").get("id"):
             if species_selected != None and species_selected !=[]:
                 Trinity_df = pd.read_csv('/wd/data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
+                if user_short_sum_df is not None:
+                    Trinity_df =pd.concat([Trinity_df, user_short_sum_df], axis=0, ignore_index=False)
+                    print("new Trinity_df raincloud: ", Trinity_df, flush=True)
                 subset_Trinity = Trinity_df.loc[Trinity_df.index.isin(species_selected)]
 
                 #data wrangling

@@ -304,3 +304,14 @@ def species_lookup(species_list):
 
     return species_c
 #----------------------------------------------------------
+#TODO process full table user input
+def process_full_table():
+    
+
+
+    return None
+
+
+
+
+#----------------------------------------------------------
