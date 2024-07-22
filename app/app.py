@@ -87,9 +87,8 @@ if __name__ == "__main__":
     app.run_server(debug=True, host='0.0.0.0', port=port)
 #----------------------------------------------------------
 #TODO
-#User upload data --done
-#sanitize input --todo
-#test with busco short summary input from serio --todo
+#update plots with new input data --todo
+#rename Protein to TransPi/Proteome --todo
 
 #add tooltips --todo
 #add way to link to just selected species downloads from zenodo --todo

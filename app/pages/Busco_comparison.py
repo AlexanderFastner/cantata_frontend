@@ -26,6 +26,7 @@ dash.register_page(__name__, path="/Busco")
 #----------------------------------------------------------
 # On startup
 user_selection.read_species_list(),
+all_user_short_sum = {}
 #print(user_selection.species,flush=True),
 #----------------------------------------------------------
 layout = html.Div(
@@ -195,22 +196,68 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
     #----------------------------------------------------------
     #Process and filter HERE!
     #parse 5 types of BUSCOs and their values
-    #TODO ask sergio about anything else?
-    print()
-    print(user_busco_textarea, flush=True)
     user_text = user_busco_textarea.split("\n")
+    short_busco_data = []
+    short_busco_data.append(species_name_input)
     for i, line in enumerate(user_text):
-        print(i, " ", line)
-        #TODO ask Sergio for test file!!
-        
-    print()
-    print(type(user_busco_textarea), flush=True)
+        print(i, " ", line, flush=True)
+        if i > 7:
+            print("check this line: ",  line, flush=True)
+            if len(line) < 3:
+                break
+            split=line.split("\t")
+            print(split)
+            busco_value = split[1]
+            short_busco_data.append(busco_value)
+    print("short_busco_data", short_busco_data, flush=True)
     print()
 
+    #save into globl dict of inputs
+    global all_user_short_sum
+    all_user_short_sum[species_name_input] = short_busco_data
+    print("all_user_short_sum: ", all_user_short_sum, flush=True)
+
+    #Do the following for each user entry
+    #add to user_pndas_df w/ species_name Complete_BUSCOs	Complete_&_single-copy	Complete_&_duplicated	Fragmented	Missing	Total
+    #species_name   #   #   #   #   #   #
+    user_list = []
+    columns = ["species_name", "Complete_BUSCOs", "Complete_&_single-copy", "Complete_&_duplicated", "Fragmented", "Missing", "Total"]
+    #sanity check
+    if len(short_busco_data) != len(columns):
+        print("Busco short summary file has wrong format. Maybe remove a line")
+        #TODO make this an alert to the user
+
+    for entry in all_user_short_sum.values():
+        print(entry)
+        species_dict={}
+        i=0
+        while i < len(entry):
+            species_dict[columns[i]] = entry[i]
+            i+=1
+        user_list.append(species_dict)
+
+    print("user_list", user_list, flush=True)
+    print()
+    global user_short_sum_df
+    #df row for each entry in dict
+    user_short_sum_df = pd.DataFrame(user_list)
+    user_short_sum_df = user_short_sum_df.set_index("species_name")
+
+    print("user_short_sum_df: ")
+    print(user_short_sum_df, flush=True)
+    print()
+
+    #TODO update all plots to referencce this df on creation
+    #TODO need an empty df as default before this is called as well
+    #TODO remove unecessary print statements
     #----------------------------------------------------------
-    new_species={"label": f"{species_name_input}","value": f"{user_busco_textarea}"}
+    #AND full table, dd script to process this - finish with the sme thing as above
+    #global user_full_table_df
+    #----------------------------------------------------------
+    #add new innput species to list
+    new_species={"label": f"{species_name_input}","value": f"{short_busco_data}"}
     updated_options = [new_species.get("label")] + species_selected
-    print("new_species", new_species, flush=True)
+    #print("new_species", new_species, flush=True)
     #print("updated_options", updated_options, flush=True)
     return [new_species.get('label')], updated_options
 
@@ -368,6 +415,7 @@ def update_Protein(species_selected, children):
     for item in children:
         if "Protein_heatmap" in item.get("props").get("id"):
             heatmap_df = pd.read_csv('/wd/data/busco5_full_table_Proteome_df_numbers.csv', index_col=0)
+            #TODO combine with full tble if user input data
             subset = heatmap_df.loc[heatmap_df.index.isin(species_selected)]
             Protein_fig = go.Figure(data=go.Heatmap(z=subset.values, colorscale=[[0, "#648FFF"], [0.33, "#DC267F"], [0.66, "#FE6100"], [1, "#FFB000"]], colorbar=dict(tickmode='array',
                 tickvals=[0, 1, 2, 3], ticktext=["single", "fragmented", "multi", "missing"], title="Busco type"),x=subset.columns, y=subset.index))
@@ -491,6 +539,12 @@ def update_Protein_area(species_selected, children):
         if "Protein_stacked_area" in item.get("props").get("id"):
             if species_selected != None and species_selected !=[]:
                 Protein_area_df = pd.read_csv('/wd/data/busco5_short_summary_Proteome.tsv', sep="\t", index_col=0)
+                print(user_short_sum_df, flush=True)
+                print("species_selected: ", species_selected, flush=True)
+                if user_short_sum_df is not None:
+                    #index issue
+                    Protein_area_df =pd.concat([Protein_area_df, user_short_sum_df], axis=0, ignore_index=False)
+                    print("new protein area: ", Protein_area_df, flush=True)
                 Protein_area_df = Protein_area_df.drop(columns=["Complete_BUSCOs", "Total"])
                 subset_Protein = Protein_area_df.loc[Protein_area_df.index.isin(species_selected)]
                 fig = go.Figure(data=ex.area(subset_Protein, color_discrete_sequence=["#648FFF", "#DC267F", "#FE6100", "#FFB000"],
