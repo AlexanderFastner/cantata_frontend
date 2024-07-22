@@ -201,22 +201,22 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
     short_busco_data = []
     short_busco_data.append(species_name_input)
     for i, line in enumerate(user_text):
-        print(i, " ", line, flush=True)
+        # print(i, " ", line, flush=True)
         if i > 7:
-            print("check this line: ",  line, flush=True)
+            # print("check this line: ",  line, flush=True)
             if len(line) < 3:
                 break
             split=line.split("\t")
-            print(split)
+            # print(split)
             busco_value = split[1]
             short_busco_data.append(busco_value)
-    print("short_busco_data", short_busco_data, flush=True)
-    print()
+    # print("short_busco_data", short_busco_data, flush=True)
+    # print()
 
     #save into globl dict of inputs
     global all_user_short_sum
     all_user_short_sum[species_name_input] = short_busco_data
-    print("all_user_short_sum: ", all_user_short_sum, flush=True)
+    # print("all_user_short_sum: ", all_user_short_sum, flush=True)
 
     #Do the following for each user entry
     #add to user_pndas_df w/ species_name Complete_BUSCOs	Complete_&_single-copy	Complete_&_duplicated	Fragmented	Missing	Total
@@ -229,7 +229,7 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
         #TODO make this an alert to the user
 
     for entry in all_user_short_sum.values():
-        print(entry)
+        # print(entry)
         species_dict={}
         i=0
         while i < len(entry):
@@ -237,8 +237,8 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
             i+=1
         user_list.append(species_dict)
 
-    print("user_list", user_list, flush=True)
-    print()
+    # print("user_list", user_list, flush=True)
+    # print()
     global user_short_sum_df
     #df row for each entry in dict
     user_short_sum_df = pd.DataFrame(user_list)
@@ -256,15 +256,15 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
     #----------------------------------------------------------
     #add new input species to list
     new_species={"label": f"{species_name_input}"}
-    print("new_species", new_species, flush=True)
+    # print("new_species", new_species, flush=True)
     #print("species_selected before: ", species_selected, flush=True)
     updated_options = [new_species.get("label")] + species_selected
     #print("updated_options", updated_options, flush=True)
     #return needs to return values of the selected options, all options
-    print("species_selected values: ", species_selected_value, flush=True)
+    # print("species_selected values: ", species_selected_value, flush=True)
     if species_selected_value is not None:
         new_species_selected_values = [new_species.get("label")] + species_selected_value
-        print("new_species_selected_values: ", new_species_selected_values, flush=True)
+        # print("new_species_selected_values: ", new_species_selected_values, flush=True)
     else:
         new_species_selected_values = [new_species.get("label")]
 
@@ -548,10 +548,9 @@ def update_Protein_area(species_selected, children):
         if "Protein_stacked_area" in item.get("props").get("id"):
             if species_selected != None and species_selected !=[]:
                 Protein_area_df = pd.read_csv('/wd/data/busco5_short_summary_Proteome.tsv', sep="\t", index_col=0)
-                print(user_short_sum_df, flush=True)
-                print("species_selected: ", species_selected, flush=True)
+                # print(user_short_sum_df, flush=True)
+                # print("species_selected: ", species_selected, flush=True)
                 if user_short_sum_df is not None:
-                    #index issue
                     Protein_area_df =pd.concat([Protein_area_df, user_short_sum_df], axis=0, ignore_index=False)
                     print("new protein area: ", Protein_area_df, flush=True)
                 Protein_area_df = Protein_area_df.drop(columns=["Complete_BUSCOs", "Total"])
@@ -579,6 +578,9 @@ def update_Trinity_area(species_selected, children):
             if species_selected != None and species_selected !=[]:
                 #print("Trinity", species_selected)
                 Trinity_area_df = pd.read_csv('/wd/data/busco4_short_summary_Trinity.tsv', sep="\t", index_col=0)
+                if user_short_sum_df is not None:
+                    Trinity_area_df =pd.concat([Trinity_area_df, user_short_sum_df], axis=0, ignore_index=False)
+                    print("new Trinity area: ", Trinity_area_df, flush=True)
                 Trinity_area_df = Trinity_area_df.drop(columns=["Complete_BUSCOs", "Total"])
                 subset_Trinity = Trinity_area_df.loc[Trinity_area_df.index.isin(species_selected)]
                 #print(subset_Trinity)
@@ -617,6 +619,9 @@ def update_TransPi_area(species_selected, children):
         if "TransPi_stacked_area" in item.get("props").get("id"):
             if species_selected != None and species_selected !=[]:
                 TransPi_area_df = pd.read_csv('/wd/data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
+                if user_short_sum_df is not None:
+                    TransPi_area_df =pd.concat([TransPi_area_df, user_short_sum_df], axis=0, ignore_index=False)
+                    print("new TraansPi area: ", TransPi_area_df, flush=True)
                 TransPi_area_df = TransPi_area_df.drop(columns=["Complete_BUSCOs", "Total"])
                 subset_TransPi = TransPi_area_df.loc[TransPi_area_df.index.isin(species_selected)]
                 fig = go.Figure(data=ex.area(subset_TransPi, color_discrete_sequence=["#648FFF", "#DC267F", "#FE6100", "#FFB000"],
