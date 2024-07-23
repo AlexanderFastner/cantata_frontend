@@ -26,7 +26,6 @@ CMD gunicorn --workers=1 --threads=2 -b 0.0.0.0:$PORT app:server
 #heroku container:login
 #heroku container:push web
 #heroku container:release web
-#heroku ps:scale web=1
 #----------------------------------------------------------------
 #for local docker test
 #docker build -t cantata .

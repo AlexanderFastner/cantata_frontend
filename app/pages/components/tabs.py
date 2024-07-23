@@ -60,6 +60,24 @@ tab_heatmap = html.Div(
         html.Hr(),
         dbc.Row(
             [
+                dcc.Textarea(
+                    id='user_full_table_input',
+                    value='''
+                        Input the contents of the BUSCO full table with all genes below with matching format to this:\n
+                        # BUSCO version is: 4.1.4 
+                        # The lineage dataset is: metazoa_odb10 (Creation date: 2020-09-10, number of species: 65, number of BUSCOs: 954)
+                        # Busco id	Status	Sequence	Score	Length
+                        5951at33208a	Duplicated	TRINITY_DN496_c0_g1_i7	2497.0	1125
+                        5951at33208a	Duplicated	SPADES.k25.NODE_765_length_4786_cov_39.834489_g517_i1	2454.6	1105
+                        ''',
+                    style={'width': '50%', 'height': 100},
+                ),
+                html.Button('Submit data', id='submit_full_table_button', n_clicks=0),
+            ], width=10,
+        ),
+        html.Hr(),
+        dbc.Row(
+            [
                 #selector to switch between the Protein and the transpi/trinity
                 create_checklist("heatmap_selector", 10, ['Protein', 'TransPi', 'Trinity', 'Show difference heatmap'], 'Protein'),
                 #empty place holder
