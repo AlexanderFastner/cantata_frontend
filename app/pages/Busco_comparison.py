@@ -179,7 +179,7 @@ def show_type_selector(type):
 def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_selected, species_selected_value):
     if n_clicks is None:
         print("n_clicks for user input is None!", flush=True)
-    
+    print("User input data", flush=True)
     print("species_name_input: ", species_name_input, flush=True)
     print("user_busco_textarea: ", user_busco_textarea, flush=True)
     print()
@@ -249,12 +249,9 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
     user_short_sum_df = pd.DataFrame(user_list)
     user_short_sum_df = user_short_sum_df.set_index("species_name")
 
-    print("user_short_sum_df: ")
-    print(user_short_sum_df, flush=True)
-    print()
-
-    #TODO update all plots to referencce this df on creation
-    #TODO remove unecessary print statements
+    # print("user_short_sum_df: ")
+    # print(user_short_sum_df, flush=True)
+    # print()
     #----------------------------------------------------------
     #TODO full table, add script to process this - finish with the same thing as above
 
@@ -264,7 +261,7 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
     #for each input full table for species process and include to df
     #This is only relevnt for hetmaps- button only there?
     #TODO ask Sergio?
-    #input text box? seems bad
+    #input text box? this seems bad
 
     #----------------------------------------------------------
     #add new input species to list
@@ -321,8 +318,9 @@ def get_heatmap_df(species_selected, heatmap_selector, active_tab, update_specie
         fig_array.remove("Difference_heatmap")
         fig_array.insert(0, "Difference_heatmap")
     
-    print(fig_array, flush=True)
-    print()
+    # print("heatmap fig array: ", fig_array, flush=True)
+    # print()
+
     #return Div with figures and names
     #add callbacks that those newly created graph ids get updated
     #add dcc.Graph elements to array and return child
@@ -423,6 +421,7 @@ def update_Difference(species_selected, children):
         Difference_fig.update_layout(title="Difference heatmap", xaxis_title="Busco Genes", yaxis_title="Species")
         return Difference_fig    
     
+    #TODO make this an alert
     print("should never get here (update difference error)")
     return None
 
@@ -690,7 +689,6 @@ def update_Trinity_TransPi_area(species_selected, children, busco_type_selector_
                 # species name   Complete_&_single-copy  Complete_&_duplicated  Fragmented  Missing
                 #species1        log2(Trinity.value/TransPi.value) value value value
                 #species2        value value value value
-                #...
 
                 #subset by selected type
                 # print(busco_type_selector_area)
@@ -715,7 +713,7 @@ def update_Trinity_TransPi_area(species_selected, children, busco_type_selector_
                 print("never get here")
                 return None
     else:
-        print("no comp in children")
+        #print("no comparison in children")
         return None
 #----------------------------------------------------------
 #Raincloud selection
