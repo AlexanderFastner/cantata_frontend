@@ -507,8 +507,8 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
     if "tab_stacked_area" not in active_tab:
         return html.P("Not active (This shouldn't happen)") 
     fig_array=[]
-    print(species_selected, Stacked_area_selector, active_tab, update_species_button)
-    print(flush=True)
+    print("Input to stacked area: ", species_selected, Stacked_area_selector, active_tab, update_species_button, flush=True)
+    print()
     #filter by user selection
     if 'None' in species_selected: 
         if len(species_selected) < 2:
@@ -532,8 +532,6 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
             #if selected put difference to the front of the list
             elif selected == "Log Comparison of Trinity vs TransPi":
                 fig_array = ["Log_Comparison_of_Trinity_vs_TransPi"] + fig_array
-                print("added")
-                print(fig_array)
     else:
         print("missing selection Stacked area")
         return None
@@ -541,7 +539,7 @@ def get_stacked_area(species_selected, Stacked_area_selector, active_tab, update
     child = []
     if fig_array == []:
         fig_array.append("None")
-    print("area, ", fig_array)
+    print("stacked area: ", fig_array)
     for fig in fig_array:
         #update children of output
         child.append(dcc.Graph(id=fig))
@@ -633,7 +631,7 @@ def update_TransPi_area(species_selected, children):
                 TransPi_area_df = pd.read_csv('/wd/data/busco4_short_summary_TransPi.tsv', sep="\t", index_col=0)
                 if user_short_sum_df is not None:
                     TransPi_area_df =pd.concat([TransPi_area_df, user_short_sum_df], axis=0, ignore_index=False)
-                    print("new TraansPi area: ", TransPi_area_df, flush=True)
+                    print("new TransPi area: ", TransPi_area_df, flush=True)
                 TransPi_area_df = TransPi_area_df.drop(columns=["Complete_BUSCOs", "Total"])
                 subset_TransPi = TransPi_area_df.loc[TransPi_area_df.index.isin(species_selected)]
                 fig = go.Figure(data=ex.area(subset_TransPi, color_discrete_sequence=["#648FFF", "#DC267F", "#FE6100", "#FFB000"],
@@ -935,11 +933,9 @@ def update_Trinity_Raincloud(species_selected, children):
 def update_align(species_selected, busco_name_selector, type_selector, active_tab, n_clicks):
     if "tab_alignment" not in active_tab:
         return alignment_functions.alignment_data
-    print(species_selected, busco_name_selector, type_selector, active_tab, n_clicks, flush=True)
+    print("update alignment values: ", species_selected, busco_name_selector, type_selector, active_tab, n_clicks, flush=True)
     if species_selected != None and species_selected !=[] and busco_name_selector != None and busco_name_selector != "None" and busco_name_selector !=[] and type_selector is not None:
         data = alignment_functions.read_in_alignment(species_selected, busco_name_selector, type_selector)
-        print("update alignment data", flush=True)
-        print(data, flush=True)
         if len(data) > 0:
             #A Match is found -> Alert is left off
             return data, False
