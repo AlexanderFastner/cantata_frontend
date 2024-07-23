@@ -86,13 +86,15 @@ if __name__ == "__main__":
     app.run_server()
     app.run_server(debug=True, host='0.0.0.0', port=port)
 #----------------------------------------------------------
-#TODO
-#update plots with new input data --todo
-#rename Protein to TransPi/Proteome --todo
+#TODO list
+#add processinng and adding pandas_df to heatmap for user data
+#rename Protein to TransPi/Proteome
+#add tooltips?
+#write tutorial
+#add way to link to just selected species downloads from zenodo
+#todo add domain on heroku
 
-#add tooltips --todo
-#add way to link to just selected species downloads from zenodo --todo
 
 #Future expansion Ideas
-#Add way to run mafft to align user input to just the selected
+#Add way to run mafft to align user input to just the selected?
 #----------------------------------------------------------
