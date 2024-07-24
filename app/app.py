@@ -10,6 +10,7 @@ from flask import Flask
 import pages.components.footer as footer
 #----------------------------------------------------------
 #Startup instructions
+#Good luck Sergio
 
 #conda activate cantata_frontend    
 #heroku login
