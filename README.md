@@ -1,7 +1,7 @@
 # Cantata Frontend  
 Frontend providing access to the curated Cantata Database as well as several tools  
 
-Coming soon: link to Cantata Zenodo *on public release
+Coming soon: https://cantatadb-8f2293883fc5.herokuapp.com/
 
 ## Available Tools  
 Heatmaps for Protein level, TransPi, Trinity  
