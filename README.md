@@ -10,15 +10,15 @@ The assembly and annotation will be done using computational resources of the Ch
 
 ## Available Visualization Tools  
 Heatmaps for Protein level, TransPi, Trinity  
-![Heatmap.png](https://github.com/AlexanderFastner/cantata_frontend/app/assets/heatmap_example.png)  
+![Heatmap.png](https://github.com/AlexanderFastner/cantata_frontend/blob/main/app/assets/heatmap_example.png)  
 
 Stacked Area plots
-![Stacked_Area.png](https://github.com/AlexanderFastner/cantata_frontend/app/assets/stacked_area_example.png)  
+![Stacked_Area.png](https://github.com/AlexanderFastner/cantata_frontend/blob/main/app/assets/stacked_area_example.png)  
 
 Raincloud plots  
-![Raincloud.png](https://github.com/AlexanderFastner/cantata_frontend/app/assets/raincloud_example.png)  
+![Raincloud.png](https://github.com/AlexanderFastner/cantata_frontend/blob/main/app/assets/raincloud_example.png)  
 
 Alignment comparison  
-![alignment.png](https://github.com/AlexanderFastner/cantata_frontend/app/assets/alignment_example.png)  
+![alignment.png](https://github.com/AlexanderFastner/cantata_frontend/blob/main/app/assets/alignment_example.png)  
 
 ### Further development will be continued by Sergio Vargas or the LMU. 
