@@ -27,6 +27,8 @@ dash.register_page(__name__, path="/Busco")
 # On startup
 user_selection.read_species_list(),
 all_user_short_sum = {}
+user_short_sum_df = None
+all_user_short_sum = None
 #print(user_selection.species,flush=True),
 #----------------------------------------------------------
 layout = html.Div(
@@ -183,11 +185,7 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
     print("species_name_input: ", species_name_input, flush=True)
     print("user_busco_textarea: ", user_busco_textarea, flush=True)
     print()
-
-
     #TODO! how to get which assembler?
-
-
     #----------------------------------------------------------
     #sanitize the species_names
     cleaned_name_input = HTML.escape(species_name_input)
@@ -219,7 +217,6 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
     # print()
 
     #save into globl dict of inputs
-    global all_user_short_sum
     all_user_short_sum[species_name_input] = short_busco_data
     # print("all_user_short_sum: ", all_user_short_sum, flush=True)
 
@@ -244,7 +241,7 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
 
     # print("user_list", user_list, flush=True)
     # print()
-    global user_short_sum_df
+
     #df row for each entry in dict
     user_short_sum_df = pd.DataFrame(user_list)
     user_short_sum_df = user_short_sum_df.set_index("species_name")
@@ -259,9 +256,7 @@ def read_user_data(n_clicks, species_name_input, user_busco_textarea, species_se
     global user_full_table_df
     #function to process input data
     #for each input full table for species process and include to df
-    #This is only relevnt for hetmaps- button only there?
-    #TODO ask Sergio?
-    #input text box? this seems bad
+    #This is only relevnt for heatmaps- button only there?
 
     #----------------------------------------------------------
     #add new input species to list

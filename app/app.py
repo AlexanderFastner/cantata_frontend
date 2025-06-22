@@ -5,6 +5,7 @@ port = os.environ.get("PORT", 8050)
 import sys
 import dash_bootstrap_components as dbc
 import dash
+# from dash import dcc
 from flask import Flask
 
 import pages.components.footer as footer
@@ -52,6 +53,8 @@ app.config.suppress_callback_exceptions = True
 #The footer is seperate from the other pages as it is added to everything
 app.layout = dash.html.Div(
     [
+        # TODO switch to using a proper datastore!
+        # dcc.Store(id='user-short-sum-store'),
         dash.html.Div(
             [
                 dbc.NavbarSimple(
