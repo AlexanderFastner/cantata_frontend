@@ -73,7 +73,7 @@ tab_heatmap = html.Div(
                     style={'width': '50%', 'height': 100},
                 ),
                 html.Button('Submit data', id='submit_full_table_button', n_clicks=0),
-            ], width=10,
+            ]
         ),
         html.Hr(),
         dbc.Row(
