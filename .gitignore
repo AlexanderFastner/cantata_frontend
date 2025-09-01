@@ -1,4 +1,4 @@
-#ignore aln data
+#ignore aln data !!!Testing turning this off for google cloud build
 gb/
 
 #ignore local caches

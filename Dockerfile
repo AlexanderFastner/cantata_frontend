@@ -3,7 +3,7 @@ FROM continuumio/miniconda3
 RUN mkdir wd
 WORKDIR /wd
 
-ENV DASH_DEBUG_MODE True
+#ENV DASH_DEBUG_MODE True
 COPY app/requirements.txt .
 
 RUN conda install -c conda-forge --file requirements.txt --yes
@@ -30,4 +30,11 @@ CMD gunicorn --workers=1 --threads=1 -b 0.0.0.0:$PORT app:server
 #for local docker test
 #docker build -t cantata .
 #docker run -p 8050:8050 -e PORT=8050 cantata
+#----------------------------------------------------------------
+#Make google run docker container
+#gcloud run deploy --source .
+#cantata
+#Region uswest-2 --40
+#y
+#comment out gb/ from gitignore just for making the container
 #----------------------------------------------------------------
